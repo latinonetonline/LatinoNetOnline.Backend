@@ -6,6 +6,8 @@ on:
     - '.github/workflows/**'
     branches:
       - main
+      
+  workflow_dispatch:
  
 jobs:
   build:
