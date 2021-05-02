@@ -2,8 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
@@ -17,7 +16,7 @@ COPY ["src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/LatinoNetOnline.
 COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/"]
 COPY ["src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/"]
 #RUN ["cp", "NuGet.Config", "/root/.nuget/NuGet/NuGet.Config"]
-RUN dotnet restore --configfile "./NuGet.Config" "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj"
+RUN dotnet restore --configfile "./NuGet.Config" 
 COPY . .
 WORKDIR "/src/src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
 RUN dotnet build "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/build --no-restore
