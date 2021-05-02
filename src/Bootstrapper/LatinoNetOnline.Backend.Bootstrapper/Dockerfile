@@ -17,7 +17,7 @@ WORKDIR /src
 #COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/"]
 #COPY ["src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/"]
 COPY . .
-
+RUN cp -r packages /root/.nuget/NuGet/packages
 RUN dotnet nuget add source ./packages -n packages
 #RUN dotnet restore --configfile "./NuGet.Config" 
 WORKDIR "/src/src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
