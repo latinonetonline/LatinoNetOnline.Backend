@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>AivenEcommerce.V1.Modules.GitHub.DependencyInjection</id>
+    <version>0.0.8</version>
+    <title>AivenEcommerce.V1.Modules.GitHub.DependencyInjection</title>
+    <authors>AivenWeb</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>AivenEcommerce.V1.Modules.GitHub.DependencyInjection</description>
+    <repository url="https://github.com/aivenweb/AivenEcommerce.V1" />
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="AivenEcommerce.V1.Modules.GitHub" version="0.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Binder" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Diagnostics.HealthChecks" version="5.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Http" version="5.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

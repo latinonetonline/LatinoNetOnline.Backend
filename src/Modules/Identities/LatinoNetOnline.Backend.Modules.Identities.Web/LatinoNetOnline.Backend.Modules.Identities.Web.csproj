@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="IdentitySite\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+    <Compile Remove="Startup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="IdentitySite\css\login.css" />
+    <None Remove="IdentitySite\Login.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Duende.IdentityServer" Version="5.1.0" />
+    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Abstractions\LatinoNetOnline.Backend.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Infrastructure\LatinoNetOnline.Backend.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

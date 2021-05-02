@@ -1,0 +1,79 @@
+name: Deploy
+ 
+on:
+  push:
+    paths-ignore: 
+    - '.github/workflows/**'
+    branches:
+      - main
+ 
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Create symbolic link Api DockerFile
+        run: cp "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/Dockerfile" "Dockerfile"
+
+
+      - name: Copy AivenWeb Packages
+        run: cp -r offline-packages packages
+        
+      - name: Set ConnectionString JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "ConnectionStrings.Default"
+          value: ${{ secrets.CONNECTION_STRING }}
+
+          
+      - name: Set GitHub Token JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "GitHubOptions.Token"
+          value: ${{ secrets.GH_TOKEN }}
+          
+      - name: Set Google Secret JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "GoogleOptions.ClientSecret"
+          value: ${{ secrets.GOOGLE_SECRET }}
+
+
+      # - name: Set Build Version
+      #   uses: jossef/action-set-json-field@v1
+      #   with:
+      #     file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/clientconfig.json"
+      #     field: "ClientConfigOptions.BuildVersion"
+      #     value: ${{ github.run_number }}
+
+
+
+      - name: Set UUID
+        id: generate-uuid
+        uses: filipstefansson/uuid-action@v1
+
+      - name: Set Jwt Secret
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "IdentityOptions.ClientSecret"
+          value: ${{ steps.generate-uuid.outputs.uuid }}
+
+    
+      - name: Deploy Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_NAME: latinonetonlineapp
+        run: |
+          docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+          heroku container:push web -a $APP_NAME
+          heroku container:release web -a $APP_NAME
+          
+          
+        
