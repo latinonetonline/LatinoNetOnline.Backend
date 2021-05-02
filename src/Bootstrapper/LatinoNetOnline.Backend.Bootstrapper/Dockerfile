@@ -16,9 +16,9 @@ COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForPropo
 COPY ["src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/LatinoNetOnline.Backend.Shared.Infrastructure.csproj", "src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/"]
 COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/"]
 COPY ["src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/"]
+RUN ["cp", "Nuget.Config", "/root/.nuget/NuGet/NuGet.Config"]
 RUN dotnet restore "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj"
 COPY . .
-RUN ["cp", "Nuget.Config", "/root/.nuget/NuGet/NuGet.Config"]
 WORKDIR "/src/src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
 RUN dotnet build "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/build
 
