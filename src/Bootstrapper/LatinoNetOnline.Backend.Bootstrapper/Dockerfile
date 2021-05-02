@@ -16,14 +16,14 @@ COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForPropo
 COPY ["src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/LatinoNetOnline.Backend.Shared.Infrastructure.csproj", "src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/"]
 COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/"]
 COPY ["src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/"]
-RUN ["cp", "NuGet.Config", "/root/.nuget/NuGet/NuGet.Config"]
-RUN dotnet restore "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj"
+#RUN ["cp", "NuGet.Config", "/root/.nuget/NuGet/NuGet.Config"]
+RUN dotnet restore --configfile "./NuGet.Config" "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj"
 COPY . .
 WORKDIR "/src/src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
-RUN dotnet build "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/build
+RUN dotnet build "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
-RUN dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/publish
+RUN dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/publish --no-restore
 
 FROM base AS final
 WORKDIR /app
