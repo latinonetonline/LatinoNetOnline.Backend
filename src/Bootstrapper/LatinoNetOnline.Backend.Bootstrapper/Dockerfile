@@ -16,18 +16,15 @@ WORKDIR /src
 #COPY ["src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/LatinoNetOnline.Backend.Shared.Infrastructure.csproj", "src/Shared/LatinoNetOnline.Backend.Shared.Infrastructure/"]
 #COPY ["src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "src/Modules/CallForProposals/LatinoNetOnline.Backend.Modules.CallForProposals.Core/"]
 #COPY ["src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "src/Modules/Identities/LatinoNetOnline.Backend.Modules.Identities.Web/"]
-
 COPY . .
 
-
-#RUN ["cp", "NuGet.Config", "/root/.nuget/NuGet/NuGet.Config"]
-RUN dotnet restore --configfile "./NuGet.Config" 
-
+RUN dotnet nuget add source ./packages -n packages
+#RUN dotnet restore --configfile "./NuGet.Config" 
 WORKDIR "/src/src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
 RUN dotnet build "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/build 
 
 FROM build AS publish
-RUN dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/publish 
+RUN dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
