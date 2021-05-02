@@ -7,7 +7,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["NuGet.Config", "."]
-COPY ["sLatinoNetOnline.Backend.sln", "LatinoNetOnline.Backend.sln"]
+COPY ["LatinoNetOnline.Backend.sln", "LatinoNetOnline.Backend.sln"]
 COPY ["src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj", "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/"]
 COPY ["src/Worker/LatinoNetOnline.Backend.Worker.Host/LatinoNetOnline.Backend.Worker.Host.csproj", "src/Worker/LatinoNetOnline.Backend.Worker.Host/"]
 COPY ["src/Worker/LatinoNetOnline.Backend.Worker.Application/LatinoNetOnline.Backend.Worker.Application.csproj", "src/Worker/LatinoNetOnline.Backend.Worker.Application/"]
