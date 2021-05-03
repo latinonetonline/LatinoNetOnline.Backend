@@ -53,6 +53,13 @@ jobs:
           field: "MailjetOptions.ClientSecret"
           value: ${{ secrets.MAILJET_SECRET }}
 
+      - name: Set Identity Secret JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "IdentityOptions.ClientSecret"
+          value: ${{ secrets.IDENTITY_CLIENT_SECRET }}
+
       # - name: Set Build Version
       #   uses: jossef/action-set-json-field@v1
       #   with:
@@ -62,16 +69,16 @@ jobs:
 
 
 
-      - name: Set UUID
-        id: generate-uuid
-        uses: filipstefansson/uuid-action@v1
+      # - name: Set UUID
+      #   id: generate-uuid
+      #   uses: filipstefansson/uuid-action@v1
 
-      - name: Set Jwt Secret
-        uses: jossef/action-set-json-field@v1
-        with:
-          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
-          field: "IdentityOptions.ClientSecret"
-          value: ${{ steps.generate-uuid.outputs.uuid }}
+      # - name: Set Jwt Secret
+      #   uses: jossef/action-set-json-field@v1
+      #   with:
+      #     file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+      #     field: "IdentityOptions.ClientSecret"
+      #     value: ${{ steps.generate-uuid.outputs.uuid }}
 
     
       - name: Deploy Heroku

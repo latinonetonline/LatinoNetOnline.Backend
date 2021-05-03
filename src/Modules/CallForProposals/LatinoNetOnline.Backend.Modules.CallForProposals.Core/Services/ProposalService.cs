@@ -1,18 +1,17 @@
 ﻿using CSharpFunctionalExtensions;
 
-using Microsoft.EntityFrameworkCore;
-
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Validators;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 {
@@ -20,6 +19,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
     {
         Task<Result<ProposalDto>> CreateAsync(CreateProposalInput input);
         Task<Result> DeleteAsync(Guid id);
+        Task<Result> DeleteAllAsync();
         Task<Result<IEnumerable<ProposalFullDto>>> GetAllAsync();
         Task<Result<ProposalDateDto>> GetAllDatesAsync();
         Task<Result<ProposalFullDto>> GetByIdAsync(Guid id);
@@ -99,8 +99,20 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 
         private async Task RemoveProposalAsync(Proposal proposal)
         {
+            var speaker = await _dbContext.Speakers.FindAsync(proposal.SpeakerId);
+            _dbContext.Speakers.Remove(speaker);
             _dbContext.Proposals.Remove(proposal);
             await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task RemoveProposalAsync(IEnumerable<Proposal> proposals)
+        {
+
+            foreach (var item in proposals)
+            {
+                await RemoveProposalAsync(item);
+            }
+
         }
 
         private Proposal ConvertToEntity(CreateProposalInput input)
@@ -118,5 +130,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 
         private ProposalDto ConvertToDto(Proposal proposal)
             => proposal.ConvertToDto();
+
+        public async Task<Result> DeleteAllAsync()
+            =>  await GetProposals()
+                    .ToResult("No hay ninguna propuesta.")
+                    .Tap(RemoveProposalAsync);
+
     }
 }

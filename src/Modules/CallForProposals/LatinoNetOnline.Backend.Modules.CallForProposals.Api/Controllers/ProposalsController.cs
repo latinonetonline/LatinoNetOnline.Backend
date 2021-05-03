@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
+using System;
 
 namespace LatinoNETOnline.App.Api.Controllers
 {
@@ -63,6 +64,23 @@ namespace LatinoNETOnline.App.Api.Controllers
                 .Check(proposal => _emailManager.SendEmailAsync(proposal.ConvertToEmailInput()))
                 .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult<ProposalFullDto>.Success(result.Value) :
                 OperationResult<ProposalFullDto>.Fail(new(result.Error))));
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return await _proposalService.DeleteAsync(id)
+                .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult.Success() :
+                OperationResult.Fail(new(result.Error))));
+        }
+
+        [HttpDelete("all")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            return await _proposalService.DeleteAllAsync()
+                .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult.Success() :
+                OperationResult.Fail(new(result.Error))));
         }
     }
 }
