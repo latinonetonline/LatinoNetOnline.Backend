@@ -46,6 +46,12 @@ jobs:
           field: "GoogleOptions.ClientSecret"
           value: ${{ secrets.GOOGLE_SECRET }}
 
+      - name: Set Mailjet Secret JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "MailjetOptions.ClientSecret"
+          value: ${{ secrets.MAILJET_SECRET }}
 
       # - name: Set Build Version
       #   uses: jossef/action-set-json-field@v1

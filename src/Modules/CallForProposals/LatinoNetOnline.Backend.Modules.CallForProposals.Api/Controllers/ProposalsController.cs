@@ -15,6 +15,8 @@ using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
 
 namespace LatinoNETOnline.App.Api.Controllers
 {
@@ -22,12 +24,13 @@ namespace LatinoNETOnline.App.Api.Controllers
     {
         private readonly IProposalService _proposalService;
         private readonly ISpeakerService _speakerService;
+        private readonly IEmailManager _emailManager;
 
-
-        public ProposalsController(IProposalService proposalService, ISpeakerService speakerService)
+        public ProposalsController(IProposalService proposalService, ISpeakerService speakerService, IEmailManager emailManager)
         {
             _proposalService = proposalService;
             _speakerService = speakerService;
+            _emailManager = emailManager;
         }
 
         [AllowAnonymous]
@@ -57,6 +60,7 @@ namespace LatinoNETOnline.App.Api.Controllers
             return await _speakerService.CreateAsync(new(request.Name, request.LastName, request.Email, request.Twitter, request.SpeakerDescription, file.OpenReadStream().ReadFully()))
                 .Bind(speaker => _proposalService.CreateAsync(new(speaker.SpeakerId, request.ProposalTitle, request.ProposalDescription, request.Date, request.AudienceAnswer, request.KnowledgeAnswer, request.UseCaseAnswer)))
                 .Bind(detail => _proposalService.GetByIdAsync(detail.ProposalId))
+                .Check(proposal => _emailManager.SendEmailAsync(proposal.ConvertToEmailInput()))
                 .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult<ProposalFullDto>.Success(result.Value) :
                 OperationResult<ProposalFullDto>.Fail(new(result.Error))));
         }

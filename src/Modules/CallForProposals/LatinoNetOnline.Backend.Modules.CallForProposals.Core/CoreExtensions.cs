@@ -8,6 +8,7 @@ using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services;
 
 using System.Runtime.CompilerServices;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Modules.CallForProposals.Api")]
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core
@@ -20,6 +21,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core
             services.AddScoped<ISpeakerService, SpeakerService>();
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IStorageService, StorageService>();
+            services.AddScoped<IEmailManager, EmailManager>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),

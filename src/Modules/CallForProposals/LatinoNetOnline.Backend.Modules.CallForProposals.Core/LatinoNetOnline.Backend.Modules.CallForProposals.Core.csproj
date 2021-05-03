@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
     <PackageReference Include="AivenEcommerce.V1.Modules.GitHub.DependencyInjection" Version="0.0.8" />
+    <PackageReference Include="Mailjet.Api" Version="2.0.1" />
   </ItemGroup>
   
   <ItemGroup>

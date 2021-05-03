@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 {
