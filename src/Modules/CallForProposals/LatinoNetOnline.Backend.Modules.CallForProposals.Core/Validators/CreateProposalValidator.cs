@@ -37,7 +37,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Validators
 
         private bool BeAValidDate(DateTime date)
         {
-            var existDate = _dbContext.Proposals.AsNoTracking().Any(x => x.EventDate.Date == date.Date);
+            var existDate = _dbContext.Proposals.AsNoTracking().Any(x => x.EventDate.Date == date.Date && x.IsActive);
 
             return !existDate;
         }

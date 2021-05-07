@@ -22,6 +22,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities
             EventDate = eventDate;
             CreationTime = DateTime.Now;
             Speakers = new List<Speaker>();
+            IsActive = true;
         }
 
         public Guid Id { get; set; }
@@ -30,6 +31,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities
         public string AudienceAnswer { get; set; }
         public string KnowledgeAnswer { get; set; }
         public string UseCaseAnswer { get; set; }
+        public bool IsActive { get; set; }
         public DateTime EventDate { get; set; }
         public DateTime CreationTime { get; set; }
         public ICollection<Speaker> Speakers { get; set; }

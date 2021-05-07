@@ -49,6 +49,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data
                 builder.Property(e => e.Description).IsRequired();
                 builder.Property(e => e.EventDate).IsRequired();
                 builder.Property(e => e.CreationTime).IsRequired();
+                builder.Property(e => e.IsActive).IsRequired();
 
                 builder.Property(e => e.AudienceAnswer);
 
@@ -56,28 +57,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data
                 builder.Property(e => e.UseCaseAnswer);
 
             });
-
-            //modelBuilder.Entity<ProposalSpeaker>(builder =>
-            //{
-            //    builder.ToTable("ProposalSpeakers");
-
-            //    builder.HasKey(e => e.Id);
-
-            //    builder.Property(e => e.ProposalId).IsRequired();
-
-            //    builder.Property(e => e.SpeakerId).IsRequired();
-
-
-            //    builder.HasOne(a => a.Speaker)
-            //        .WithMany(b => b.ProposalSpeakers)
-            //        .IsRequired();
-
-            //    builder.HasOne(a => a.Proposal)
-            //        .WithMany(b => b.ProposalSpeakers)
-            //        .IsRequired();
-
-            //});
-
 
             base.OnModelCreating(modelBuilder);
         }

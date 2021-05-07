@@ -15,7 +15,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions
     static class ProposalExtensions
     {
         public static ProposalDto ConvertToDto(this Proposal proposal)
-            => new(proposal.Id, proposal.Title, proposal.Description, proposal.EventDate, proposal.CreationTime, proposal.AudienceAnswer, proposal.KnowledgeAnswer, proposal.UseCaseAnswer);
+            => new(proposal.Id, proposal.Title, proposal.Description, proposal.EventDate, proposal.CreationTime, proposal.AudienceAnswer, proposal.KnowledgeAnswer, proposal.UseCaseAnswer, proposal.IsActive);
 
 
         public static async Task<SendEmailInput> ConvertToEmailInput(this ProposalFullDto proposal)

@@ -1,21 +1,14 @@
 ﻿
 using LatinoNetOnline.Backend.Modules.CallForProposals.Api.Requests;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Speakers;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services;
 using LatinoNetOnline.Backend.Modules.Conferences.Api.Controllers;
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LatinoNETOnline.App.Api.Controllers
@@ -31,8 +24,8 @@ namespace LatinoNETOnline.App.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-            => new OperationActionResult(await _proposalService.GetAllAsync());
+        public async Task<IActionResult> GetAll([FromQuery] ProposalFilter filter)
+            => new OperationActionResult(await _proposalService.GetAllAsync(filter));
 
         [AllowAnonymous]
         [HttpGet("dates")]

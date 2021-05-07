@@ -21,6 +21,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Migrations
                     AudienceAnswer = table.Column<string>(type: "text", nullable: true),
                     KnowledgeAnswer = table.Column<string>(type: "text", nullable: true),
                     UseCaseAnswer = table.Column<string>(type: "text", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     EventDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },

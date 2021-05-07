@@ -23,7 +23,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
         Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input);
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult> DeleteAllAsync();
-        Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync();
+        Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter);
         Task<OperationResult<ProposalDateDto>> GetAllDatesAsync();
         Task<OperationResult<ProposalFullDto>> GetByIdAsync(Guid id);
     }
@@ -39,8 +39,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
             _emailManager = emailManager;
         }
 
-        public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync()
-            => GetProposals()
+        public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter)
+            => GetProposals(filter)
                 .ToResult("No hay ninguna propuesta.")
                 .Map(ConvertToFullDto)
                 .FinallyOperationResult();
@@ -72,9 +72,21 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
                     .FinallyOperationResult();
 
 
-        private async Task<Maybe<List<Proposal>>> GetProposals()
+        private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter)
         {
-            return await _dbContext.Proposals.AsNoTracking().Include(x => x.Speakers).ToListAsync();
+            var query = _dbContext.Proposals.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(filter.Title))
+                query = query.Where(x => x.Title.ToLower() == filter.Title.ToLower());
+
+            if (filter.Date.HasValue)
+                query = query.Where(x => x.EventDate.Date == filter.Date.Value);
+
+            if (filter.IsActive.HasValue)
+                query = query.Where(x => x.IsActive == filter.IsActive.Value);
+
+            return await query.Include(x => x.Speakers).ToListAsync();
+
         }
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
         {
@@ -158,7 +170,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
             => proposal.ConvertToDto();
 
         public async Task<OperationResult> DeleteAllAsync()
-            => await GetProposals()
+            => await GetProposals(new())
                     .ToResult("No hay ninguna propuesta.")
                     .Tap(RemoveProposalAsync)
                     .FinallyOperationResult();

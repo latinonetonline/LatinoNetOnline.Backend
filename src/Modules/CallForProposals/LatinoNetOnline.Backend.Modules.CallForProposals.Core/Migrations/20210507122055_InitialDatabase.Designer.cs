@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210507045332_InitialDatabase")]
+    [Migration("20210507122055_InitialDatabase")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Migrations
 
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("KnowledgeAnswer")
                         .HasColumnType("text");

@@ -39,6 +39,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Migrations
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("KnowledgeAnswer")
                         .HasColumnType("text");
 
