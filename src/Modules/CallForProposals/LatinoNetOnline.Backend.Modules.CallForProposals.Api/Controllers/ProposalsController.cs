@@ -1,86 +1,68 @@
 ﻿
-using CSharpFunctionalExtensions;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
 using LatinoNetOnline.Backend.Modules.CallForProposals.Api.Requests;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services;
 using LatinoNetOnline.Backend.Modules.Conferences.Api.Controllers;
-using LatinoNetOnline.Backend.Shared.Abstractions.Extensions;
 using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
-using System;
 
 namespace LatinoNETOnline.App.Api.Controllers
 {
     class ProposalsController : BaseController
     {
         private readonly IProposalService _proposalService;
-        private readonly ISpeakerService _speakerService;
-        private readonly IEmailManager _emailManager;
 
-        public ProposalsController(IProposalService proposalService, ISpeakerService speakerService, IEmailManager emailManager)
+        public ProposalsController(IProposalService proposalService)
         {
             _proposalService = proposalService;
-            _speakerService = speakerService;
-            _emailManager = emailManager;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-        {
-            return await _proposalService.GetAllAsync()
-                .Finally(result => new OperationActionResult(result.IsSuccess ?OperationResult<IEnumerable<ProposalFullDto>>.Success(result.Value) :
-                  OperationResult<IEnumerable<ProposalFullDto>>.Fail(new(result.Error))));
-
-        }
+            => new OperationActionResult(await _proposalService.GetAllAsync());
 
         [AllowAnonymous]
         [HttpGet("dates")]
         public async Task<IActionResult> GetAllDates()
-        {
-            return await _proposalService.GetAllDatesAsync()
-                .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult<ProposalDateDto>.Success(result.Value) :
-                  OperationResult<ProposalDateDto>.Fail(new(result.Error))));
-
-        }
+            => new OperationActionResult(await _proposalService.GetAllDatesAsync());
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create(IFormFile file, [FromForm] CreateProposalRequest request)
+        public async Task<IActionResult> Create(CreateProposalRequest request)
         {
-            return await _speakerService.CreateAsync(new(request.Name, request.LastName, request.Email, request.Twitter, request.SpeakerDescription, file.OpenReadStream().ReadFully()))
-                .Bind(speaker => _proposalService.CreateAsync(new(speaker.SpeakerId, request.ProposalTitle, request.ProposalDescription, request.Date, request.AudienceAnswer, request.KnowledgeAnswer, request.UseCaseAnswer)))
-                .Bind(detail => _proposalService.GetByIdAsync(detail.ProposalId))
-                .Check(proposal => _emailManager.SendEmailAsync(proposal.ConvertToEmailInput()))
-                .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult<ProposalFullDto>.Success(result.Value) :
-                OperationResult<ProposalFullDto>.Fail(new(result.Error))));
+            var result = await _proposalService.CreateAsync(new(
+                request.Title,
+                request.Description,
+                request.Date,
+                request.AudienceAnswer,
+                request.KnowledgeAnswer,
+                request.UseCaseAnswer,
+                request.Speakers));
+
+            return new OperationActionResult(result);
         }
 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
-        {
-            return await _proposalService.DeleteAsync(id)
-                .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult.Success() :
-                OperationResult.Fail(new(result.Error))));
-        }
+            => new OperationActionResult(await _proposalService.DeleteAsync(id));
 
         [HttpDelete("all")]
         public async Task<IActionResult> DeleteAll()
-        {
-            return await _proposalService.DeleteAllAsync()
-                .Finally(result => new OperationActionResult(result.IsSuccess ? OperationResult.Success() :
-                OperationResult.Fail(new(result.Error))));
-        }
+             => new OperationActionResult(await _proposalService.DeleteAllAsync());
+
     }
 }

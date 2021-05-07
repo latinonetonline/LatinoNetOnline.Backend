@@ -1,7 +1,10 @@
-﻿using System;
+﻿using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Speakers;
+
+using System;
+using System.Collections.Generic;
 
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api.Requests
 {
-    record CreateProposalRequest(string Name, string LastName, string Email, string Twitter, string SpeakerDescription, string ProposalTitle, string ProposalDescription, DateTime Date, string AudienceAnswer, string KnowledgeAnswer, string UseCaseAnswer);
+    record CreateProposalRequest(IEnumerable<CreateSpeakerInput> Speakers, string Title, string Description, DateTime Date, string AudienceAnswer, string KnowledgeAnswer, string UseCaseAnswer);
 
 }

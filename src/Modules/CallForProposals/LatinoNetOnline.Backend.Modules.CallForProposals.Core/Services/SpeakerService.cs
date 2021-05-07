@@ -1,14 +1,14 @@
 ﻿using CSharpFunctionalExtensions;
 
-using Microsoft.EntityFrameworkCore;
-
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Speakers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Validators;
+using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
 
-using System;
+using Microsoft.EntityFrameworkCore;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,35 +16,33 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 {
     interface ISpeakerService
     {
-        Task<Result<SpeakerDto>> CreateAsync(CreateSpeakerInput input);
-        Task<List<Speaker>> GetAllAsync();
+        Task<OperationResult<SpeakerDto>> CreateAsync(CreateSpeakerInput input);
+        Task<OperationResult<IEnumerable<Speaker>>> GetAllAsync();
     }
 
     class SpeakerService : ISpeakerService
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IStorageService _storageService;
 
-        public SpeakerService(ApplicationDbContext dbContext, IStorageService storageService)
+        public SpeakerService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _storageService = storageService;
         }
 
-        public Task<List<Speaker>> GetAllAsync()
-        {
-            return _dbContext.Speakers.ToListAsync();
-        }
+        public Task<OperationResult<IEnumerable<Speaker>>> GetAllAsync()
+            => GetAllSpeakersAsync()
+                .ToResult("No hay ningún speaker.")
+                .FinallyOperationResult();
 
-        public async Task<Result<SpeakerDto>> CreateAsync(CreateSpeakerInput input)
-        {
-            return await Validate(input)
-                .Map(input => GetImageLinkAsync(input.Image).ToResult("No se pudo subir la imagen."))
-                .Map(image => ConvertToEntity(input, image))
+
+        public Task<OperationResult<SpeakerDto>> CreateAsync(CreateSpeakerInput input)
+            => Validate(input)
+                .Map(input => ConvertToEntity(input))
                 .Map(speaker => AddSpeakerAsync(speaker))
-                .Map(speaker => ConvertToDto(speaker));
+                .Map(speaker => ConvertToDto(speaker))
+                .FinallyOperationResult();
 
-        }
+
 
         private Result<CreateSpeakerInput> Validate(CreateSpeakerInput input)
         {
@@ -64,20 +62,21 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
             return speaker;
         }
 
-        private Speaker ConvertToEntity(CreateSpeakerInput input, Uri image) => new()
+        private Speaker ConvertToEntity(CreateSpeakerInput input) => new()
         {
             Name = input.Name,
             LastName = input.LastName,
             Email = input.Email,
             Description = input.Description,
             Twitter = input.Twitter,
-            Image = image
+            Image = input.Image
         };
 
         private SpeakerDto ConvertToDto(Speaker speaker) => speaker.ConvertToDto();
 
-        private async Task<Maybe<Uri>> GetImageLinkAsync(byte[] image)
-            => await _storageService.UploadFile("images", Guid.NewGuid().ToString(), image);
+
+        private async Task<Maybe<IEnumerable<Speaker>>> GetAllSpeakersAsync()
+            => await _dbContext.Speakers.AsNoTracking().ToListAsync();
 
     }
 }

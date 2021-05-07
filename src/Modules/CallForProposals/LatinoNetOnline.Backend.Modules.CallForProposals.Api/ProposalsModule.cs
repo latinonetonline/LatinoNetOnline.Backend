@@ -8,6 +8,9 @@ using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Options;
 
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api
@@ -23,6 +26,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api
 
         public static IApplicationBuilder UseProposalsModule(this IApplicationBuilder app)
         {
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(new FileInfo(typeof(ApplicationDbContext).Assembly.Location).DirectoryName ?? string.Empty, "Files")),
+                RequestPath = new PathString("/proposals-module")
+            });
+
             return app;
         }
 

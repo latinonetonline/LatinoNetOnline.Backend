@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers
@@ -31,6 +32,21 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers
         public async Task<Result> SendEmailAsync(SendEmailInput input)
         {
             MailjetClient client = new MailjetClient("7a15b8d00d9ae904df4d492a89d03f60", _configuration["MailjetOptions:ClientSecret"]);
+
+            List<JObject> emails = new();
+            emails.Add(new JObject {
+
+                             { "Email", "latinonetonline@outlook.com"}
+                         });
+
+            foreach (var email in input.Emails)
+            {
+                emails.Add(new JObject {
+
+                             { "Email", email}
+                         });
+            }
+
             MailjetRequest request = new MailjetRequest
             {
                 Resource = Send.Resource,
@@ -40,17 +56,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers
                .Property(Send.Subject, input.Subject)
                .Property(Send.TextPart, input.Message)
                .Property(Send.HtmlPart, input.HtmlMessage)
+               .Property(Send.Recipients, new JArray(emails.ToArray()));
 
-               .Property(Send.Recipients, new JArray {
-                new JObject {
-                 {
-                        "Email", input.ToEmail}
-                 },
-                 new JObject {
-                 {
-                        "Email", "latinonetonline@outlook.com"}
-                 }
-                   });
+
             MailjetResponse response = await client.PostAsync(request);
             if (response.IsSuccessStatusCode)
             {

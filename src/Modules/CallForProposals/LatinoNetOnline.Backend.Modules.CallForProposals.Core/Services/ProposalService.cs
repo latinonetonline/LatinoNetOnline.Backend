@@ -2,9 +2,12 @@
 
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Speakers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
+using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Validators;
+using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,71 +20,75 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 {
     interface IProposalService
     {
-        Task<Result<ProposalDto>> CreateAsync(CreateProposalInput input);
-        Task<Result> DeleteAsync(Guid id);
-        Task<Result> DeleteAllAsync();
-        Task<Result<IEnumerable<ProposalFullDto>>> GetAllAsync();
-        Task<Result<ProposalDateDto>> GetAllDatesAsync();
-        Task<Result<ProposalFullDto>> GetByIdAsync(Guid id);
+        Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input);
+        Task<OperationResult> DeleteAsync(Guid id);
+        Task<OperationResult> DeleteAllAsync();
+        Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync();
+        Task<OperationResult<ProposalDateDto>> GetAllDatesAsync();
+        Task<OperationResult<ProposalFullDto>> GetByIdAsync(Guid id);
     }
 
     class ProposalService : IProposalService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IEmailManager _emailManager;
 
-        public ProposalService(ApplicationDbContext dbContext)
+        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager)
         {
             _dbContext = dbContext;
+            _emailManager = emailManager;
         }
 
-        public async Task<Result<IEnumerable<ProposalFullDto>>> GetAllAsync()
-            => await GetProposals()
+        public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync()
+            => GetProposals()
                 .ToResult("No hay ninguna propuesta.")
-                .Map(proposals => proposals.Select(x => x.ConvertToFullDto()));
+                .Map(ConvertToFullDto)
+                .FinallyOperationResult();
 
-        public async Task<Result<ProposalDateDto>> GetAllDatesAsync()
-            => await GetProposalDates()
+        public Task<OperationResult<ProposalDateDto>> GetAllDatesAsync()
+            => GetProposalDates()
                 .ToResult("No hay ninguna propuesta.")
-                .Map(dates => new ProposalDateDto(dates));
+                .Map(dates => new ProposalDateDto(dates))
+                .FinallyOperationResult();
 
 
-        public async Task<Result<ProposalFullDto>> GetByIdAsync(Guid id)
+        public Task<OperationResult<ProposalFullDto>> GetByIdAsync(Guid id)
+            => GetProposalById(id)
+                .ToResult("No existe una propuesta con ese id.")
+                .Map(ConvertToFullDto)
+                .FinallyOperationResult();
+
+
+        public async Task<OperationResult> DeleteAsync(Guid id)
             => await GetProposalById(id)
                 .ToResult("No existe una propuesta con ese id.")
-                .Map(proposal => proposal.ConvertToFullDto());
+                .Tap(RemoveProposalAsync)
+                .FinallyOperationResult();
 
-
-        public async Task<Result> DeleteAsync(Guid id)
-            => await GetProposalById(id)
-                .ToResult("No existe una propuesta con ese id.")
-                .Tap(RemoveProposalAsync);
-
-
-        public async Task<Result<ProposalDto>> CreateAsync(CreateProposalInput input)
-            => await Validate(input)
-                    .Map(ConvertToEntity)
-                    .Map(AddProposalAsync)
-                    .Map(ConvertToDto);
-
+        public Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input)
+            => Validate(input)
+                    .Map(CreateProposalAsync)
+                    .Check(async proposal => await _emailManager.SendEmailAsync(await proposal.ConvertToEmailInput()))
+                    .FinallyOperationResult();
 
 
         private async Task<Maybe<List<Proposal>>> GetProposals()
         {
-            return await _dbContext.Proposals.Include(x => x.Speaker).ToListAsync();
+            return await _dbContext.Proposals.AsNoTracking().Include(x => x.Speakers).ToListAsync();
         }
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
         {
-            return await _dbContext.Proposals.Select(x => x.EventDate).ToListAsync();
+            return await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
         }
 
         private async Task<Maybe<Proposal>> GetProposalById(Guid id)
         {
-            return await _dbContext.Proposals.Include(x => x.Speaker).SingleOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Proposals.Include(x => x.Speakers).SingleOrDefaultAsync(x => x.Id == id);
         }
 
         private Result<CreateProposalInput> Validate(CreateProposalInput input)
         {
-            CreateProposalValidator validator = new();
+            CreateProposalValidator validator = new(_dbContext);
 
             var validationResult = validator.Validate(input);
 
@@ -89,18 +96,38 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 
         }
 
-        private async Task<Proposal> AddProposalAsync(Proposal proposal)
+        private async Task<ProposalFullDto> CreateProposalAsync(CreateProposalInput input)
         {
-            await _dbContext.Proposals.AddAsync(proposal);
+            Proposal proposal = new(input.Title, input.Description, input.AudienceAnswer, input.KnowledgeAnswer, input.UseCaseAnswer, input.Date);
+
+            List<SpeakerDto> speakerdtos = new();
+
+            foreach (var speakerInput in input.Speakers)
+            {
+                Speaker speaker = new(speakerInput.Name, speakerInput.LastName, speakerInput.Email, speakerInput.Twitter, speakerInput.Description, speakerInput.Image);
+
+                proposal.Speakers.Add(speaker);
+
+                speakerdtos.Add(speaker.ConvertToDto());
+            }
+
+            await _dbContext.AddAsync(proposal);
+
             await _dbContext.SaveChangesAsync();
 
-            return proposal;
+            ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), speakerdtos); ;
+
+            return proposalFullDto;
         }
 
         private async Task RemoveProposalAsync(Proposal proposal)
         {
-            var speaker = await _dbContext.Speakers.FindAsync(proposal.SpeakerId);
-            _dbContext.Speakers.Remove(speaker);
+
+            foreach (Speaker speaker in proposal.Speakers)
+            {
+                _dbContext.Speakers.Remove(speaker);
+            }
+
             _dbContext.Proposals.Remove(proposal);
             await _dbContext.SaveChangesAsync();
         }
@@ -120,7 +147,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
             {
                 Title = input.Title,
                 Description = input.Description,
-                SpeakerId = input.SpeakerId,
                 EventDate = input.Date,
                 CreationTime = DateTime.Now,
                 AudienceAnswer = input.AudienceAnswer,
@@ -131,10 +157,32 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
         private ProposalDto ConvertToDto(Proposal proposal)
             => proposal.ConvertToDto();
 
-        public async Task<Result> DeleteAllAsync()
-            =>  await GetProposals()
+        public async Task<OperationResult> DeleteAllAsync()
+            => await GetProposals()
                     .ToResult("No hay ninguna propuesta.")
-                    .Tap(RemoveProposalAsync);
+                    .Tap(RemoveProposalAsync)
+                    .FinallyOperationResult();
 
+        private ProposalFullDto ConvertToFullDto(Proposal proposal)
+        {
+            var proposalDto = proposal.ConvertToDto();
+            var speakers = proposal.Speakers;
+            var speakerDtos = speakers.Select(x => x.ConvertToDto());
+
+            return new(proposalDto, speakerDtos);
+        }
+
+        private IEnumerable<ProposalFullDto> ConvertToFullDto(IEnumerable<Proposal> proposals)
+        {
+            List<ProposalFullDto> proposalFullDtos = new();
+
+            foreach (var proposal in proposals)
+            {
+                var proposalFullDto = ConvertToFullDto(proposal);
+                proposalFullDtos.Add(proposalFullDto);
+            }
+
+            return proposalFullDtos;
+        }
     }
 }

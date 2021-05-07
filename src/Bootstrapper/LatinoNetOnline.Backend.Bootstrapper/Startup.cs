@@ -38,6 +38,7 @@ namespace LatinoNetOnline.Backend.Bootstrapper
         {
             app.UseInfrastructure(Environment, provider, loggerFactory);
             app.UseRouting();
+            app.UseProposalsModule();
             app.UseIdentityModule();
             app.UseWorker();
 

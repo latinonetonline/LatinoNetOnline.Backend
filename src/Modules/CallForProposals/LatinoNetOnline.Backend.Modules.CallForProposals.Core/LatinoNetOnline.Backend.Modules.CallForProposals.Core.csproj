@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Files\mail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Files\mail.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.15.0" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.1" />
     <PackageReference Include="FluentValidation" Version="10.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
@@ -19,6 +30,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Abstractions\LatinoNetOnline.Backend.Shared.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Infrastructure\LatinoNetOnline.Backend.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Files\mail.html" />
   </ItemGroup>
 
 </Project>

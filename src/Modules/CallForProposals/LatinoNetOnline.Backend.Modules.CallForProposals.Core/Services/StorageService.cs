@@ -1,5 +1,7 @@
 ﻿using AivenEcommerce.V1.Modules.GitHub.Services;
 
+using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+
 using System;
 using System.Threading.Tasks;
 
@@ -7,7 +9,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 {
     interface IStorageService
     {
-        Task<Uri> UploadFile(string path, string filename, byte[] file);
+        Task<OperationResult<Uri>> UploadFile(string path, string filename, byte[] file);
     }
 
     class StorageService : IStorageService
@@ -19,11 +21,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
             _githubService = githubService ?? throw new ArgumentNullException(nameof(githubService));
         }
 
-        public async Task<Uri> UploadFile(string path, string filename, byte[] file)
+        public async Task<OperationResult<Uri>> UploadFile(string path, string filename, byte[] file)
         {
             var fileContent = await _githubService.CreateFileAsync(363513177, path, filename, file);
 
-            return new(fileContent.DownloadUrl);
+            return OperationResult<Uri>.Success(new(fileContent.DownloadUrl));
         }
     }
 }

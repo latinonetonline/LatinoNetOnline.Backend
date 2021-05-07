@@ -16,10 +16,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data
         public DbSet<Speaker> Speakers { get; set; }
         public DbSet<Proposal> Proposals { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("csp");
+            modelBuilder.HasDefaultSchema("cfs");
 
             modelBuilder.Entity<Speaker>(builder =>
             {
@@ -56,11 +55,28 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data
                 builder.Property(e => e.KnowledgeAnswer);
                 builder.Property(e => e.UseCaseAnswer);
 
-                builder.HasOne(a => a.Speaker)
-                    .WithMany(b => b.Proposals)
-                    .IsRequired();
-
             });
+
+            //modelBuilder.Entity<ProposalSpeaker>(builder =>
+            //{
+            //    builder.ToTable("ProposalSpeakers");
+
+            //    builder.HasKey(e => e.Id);
+
+            //    builder.Property(e => e.ProposalId).IsRequired();
+
+            //    builder.Property(e => e.SpeakerId).IsRequired();
+
+
+            //    builder.HasOne(a => a.Speaker)
+            //        .WithMany(b => b.ProposalSpeakers)
+            //        .IsRequired();
+
+            //    builder.HasOne(a => a.Proposal)
+            //        .WithMany(b => b.ProposalSpeakers)
+            //        .IsRequired();
+
+            //});
 
 
             base.OnModelCreating(modelBuilder);
