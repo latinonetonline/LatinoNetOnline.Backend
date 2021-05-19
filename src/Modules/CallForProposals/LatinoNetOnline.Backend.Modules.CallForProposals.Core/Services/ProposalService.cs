@@ -40,7 +40,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
         }
 
         public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter)
-            => GetProposals(filter)
+            => GetProposals(filter, true)
                 .ToResult("No hay ninguna propuesta.")
                 .Map(ConvertToFullDto)
                 .FinallyOperationResult();
@@ -53,17 +53,18 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 
 
         public Task<OperationResult<ProposalFullDto>> GetByIdAsync(Guid id)
-            => GetProposalById(id)
+            => GetProposalById(id, true)
                 .ToResult("No existe una propuesta con ese id.")
                 .Map(ConvertToFullDto)
                 .FinallyOperationResult();
 
 
         public async Task<OperationResult> DeleteAsync(Guid id)
-            => await GetProposalById(id)
+            => await GetProposalById(id, false)
                 .ToResult("No existe una propuesta con ese id.")
                 .Tap(RemoveProposalAsync)
                 .FinallyOperationResult();
+
 
         public Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input)
             => Validate(input)
@@ -72,31 +73,28 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
                     .FinallyOperationResult();
 
 
-        private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter)
-        {
-            var query = _dbContext.Proposals.AsNoTracking();
+        public async Task<OperationResult> DeleteAllAsync()
+            => await GetProposals(new(), false)
+                    .ToResult("No hay ninguna propuesta.")
+                    .Tap(RemoveProposalAsync)
+                    .FinallyOperationResult();
 
-            if (!string.IsNullOrWhiteSpace(filter.Title))
-                query = query.Where(x => x.Title.ToLower() == filter.Title.ToLower());
 
-            if (filter.Date.HasValue)
-                query = query.Where(x => x.EventDate.Date == filter.Date.Value);
+        private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter, bool include)
+            => await _dbContext.Proposals.AsNoTracking()
+                    .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.ToLower() == filter.Title.ToLower())
+                    .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.Value)
+                    .WhereIf(filter.IsActive.HasValue, x => x.IsActive == filter.IsActive.Value)
+                    .IncludeIf(include, x => x.Speakers).ToListAsync();
 
-            if (filter.IsActive.HasValue)
-                query = query.Where(x => x.IsActive == filter.IsActive.Value);
 
-            return await query.Include(x => x.Speakers).ToListAsync();
-
-        }
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
-        {
-            return await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
-        }
+            => await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
+        
 
-        private async Task<Maybe<Proposal>> GetProposalById(Guid id)
-        {
-            return await _dbContext.Proposals.Include(x => x.Speakers).SingleOrDefaultAsync(x => x.Id == id);
-        }
+        private async Task<Maybe<Proposal>> GetProposalById(Guid id, bool include)
+            => await _dbContext.Proposals.IncludeIf(include, x => x.Speakers).SingleOrDefaultAsync(x => x.Id == id);
+        
 
         private Result<CreateProposalInput> Validate(CreateProposalInput input)
         {
@@ -148,32 +146,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
         {
 
             foreach (var item in proposals)
-            {
                 await RemoveProposalAsync(item);
-            }
 
         }
-
-        private Proposal ConvertToEntity(CreateProposalInput input)
-            => new()
-            {
-                Title = input.Title,
-                Description = input.Description,
-                EventDate = input.Date,
-                CreationTime = DateTime.Now,
-                AudienceAnswer = input.AudienceAnswer,
-                KnowledgeAnswer = input.KnowledgeAnswer,
-                UseCaseAnswer = input.UseCaseAnswer
-            };
-
-        private ProposalDto ConvertToDto(Proposal proposal)
-            => proposal.ConvertToDto();
-
-        public async Task<OperationResult> DeleteAllAsync()
-            => await GetProposals(new())
-                    .ToResult("No hay ninguna propuesta.")
-                    .Tap(RemoveProposalAsync)
-                    .FinallyOperationResult();
 
         private ProposalFullDto ConvertToFullDto(Proposal proposal)
         {

@@ -6,15 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using IBufSerializer = GroBuf.ISerializer;
+
 namespace LatinoNetOnline.Backend.Shared.Abstractions.Modules
 {
     internal sealed class ModuleClient : IModuleClient
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IModuleRegistry _moduleRegistry;
-        private readonly ISerializer _serializer;
+        private readonly IBufSerializer _serializer;
 
-        public ModuleClient(IServiceProvider serviceProvider, IModuleRegistry moduleRegistry, ISerializer serializer)
+        public ModuleClient(IServiceProvider serviceProvider, IModuleRegistry moduleRegistry, IBufSerializer serializer)
         {
             _serviceProvider = serviceProvider;
             _moduleRegistry = moduleRegistry;
