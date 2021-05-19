@@ -15,7 +15,7 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api
 {
-    internal static class ProposalsModule
+    static class ProposalsModule
     {
         public static IServiceCollection AddProposalsModule(this IServiceCollection services, IConfiguration configuration)
         {

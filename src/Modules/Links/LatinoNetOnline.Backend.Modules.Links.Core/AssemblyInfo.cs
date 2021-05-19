@@ -16,6 +16,6 @@ using System.Runtime.InteropServices;
 // El siguiente GUID es para el identificador de typelib, si este proyecto se expone
 // en COM.
 
-[assembly: Guid("08b10b8f-0f73-4978-9f50-233cf3b45598")]
+[assembly: Guid("5a2d348a-7938-41cd-b829-27d63546d855")]
 
-[assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Worker.Application")]
+[assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Modules.Links.Api")]

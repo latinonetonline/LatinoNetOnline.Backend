@@ -1,6 +1,7 @@
 using Duende.IdentityServer;
 
 using LatinoNetOnline.Backend.Modules.CallForProposals.Api;
+using LatinoNetOnline.Backend.Modules.Links.Api;
 using LatinoNetOnline.Backend.Modules.Identities.Web;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
 
@@ -29,6 +30,7 @@ namespace LatinoNetOnline.Backend.Bootstrapper
         {
             services.AddInfrastructure(this.GetType().Assembly);
             services.AddProposalsModule(Configuration);
+            services.AddLinksModule(Configuration);
             services.AddIdentityModule(Configuration, Environment);
         }
 
@@ -37,6 +39,7 @@ namespace LatinoNetOnline.Backend.Bootstrapper
             app.UseInfrastructure(Environment, provider, loggerFactory);
             app.UseRouting();
             app.UseProposalsModule();
+            app.UseLinksModule();
             app.UseIdentityModule();
 
             app.UseEndpoints(endpoints =>
