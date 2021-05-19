@@ -1,5 +1,4 @@
-﻿
-using LatinoNetOnline.Backend.Shared.Abstractions.Entities;
+﻿using LatinoNetOnline.Backend.Shared.Commons.Entities;
 
 using System;
 using System.Collections.Generic;

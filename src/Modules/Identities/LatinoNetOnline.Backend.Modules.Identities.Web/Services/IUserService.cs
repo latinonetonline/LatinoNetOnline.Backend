@@ -1,10 +1,10 @@
 ﻿
 using IdentityServerHost.Models;
 
-using Microsoft.AspNetCore.Identity;
-
 using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+
+using Microsoft.AspNetCore.Identity;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;

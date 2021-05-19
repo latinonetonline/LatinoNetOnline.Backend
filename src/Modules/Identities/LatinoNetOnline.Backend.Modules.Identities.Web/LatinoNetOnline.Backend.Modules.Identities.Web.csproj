@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Abstractions\LatinoNetOnline.Backend.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Commons\LatinoNetOnline.Backend.Shared.Commons.csproj" />
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Infrastructure\LatinoNetOnline.Backend.Shared.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

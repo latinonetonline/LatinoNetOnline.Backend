@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\CallForProposals\LatinoNetOnline.Backend.Modules.CallForProposals.Api\LatinoNetOnline.Backend.Modules.CallForProposals.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Identities\LatinoNetOnline.Backend.Modules.Identities.Web\LatinoNetOnline.Backend.Modules.Identities.Web.csproj" />
-    <ProjectReference Include="..\..\Worker\LatinoNetOnline.Backend.Worker.Host\LatinoNetOnline.Backend.Worker.Host.csproj" />
   </ItemGroup>
 
 </Project>

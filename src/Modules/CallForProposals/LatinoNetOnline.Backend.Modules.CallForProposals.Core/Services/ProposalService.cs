@@ -7,7 +7,7 @@ using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Validators;
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -90,11 +90,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services
 
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
             => await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
-        
+
 
         private async Task<Maybe<Proposal>> GetProposalById(Guid id, bool include)
             => await _dbContext.Proposals.IncludeIf(include, x => x.Speakers).SingleOrDefaultAsync(x => x.Id == id);
-        
+
 
         private Result<CreateProposalInput> Validate(CreateProposalInput input)
         {

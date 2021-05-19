@@ -2,10 +2,10 @@
 // See LICENSE in the project root for license information.
 
 
+using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Options;
 
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data
 {

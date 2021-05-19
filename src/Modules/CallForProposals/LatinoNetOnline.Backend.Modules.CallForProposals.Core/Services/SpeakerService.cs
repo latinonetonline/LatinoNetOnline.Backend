@@ -5,7 +5,7 @@ using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Speakers;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Entities;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Validators;
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
 

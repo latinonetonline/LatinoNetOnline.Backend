@@ -1,7 +1,7 @@
 ﻿
-using Microsoft.AspNetCore.Http;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using Microsoft.AspNetCore.Http;
 
 using System;
 using System.Threading.Tasks;

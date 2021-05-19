@@ -3,12 +3,12 @@ using IdentityModel;
 
 using IdentityServerHost.Models;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;

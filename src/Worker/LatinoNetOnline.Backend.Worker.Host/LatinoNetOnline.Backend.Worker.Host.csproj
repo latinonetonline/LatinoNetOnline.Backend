@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\LatinoNetOnline.Backend.Worker.Application\LatinoNetOnline.Backend.Worker.Application.csproj" />
-  </ItemGroup>
 </Project>

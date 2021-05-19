@@ -1,6 +1,6 @@
 ﻿using AivenEcommerce.V1.Modules.GitHub.Services;
 
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System;
 using System.Threading.Tasks;

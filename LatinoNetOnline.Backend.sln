@@ -21,19 +21,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identities", "Identities", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Identities.Web", "src\Modules\Identities\LatinoNetOnline.Backend.Modules.Identities.Web\LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "{6B43160B-FC99-4651-ADE7-B0E6DFA935EE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Worker", "Worker", "{1E7B20D0-5F8F-48FC-AC27-60D390BA3179}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Worker.Host", "src\Worker\LatinoNetOnline.Backend.Worker.Host\LatinoNetOnline.Backend.Worker.Host.csproj", "{8AADB3FA-4989-47D3-A196-3B30240C65CF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Worker.Application", "src\Worker\LatinoNetOnline.Backend.Worker.Application\LatinoNetOnline.Backend.Worker.Application.csproj", "{DBEDF234-BE11-4671-BD9C-832847B21554}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Worker.Domain", "src\Worker\LatinoNetOnline.Backend.Worker.Domain\LatinoNetOnline.Backend.Worker.Domain.csproj", "{01C2F630-466D-4191-B9E0-592A3A7D43B0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CallForProposals", "CallForProposals", "{5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForProposals.Api", "src\Modules\CallForProposals\LatinoNetOnline.Backend.Modules.CallForProposals.Api\LatinoNetOnline.Backend.Modules.CallForProposals.Api.csproj", "{9D4EC920-DF48-490B-992C-DB85BAB2921D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForProposals.Core", "src\Modules\CallForProposals\LatinoNetOnline.Backend.Modules.CallForProposals.Core\LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "{2596A790-3057-4E11-89D2-77EA7F40E551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatinoNetOnline.Backend.Shared.Commons", "src\Shared\LatinoNetOnline.Backend.Shared.Commons\LatinoNetOnline.Backend.Shared.Commons.csproj", "{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,42 +87,6 @@ Global
 		{6B43160B-FC99-4651-ADE7-B0E6DFA935EE}.Release|x64.Build.0 = Release|Any CPU
 		{6B43160B-FC99-4651-ADE7-B0E6DFA935EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{6B43160B-FC99-4651-ADE7-B0E6DFA935EE}.Release|x86.Build.0 = Release|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Debug|x64.Build.0 = Debug|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Debug|x86.Build.0 = Debug|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Release|x64.ActiveCfg = Release|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Release|x64.Build.0 = Release|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Release|x86.ActiveCfg = Release|Any CPU
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF}.Release|x86.Build.0 = Release|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Debug|x64.Build.0 = Debug|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Debug|x86.Build.0 = Debug|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Release|x64.ActiveCfg = Release|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Release|x64.Build.0 = Release|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Release|x86.ActiveCfg = Release|Any CPU
-		{DBEDF234-BE11-4671-BD9C-832847B21554}.Release|x86.Build.0 = Release|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Debug|x64.Build.0 = Debug|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Debug|x86.Build.0 = Debug|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Release|x64.ActiveCfg = Release|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Release|x64.Build.0 = Release|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Release|x86.ActiveCfg = Release|Any CPU
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0}.Release|x86.Build.0 = Release|Any CPU
 		{9D4EC920-DF48-490B-992C-DB85BAB2921D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D4EC920-DF48-490B-992C-DB85BAB2921D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D4EC920-DF48-490B-992C-DB85BAB2921D}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -153,6 +111,18 @@ Global
 		{2596A790-3057-4E11-89D2-77EA7F40E551}.Release|x64.Build.0 = Release|Any CPU
 		{2596A790-3057-4E11-89D2-77EA7F40E551}.Release|x86.ActiveCfg = Release|Any CPU
 		{2596A790-3057-4E11-89D2-77EA7F40E551}.Release|x86.Build.0 = Release|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Debug|x86.Build.0 = Debug|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Release|x64.Build.0 = Release|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,13 +136,10 @@ Global
 		{65B3C426-EF74-4B69-8F65-9909CFFAF67F} = {C75C8B32-E811-480D-9604-F7351D767499}
 		{5CE35C78-7290-4CF9-B848-6F9868FB9F13} = {412B1691-20CB-4621-AABA-1A08A214F683}
 		{6B43160B-FC99-4651-ADE7-B0E6DFA935EE} = {5CE35C78-7290-4CF9-B848-6F9868FB9F13}
-		{1E7B20D0-5F8F-48FC-AC27-60D390BA3179} = {DCC93AA0-7939-468A-9871-A2F742D2D30B}
-		{8AADB3FA-4989-47D3-A196-3B30240C65CF} = {1E7B20D0-5F8F-48FC-AC27-60D390BA3179}
-		{DBEDF234-BE11-4671-BD9C-832847B21554} = {1E7B20D0-5F8F-48FC-AC27-60D390BA3179}
-		{01C2F630-466D-4191-B9E0-592A3A7D43B0} = {1E7B20D0-5F8F-48FC-AC27-60D390BA3179}
 		{5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1} = {412B1691-20CB-4621-AABA-1A08A214F683}
 		{9D4EC920-DF48-490B-992C-DB85BAB2921D} = {5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}
 		{2596A790-3057-4E11-89D2-77EA7F40E551} = {5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}
+		{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE} = {C75C8B32-E811-480D-9604-F7351D767499}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E700AE28-81C8-4ED1-BAA2-C9D2627F34F2}

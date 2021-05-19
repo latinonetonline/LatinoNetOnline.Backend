@@ -1,7 +1,7 @@
 ﻿
-using Microsoft.AspNetCore.Mvc;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LatinoNetOnline.Backend.Shared.Infrastructure.Presenter
 {

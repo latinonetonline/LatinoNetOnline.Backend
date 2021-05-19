@@ -18,11 +18,12 @@ using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Options;
 
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
+using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Modules.Identities.Web

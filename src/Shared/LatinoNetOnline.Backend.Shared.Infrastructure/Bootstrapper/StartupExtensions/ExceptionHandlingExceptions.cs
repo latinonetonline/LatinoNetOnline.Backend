@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
 
 using System.Net;
 using System.Text.Json;

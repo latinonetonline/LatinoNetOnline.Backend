@@ -1,7 +1,6 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Dto.Images;
-using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Services;
 using LatinoNetOnline.Backend.Modules.Conferences.Api.Controllers;
-using LatinoNetOnline.Backend.Shared.Abstractions.Extensions;
+using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;

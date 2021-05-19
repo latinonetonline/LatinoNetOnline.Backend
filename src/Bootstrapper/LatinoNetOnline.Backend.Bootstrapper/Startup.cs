@@ -1,5 +1,9 @@
 using Duende.IdentityServer;
 
+using LatinoNetOnline.Backend.Modules.CallForProposals.Api;
+using LatinoNetOnline.Backend.Modules.Identities.Web;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,11 +11,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using LatinoNetOnline.Backend.Modules.CallForProposals.Api;
-using LatinoNetOnline.Backend.Modules.Identities.Web;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
-using LatinoNetOnline.Backend.Worker.Host;
 
 namespace LatinoNetOnline.Backend.Bootstrapper
 {
@@ -31,7 +30,6 @@ namespace LatinoNetOnline.Backend.Bootstrapper
             services.AddInfrastructure(this.GetType().Assembly);
             services.AddProposalsModule(Configuration);
             services.AddIdentityModule(Configuration, Environment);
-            services.AddWorker();
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider, ILoggerFactory loggerFactory)
@@ -40,7 +38,6 @@ namespace LatinoNetOnline.Backend.Bootstrapper
             app.UseRouting();
             app.UseProposalsModule();
             app.UseIdentityModule();
-            app.UseWorker();
 
             app.UseEndpoints(endpoints =>
             {

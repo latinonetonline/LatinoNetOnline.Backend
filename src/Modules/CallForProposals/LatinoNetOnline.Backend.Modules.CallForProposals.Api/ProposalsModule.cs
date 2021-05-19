@@ -5,12 +5,12 @@ using Microsoft.Extensions.Hosting;
 
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core;
 using LatinoNetOnline.Backend.Modules.CallForProposals.Core.Data;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Options;
 
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api

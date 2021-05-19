@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-using LatinoNetOnline.Backend.Shared.Abstractions.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System.Threading.Tasks;
 

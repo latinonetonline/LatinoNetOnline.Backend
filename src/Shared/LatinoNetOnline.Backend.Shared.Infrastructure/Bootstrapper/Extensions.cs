@@ -13,6 +13,7 @@ using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensio
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
