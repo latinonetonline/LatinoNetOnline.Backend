@@ -2,11 +2,11 @@
 // See LICENSE in the project root for license information.
 
 
-using Duende.IdentityServer.Models;
-
-using Microsoft.AspNetCore.Mvc;
+using IdentityServer4.Models;
 
 using LatinoNetOnline.Backend.Modules.Identities.Web.ViewModel;
+
+using Microsoft.AspNetCore.Mvc;
 
 using System;
 

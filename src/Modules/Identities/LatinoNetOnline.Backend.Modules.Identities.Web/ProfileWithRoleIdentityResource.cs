@@ -1,6 +1,7 @@
-﻿using Duende.IdentityServer.Models;
-
+﻿
 using IdentityModel;
+
+using IdentityServer4.Models;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web
 {

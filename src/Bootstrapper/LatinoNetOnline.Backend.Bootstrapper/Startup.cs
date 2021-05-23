@@ -1,8 +1,9 @@
-using Duende.IdentityServer;
+
+using IdentityServer4;
 
 using LatinoNetOnline.Backend.Modules.CallForProposals.Api;
-using LatinoNetOnline.Backend.Modules.Links.Api;
 using LatinoNetOnline.Backend.Modules.Identities.Web;
+using LatinoNetOnline.Backend.Modules.Links.Api;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
 
 using Microsoft.AspNetCore.Builder;

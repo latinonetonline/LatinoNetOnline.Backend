@@ -1,7 +1,14 @@
 ﻿
-using Duende.IdentityServer;
+using IdentityServer4;
 
 using IdentityServerHost.Models;
+
+using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Services;
+using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,17 +20,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
-using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
-using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
-using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
-using LatinoNetOnline.Backend.Modules.Identities.Web.Services;
-using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
-
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
-using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Modules.Identities.Web
@@ -48,7 +47,6 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
 
-                // see https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
 
                 options.UserInteraction.LoginUrl = "/identities-module/Account/Login";
@@ -121,7 +119,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(new FileInfo(typeof(ApplicationDbContext).Assembly.Location).DirectoryName ?? string.Empty, "IdentitySite")),
-                RequestPath = new PathString("/identity-module")
+                RequestPath = new PathString("/assets/identities-module")
             });
             app.UseIdentityServer();
 

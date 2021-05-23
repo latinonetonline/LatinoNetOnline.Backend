@@ -1,9 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="IdentitySite\**">
@@ -12,19 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Program.cs" />
-    <Compile Remove="Startup.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-    <None Remove="IdentitySite\css\login.css" />
-    <None Remove="IdentitySite\Login.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Duende.IdentityServer" Version="5.1.0" />
-    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="5.1.0" />
+    <PackageReference Include="IdentityServer4" Version="4.1.2" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>

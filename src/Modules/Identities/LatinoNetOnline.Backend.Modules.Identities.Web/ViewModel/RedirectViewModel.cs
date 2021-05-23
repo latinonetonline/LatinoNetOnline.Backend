@@ -3,7 +3,7 @@
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web.ViewModel
 {
-    class RedirectViewModel
+    public class RedirectViewModel
     {
         public string? RedirectUrl { get; set; }
     }

@@ -2,12 +2,12 @@
 // See LICENSE in the project root for license information.
 
 
-using Duende.IdentityServer;
-using Duende.IdentityServer.Models;
-
-using Microsoft.Extensions.Configuration;
+using IdentityServer4;
+using IdentityServer4.Models;
 
 using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
+
+using Microsoft.Extensions.Configuration;
 
 using System.Collections.Generic;
 
