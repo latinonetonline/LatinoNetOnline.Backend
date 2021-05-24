@@ -21,19 +21,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identities", "Identities", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Identities.Web", "src\Modules\Identities\LatinoNetOnline.Backend.Modules.Identities.Web\LatinoNetOnline.Backend.Modules.Identities.Web.csproj", "{6B43160B-FC99-4651-ADE7-B0E6DFA935EE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CallForProposals", "CallForProposals", "{5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CallForSpeakers", "CallForSpeakers", "{5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForProposals.Api", "src\Modules\CallForProposals\LatinoNetOnline.Backend.Modules.CallForProposals.Api\LatinoNetOnline.Backend.Modules.CallForProposals.Api.csproj", "{9D4EC920-DF48-490B-992C-DB85BAB2921D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForSpeakers.Api", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.csproj", "{9D4EC920-DF48-490B-992C-DB85BAB2921D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForProposals.Core", "src\Modules\CallForProposals\LatinoNetOnline.Backend.Modules.CallForProposals.Core\LatinoNetOnline.Backend.Modules.CallForProposals.Core.csproj", "{2596A790-3057-4E11-89D2-77EA7F40E551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForSpeakers.Core", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.csproj", "{2596A790-3057-4E11-89D2-77EA7F40E551}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatinoNetOnline.Backend.Shared.Commons", "src\Shared\LatinoNetOnline.Backend.Shared.Commons\LatinoNetOnline.Backend.Shared.Commons.csproj", "{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Shared.Commons", "src\Shared\LatinoNetOnline.Backend.Shared.Commons\LatinoNetOnline.Backend.Shared.Commons.csproj", "{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Links", "Links", "{3528EDCC-7508-4DB7-8A41-9B820DC42E75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatinoNetOnline.Backend.Modules.Links.Api", "src\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Api\LatinoNetOnline.Backend.Modules.Links.Api.csproj", "{1EA27715-2064-47BA-8F1E-C7C2375D6FC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Links.Api", "src\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Api\LatinoNetOnline.Backend.Modules.Links.Api.csproj", "{1EA27715-2064-47BA-8F1E-C7C2375D6FC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatinoNetOnline.Backend.Modules.Links.Core", "src\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Core\LatinoNetOnline.Backend.Modules.Links.Core.csproj", "{6A2C757E-B23B-4650-8B0E-B64029B45B03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Links.Core", "src\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Core\LatinoNetOnline.Backend.Modules.Links.Core.csproj", "{6A2C757E-B23B-4650-8B0E-B64029B45B03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

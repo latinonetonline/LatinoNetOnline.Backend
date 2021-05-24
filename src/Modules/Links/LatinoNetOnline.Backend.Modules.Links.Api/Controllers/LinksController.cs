@@ -39,11 +39,11 @@ namespace LatinoNetOnline.Backend.Modules.Links.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(Link model)
             => new OperationActionResult(await _linkService.Update(model));
-        
+
 
         [HttpDelete("{name}")]
         public async Task<IActionResult> Delete(string name)
             => new OperationActionResult(await _linkService.Delete(name));
-        
+
     }
 }

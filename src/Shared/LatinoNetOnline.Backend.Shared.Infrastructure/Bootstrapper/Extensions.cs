@@ -1,4 +1,9 @@
 
+using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Api;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Api.JsonConvertes;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensions;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -6,14 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Api;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Api.JsonConvertes;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensions;
-
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
 namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper

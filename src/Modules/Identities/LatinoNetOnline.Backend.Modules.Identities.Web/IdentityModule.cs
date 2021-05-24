@@ -21,10 +21,9 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-[assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Bootstrapper")]
+
 namespace LatinoNetOnline.Backend.Modules.Identities.Web
 {
     static class IdentityExtensions

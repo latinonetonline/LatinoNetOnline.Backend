@@ -1,7 +1,7 @@
+using LatinoNetOnline.Backend.Bootstrapper;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-
-using LatinoNetOnline.Backend.Bootstrapper;
 
 using Serilog;
 

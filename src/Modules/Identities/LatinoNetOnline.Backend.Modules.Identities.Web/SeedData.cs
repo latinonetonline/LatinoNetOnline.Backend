@@ -6,16 +6,16 @@ using IdentityModel;
 
 using IdentityServerHost.Models;
 
+using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
+using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
-
 using System;
 using System.Linq;
 using System.Security.Claims;
-using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web
 {

@@ -1,4 +1,6 @@
 ﻿
+using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Swagger;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -6,8 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
-
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Swagger;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 

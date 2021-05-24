@@ -2,14 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Linq;
-using System.Threading.Tasks;
-
 using LatinoNetOnline.Backend.Modules.Identities.Web.Controllers;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace IdentityServerHost.Quickstart.UI
 {

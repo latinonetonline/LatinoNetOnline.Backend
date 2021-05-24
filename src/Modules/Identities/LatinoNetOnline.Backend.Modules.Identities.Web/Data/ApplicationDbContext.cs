@@ -3,8 +3,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-using System;
-
 namespace LatinoNetOnline.Backend.Modules.Identities.Web.Data
 {
     class ApplicationDbContext : IdentityDbContext<ApplicationUser>

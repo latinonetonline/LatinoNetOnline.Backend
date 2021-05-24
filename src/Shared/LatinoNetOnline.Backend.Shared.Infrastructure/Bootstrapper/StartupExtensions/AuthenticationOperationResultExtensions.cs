@@ -1,7 +1,7 @@
 ﻿
-using Microsoft.AspNetCore.Builder;
-
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Middlewares;
+
+using Microsoft.AspNetCore.Builder;
 
 namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensions
 {

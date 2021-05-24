@@ -1,8 +1,8 @@
 ﻿
+using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Rules;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Rewrite;
-
-using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Rules;
 
 namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensions
 {
