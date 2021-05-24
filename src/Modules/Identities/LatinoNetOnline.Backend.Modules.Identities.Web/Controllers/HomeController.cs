@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web.Controllers
@@ -6,6 +7,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Controllers
     class HomeController : BaseController
     {
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<string> Get() => "Identity module";
     }
 }

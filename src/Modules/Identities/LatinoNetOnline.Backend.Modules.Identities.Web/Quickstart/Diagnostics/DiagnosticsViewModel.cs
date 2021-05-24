@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Diagnostics
 {
     public class DiagnosticsViewModel
     {

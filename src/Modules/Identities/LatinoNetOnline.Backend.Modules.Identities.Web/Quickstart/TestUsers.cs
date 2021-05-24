@@ -13,7 +13,7 @@ using System.Text.Json;
 
 namespace IdentityServerHost.Quickstart.UI
 {
-    public class TestUsers
+    private class TestUsers
     {
         public static List<TestUser> Users
         {

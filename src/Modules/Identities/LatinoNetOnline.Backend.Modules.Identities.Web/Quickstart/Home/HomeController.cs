@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 using System.Threading.Tasks;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Home
 {
     [SecurityHeaders]
     [AllowAnonymous]

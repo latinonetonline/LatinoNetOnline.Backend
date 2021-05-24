@@ -124,7 +124,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(new FileInfo(typeof(ApplicationDbContext).Assembly.Location).DirectoryName ?? string.Empty, "IdentitySite")),
-                RequestPath = new PathString("/assets/identities-module")
+                RequestPath = new PathString($"/assets/{BaseMvcController.BasePath}")
             });
             app.UseIdentityServer();
 

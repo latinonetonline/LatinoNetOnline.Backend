@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LatinoNetOnline.Backend.Modules.Identities.Web.Options
+﻿namespace LatinoNetOnline.Backend.Modules.Identities.Web.Options
 {
     class IdentityOptions
     {

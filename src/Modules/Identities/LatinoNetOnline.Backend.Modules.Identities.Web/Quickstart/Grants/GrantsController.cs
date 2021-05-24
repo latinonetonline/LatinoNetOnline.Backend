@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Grants
 {
     /// <summary>
     /// This sample controller allows a user to revoke grants given to clients

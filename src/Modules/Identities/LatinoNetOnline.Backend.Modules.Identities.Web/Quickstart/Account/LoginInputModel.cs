@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Account
 {
     public class LoginInputModel
     {

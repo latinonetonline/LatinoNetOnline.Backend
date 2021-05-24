@@ -10,6 +10,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Validation;
 
 using LatinoNetOnline.Backend.Modules.Identities.Web.Controllers;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Consent;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Device
 {
     [Authorize]
     [SecurityHeaders]

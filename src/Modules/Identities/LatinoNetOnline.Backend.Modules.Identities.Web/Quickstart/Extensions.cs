@@ -1,10 +1,12 @@
 using IdentityServer4.Models;
 
+using LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Account;
+
 using Microsoft.AspNetCore.Mvc;
 
 using System;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart
 {
     public static class Extensions
     {

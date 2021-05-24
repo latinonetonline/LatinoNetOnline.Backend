@@ -1,12 +1,14 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LatinoNetOnline.Backend.Modules.Links.Api.Controllers
 {
     [Route(BasePath)]
-    internal class HomeController : BaseController
+    class HomeController : BaseController
     {
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<string> Get() => "Links module";
     }
 }
