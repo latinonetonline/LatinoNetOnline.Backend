@@ -19,9 +19,9 @@ using System.Security.Claims;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web
 {
-    public class SeedData
+    class SeedData
     {
-        public static void EnsureSeedData(string connectionString, SettingOptions settingOptions)
+        public static void EnsureSeedData(string connectionString, SettingOptions settingOptions, Options.IdentityOptions identityOptions)
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -50,19 +50,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var roleSuperAdminExist = roleManager.RoleExistsAsync("SuperAdmin").GetAwaiter().GetResult();
+
                 var roleAdminExist = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
                 var roleUserExist = roleManager.RoleExistsAsync("User").GetAwaiter().GetResult();
-
-
-                if (!roleSuperAdminExist)
-                {
-                    roleManager.CreateAsync(new IdentityRole
-                    {
-                        Name = "SuperAdmin"
-                    }).GetAwaiter().GetResult();
-                }
-
 
                 if (!roleAdminExist)
                 {
@@ -81,26 +71,26 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     }).GetAwaiter().GetResult();
                 }
 
-                var superAdminUser = userMgr.FindByNameAsync("superadmin").GetAwaiter().GetResult();
+                var superAdminUser = userMgr.FindByNameAsync("latinonetonline").GetAwaiter().GetResult();
                 if (superAdminUser is null)
                 {
                     superAdminUser = new ApplicationUser
                     {
-                        Name = "Super",
-                        Lastname = "Admin",
-                        UserName = "superadmin",
-                        Email = "superadmin@email.com",
+                        Name = "Latino .NET",
+                        Lastname = "Online",
+                        UserName = "latinonetonline",
+                        Email = "latinonetonline@outlook.com",
                         EmailConfirmed = true
                     };
 
-                    var result = userMgr.CreateAsync(superAdminUser, "Pass123$").GetAwaiter().GetResult();
+                    var result = userMgr.CreateAsync(superAdminUser, identityOptions.Password).GetAwaiter().GetResult();
 
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    userMgr.AddToRoleAsync(superAdminUser, "SuperAdmin").GetAwaiter().GetResult();
+                    userMgr.AddToRoleAsync(superAdminUser, "Admin").GetAwaiter().GetResult();
 
                     userMgr.AddClaimsAsync(superAdminUser, new Claim[]{
                             new Claim(JwtClaimTypes.Subject, superAdminUser.Id),

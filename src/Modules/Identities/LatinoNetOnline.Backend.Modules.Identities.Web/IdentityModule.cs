@@ -3,6 +3,7 @@ using IdentityServer4;
 
 using IdentityServerHost.Models;
 
+using LatinoNetOnline.Backend.Modules.Identities.Web.Controllers;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
@@ -48,7 +49,12 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
 
                 options.EmitStaticAudienceClaim = true;
 
-                options.UserInteraction.LoginUrl = "/identities-module/Account/Login";
+                options.UserInteraction.LoginUrl = $"/{BaseMvcController.BasePath}/Account/Login";
+                options.UserInteraction.ErrorUrl = $"/{BaseMvcController.BasePath}/Home/Error";
+                options.UserInteraction.ConsentUrl = $"/{BaseMvcController.BasePath}/Consent";
+                options.UserInteraction.DeviceVerificationUrl = $"/{BaseMvcController.BasePath}/Device";
+                options.UserInteraction.LogoutUrl = $"/{BaseMvcController.BasePath}/Account/Logout";
+
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
@@ -138,7 +144,8 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
             var configuration = host.Services.GetRequiredService<IConfiguration>();
             var connectionString = configuration.GetConnectionString("Default");
             var settingOptions = configuration.GetSection(nameof(SettingOptions)).Get<SettingOptions>();
-            SeedData.EnsureSeedData(connectionString, settingOptions);
+            var identityOptions = configuration.GetSection(nameof(Options.IdentityOptions)).Get<Options.IdentityOptions>();
+            SeedData.EnsureSeedData(connectionString, settingOptions, identityOptions);
 
             return host;
         }

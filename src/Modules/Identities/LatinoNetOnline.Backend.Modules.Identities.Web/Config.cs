@@ -54,6 +54,40 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                         IdentityServerConstants.LocalApi.ScopeName
                     }
                 },
+                new Client
+                {
+                    ClientId = "LatinoNetOnline.BackOffice",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedCorsOrigins = { identityOptions.FrontendUrl },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.LocalApi.ScopeName
+                    },
+                    RedirectUris = { $"{identityOptions.FrontendUrl}/authentication/login-callback" },
+                    PostLogoutRedirectUris = { $"{identityOptions.FrontendUrl}/" },
+                    Enabled = true
+                },
+                new Client
+                {
+                    ClientId = "LatinoNetOnline.BackOffice.dev",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedCorsOrigins = { "https://localhost:44343" },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.LocalApi.ScopeName
+                    },
+                    RedirectUris = { "https://localhost:44343/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44343/" },
+                    Enabled = true
+                }
             };
         }
     }
