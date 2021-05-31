@@ -33,7 +33,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
 
             services.AddSerilog();
             services.AddSwaggerApiVersioning(assembly);
-
+            services.AddForwardedHeaders();
             services.AddModuleRequests();
 
 
