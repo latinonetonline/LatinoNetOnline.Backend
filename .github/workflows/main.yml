@@ -60,6 +60,14 @@ jobs:
           field: "IdentityOptions.ClientSecret"
           value: ${{ secrets.IDENTITY_CLIENT_SECRET }}
 
+
+      - name: Set Identity Default Password JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
+          field: "IdentityOptions.Password"
+          value: ${{ secrets.IDENTITY_DEFAULT_PASSWORD }}
+
       # - name: Set Build Version
       #   uses: jossef/action-set-json-field@v1
       #   with:
