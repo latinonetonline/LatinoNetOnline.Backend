@@ -19,3 +19,5 @@ using System.Runtime.InteropServices;
 [assembly: Guid("8a408f89-3aee-497d-9e4c-c6a135ea4d1f")]
 
 [assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Modules.CallForSpeakers.Api")]
+[assembly: InternalsVisibleTo("LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

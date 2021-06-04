@@ -6,7 +6,8 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using Microsoft.EntityFrameworkCore;
 
 using System;
-using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
 {
@@ -26,7 +27,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
 
             RuleFor(x => x.Date).Must(BeAValidSaturday).WithMessage("La fecha debe ser un Sábado.");
 
-            RuleFor(x => x.Date).Must(BeAValidDate).WithMessage("Esa fecha ya esta ocupada. Escoja otra.");
+            RuleFor(x => x.Date).MustAsync(BeAValidDateAsync).WithMessage("Esa fecha ya esta ocupada. Escoja otra.");
+
+            RuleFor(x => x.Speakers).NotEmpty().WithMessage("Debe especificar minimo un Spekaer.");
+
+            RuleForEach(x => x.Speakers).SetValidator(new CreateSpeakerValidator());
 
         }
 
@@ -35,9 +40,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
             return date.DayOfWeek is DayOfWeek.Saturday;
         }
 
-        private bool BeAValidDate(DateTime date)
+        private async Task<bool> BeAValidDateAsync(DateTime date, CancellationToken cancellationToken)
         {
-            var existDate = _dbContext.Proposals.AsNoTracking().Any(x => x.EventDate.Date == date.Date && x.IsActive);
+            var existDate = await _dbContext.Proposals.AsNoTracking().AnyAsync(x => x.EventDate.Date == date.Date && x.IsActive, cancellationToken);
 
             return !existDate;
         }

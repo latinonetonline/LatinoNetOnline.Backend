@@ -13,6 +13,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
             RuleFor(x => x.Email).EmailAddress().WithMessage("Ingrese un email valido.");
             RuleFor(x => x.Description).NotEmpty().WithMessage("Ingrese una descipción personal.");
             RuleFor(x => x.Twitter).Must(BeAValidTwitter).WithMessage("Ingrese un usuario de Twitter valido.");
+            RuleFor(x => x.Image).NotNull().WithMessage("Ingrese una imagen.");
+
 
         }
 
@@ -23,7 +25,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
 
             if (twitter.StartsWith("@"))
             {
-                twitter = twitter.Substring(1);
+                twitter = twitter[1..];
             }
 
 

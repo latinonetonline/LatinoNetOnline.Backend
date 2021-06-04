@@ -10,6 +10,7 @@ using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using Microsoft.EntityFrameworkCore;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
@@ -17,7 +18,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
     interface ISpeakerService
     {
         Task<OperationResult<SpeakerDto>> CreateAsync(CreateSpeakerInput input);
-        Task<OperationResult<IEnumerable<Speaker>>> GetAllAsync();
+        Task<OperationResult<IEnumerable<SpeakerDto>>> GetAllAsync();
     }
 
     class SpeakerService : ISpeakerService
@@ -29,8 +30,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             _dbContext = dbContext;
         }
 
-        public Task<OperationResult<IEnumerable<Speaker>>> GetAllAsync()
+        public Task<OperationResult<IEnumerable<SpeakerDto>>> GetAllAsync()
             => GetAllSpeakersAsync()
+                .Map(ConvertToDto)
                 .ToResult("No hay ningún speaker.")
                 .FinallyOperationResult();
 
@@ -73,6 +75,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         };
 
         private SpeakerDto ConvertToDto(Speaker speaker) => speaker.ConvertToDto();
+
+        private IEnumerable<SpeakerDto> ConvertToDto(IEnumerable<Speaker> speakers) => speakers.Select(x => x.ConvertToDto());
 
 
         private async Task<Maybe<IEnumerable<Speaker>>> GetAllSpeakersAsync()

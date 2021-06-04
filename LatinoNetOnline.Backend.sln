@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Links.Core", "src\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Core\LatinoNetOnline.Backend.Modules.Links.Core.csproj", "{6A2C757E-B23B-4650-8B0E-B64029B45B03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests\LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.csproj", "{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,18 @@ Global
 		{6A2C757E-B23B-4650-8B0E-B64029B45B03}.Release|x64.Build.0 = Release|Any CPU
 		{6A2C757E-B23B-4650-8B0E-B64029B45B03}.Release|x86.ActiveCfg = Release|Any CPU
 		{6A2C757E-B23B-4650-8B0E-B64029B45B03}.Release|x86.Build.0 = Release|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Debug|x64.Build.0 = Debug|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Debug|x86.Build.0 = Debug|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Release|x64.ActiveCfg = Release|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Release|x64.Build.0 = Release|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Release|x86.ActiveCfg = Release|Any CPU
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -173,6 +187,7 @@ Global
 		{3528EDCC-7508-4DB7-8A41-9B820DC42E75} = {412B1691-20CB-4621-AABA-1A08A214F683}
 		{1EA27715-2064-47BA-8F1E-C7C2375D6FC8} = {3528EDCC-7508-4DB7-8A41-9B820DC42E75}
 		{6A2C757E-B23B-4650-8B0E-B64029B45B03} = {3528EDCC-7508-4DB7-8A41-9B820DC42E75}
+		{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C} = {5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E700AE28-81C8-4ED1-BAA2-C9D2627F34F2}

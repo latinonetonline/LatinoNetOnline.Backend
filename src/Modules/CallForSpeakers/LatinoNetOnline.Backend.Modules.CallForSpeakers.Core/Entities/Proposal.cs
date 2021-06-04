@@ -24,6 +24,19 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities
             IsActive = true;
         }
 
+        public Proposal(string title, string description, string audienceAnswer, string knowledgeAnswer, string useCaseAnswer, bool isActive, DateTime eventDate, DateTime creationTime, ICollection<Speaker> speakers)
+        {
+            Title = title;
+            Description = description;
+            AudienceAnswer = audienceAnswer;
+            KnowledgeAnswer = knowledgeAnswer;
+            UseCaseAnswer = useCaseAnswer;
+            IsActive = isActive;
+            EventDate = eventDate;
+            CreationTime = creationTime;
+            Speakers = speakers;
+        }
+
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
