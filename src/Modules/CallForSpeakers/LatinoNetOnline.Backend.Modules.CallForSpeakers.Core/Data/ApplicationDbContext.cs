@@ -15,6 +15,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
 
         public DbSet<Speaker> Speakers { get; set; }
         public DbSet<Proposal> Proposals { get; set; }
+        public DbSet<Webinar> Webinars { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +57,27 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
                 builder.Property(e => e.KnowledgeAnswer);
                 builder.Property(e => e.UseCaseAnswer);
 
+            });
+
+            modelBuilder.Entity<Webinar>(builder =>
+            {
+                builder.ToTable("Webinars");
+
+                builder.HasKey(e => e.Id);
+
+                builder.Property(e => e.YoutubeLink)
+                    .HasConversion(v => v.ToString(), db => new Uri(db))
+                    .IsRequired();
+
+
+                builder.Property(e => e.MeetupLink)
+                    .HasConversion(v => v.ToString(), db => new Uri(db))
+                    .IsRequired();
+
+
+                builder.Property(e => e.FlyerLink)
+                    .HasConversion(v => v.ToString(), db => new Uri(db))
+                    .IsRequired();
             });
 
             base.OnModelCreating(modelBuilder);

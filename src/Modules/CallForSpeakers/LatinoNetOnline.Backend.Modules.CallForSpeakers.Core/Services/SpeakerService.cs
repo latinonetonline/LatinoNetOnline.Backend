@@ -64,19 +64,15 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             return speaker;
         }
 
-        private Speaker ConvertToEntity(CreateSpeakerInput input) => new()
-        {
-            Name = input.Name,
-            LastName = input.LastName,
-            Email = input.Email,
-            Description = input.Description,
-            Twitter = input.Twitter,
-            Image = input.Image
-        };
+        private Speaker ConvertToEntity(CreateSpeakerInput input) 
+            => new(input.Name, input.LastName, input.Email, input.Twitter, input.Description, input.Image);
 
-        private SpeakerDto ConvertToDto(Speaker speaker) => speaker.ConvertToDto();
 
-        private IEnumerable<SpeakerDto> ConvertToDto(IEnumerable<Speaker> speakers) => speakers.Select(x => x.ConvertToDto());
+        private SpeakerDto ConvertToDto(Speaker speaker) 
+            => speaker.ConvertToDto();
+
+        private IEnumerable<SpeakerDto> ConvertToDto(IEnumerable<Speaker> speakers) 
+            => speakers.Select(x => x.ConvertToDto());
 
 
         private async Task<Maybe<IEnumerable<Speaker>>> GetAllSpeakersAsync()
