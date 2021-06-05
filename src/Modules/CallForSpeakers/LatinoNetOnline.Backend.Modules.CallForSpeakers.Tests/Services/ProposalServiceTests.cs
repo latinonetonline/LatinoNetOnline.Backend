@@ -1,9 +1,14 @@
 ﻿using CSharpFunctionalExtensions;
 
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 using Moq;
 
@@ -24,7 +29,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         public async Task GetAllAsync_ResultSuccess()
         {
             MockObject mockObject = new();
-            
+
             ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
 
             var result = await service.GetAllAsync(new());
@@ -127,7 +132,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
         #endregion
 
-
         #region GetAllDatesAsync
 
         [Fact]
@@ -166,7 +170,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         }
 
         #endregion
-
 
         #region GetByIdAsync
 
@@ -212,15 +215,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.EmailManagerMock.Setup(s => s.SendEmailAsync(It.IsAny<SendEmailInput>())).ReturnsAsync(Result.Success());
 
-            CreateSpeakerInput speakerInput = new("test", "test", "test@tests.com", "test", "test", new("https://tests.com"));
-
+            CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
             ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
 
 
 
             var result = await service.CreateAsync(
-                new("test", "tests", new(2046, 08,18), "test", "test", "test",new List<CreateSpeakerInput>() { speakerInput }));
+                new("test", "tests", new(2046, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Result);
@@ -242,6 +244,161 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             Assert.False(result.IsSuccess);
         }
 
+        [Fact]
+        public async Task CreateAsync_WithEmplyTitle_ResultError()
+        {
+            MockObject mockObject = new();
+
+            CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult<ProposalFullDto> result = await service.CreateAsync(
+                new(string.Empty, "tests", new(2046, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
+
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task CreateAsync_WithEmplyDescription_ResultError()
+        {
+            MockObject mockObject = new();
+
+            CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult<ProposalFullDto> result = await service.CreateAsync(
+                new("test", string.Empty, new(2046, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
+
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task CreateAsync_WithEventDateLessThanToday_ResultError()
+        {
+            MockObject mockObject = new();
+
+            CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult<ProposalFullDto> result = await service.CreateAsync(
+                new("test", "tests", new(2020, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
+
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task CreateAsync_WithEventDateIsNotSaturday_ResultError()
+        {
+            MockObject mockObject = new();
+
+            CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult<ProposalFullDto> result = await service.CreateAsync(
+                new("test", "tests", new(2046, 08, 19), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
+
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task CreateAsync_WithEventDateAlreadyTaken_ResultError()
+        {
+            MockObject mockObject = new();
+
+            DateTime eventDate = new(2046, 08, 18);
+
+            mockObject.ApplicationDbContext.Add(new Proposal("test", "tests", string.Empty, string.Empty, string.Empty, eventDate));
+
+            mockObject.ApplicationDbContext.SaveChanges();
+
+            CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult<ProposalFullDto> result = await service.CreateAsync(
+                new("test", "tests", eventDate, "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
+
+            Assert.False(result.IsSuccess);
+        }
+
         #endregion
+
+        #region DeleteAsync
+
+        [Fact]
+        public async Task DeleteAsync_WithValidId_ReturnSuccess()
+        {
+            MockObject mockObject = new();
+
+            Proposal proposal = new("test", "tests", string.Empty, string.Empty, string.Empty, new(2046, 08, 18));
+
+            mockObject.ApplicationDbContext.Add(proposal);
+
+            mockObject.ApplicationDbContext.SaveChanges();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult result = await service.DeleteAsync(proposal.Id);
+
+            Assert.True(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_WithInalidId_ReturnError()
+        {
+            MockObject mockObject = new();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult result = await service.DeleteAsync(Guid.NewGuid());
+
+            Assert.False(result.IsSuccess);
+        }
+
+        #endregion
+
+
+        #region DeleteAllAsync
+
+        [Fact]
+        public async Task DeleteAllAsync_WithExistProposals_ReturnSuccess()
+        {
+            MockObject mockObject = new();
+
+            Proposal proposal = new("test", "tests", string.Empty, string.Empty, string.Empty, new(2046, 08, 18));
+
+            EntityEntry<Proposal> entry = mockObject.ApplicationDbContext.Add(proposal);
+
+            await mockObject.ApplicationDbContext.SaveChangesAsync();
+
+            entry.State = EntityState.Detached;
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult result = await service.DeleteAllAsync();
+
+            Assert.True(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task DeleteAllAsync_WithoutExistProposals_ReturnSuccess()
+        {
+            MockObject mockObject = new();
+
+            ProposalService service = new(mockObject.ApplicationDbContext, mockObject.EmailManagerMock.Object);
+
+            OperationResult result = await service.DeleteAllAsync();
+
+            Assert.True(result.IsSuccess);
+        }
+
+        #endregion
+
+        private CreateSpeakerInput GetCreateSpeakerInput()
+            => new("test", "test", "test@tests.com", "test", "test", new("https://tests.com"));
     }
 }

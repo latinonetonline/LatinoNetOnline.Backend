@@ -132,10 +132,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private async Task RemoveProposalAsync(Proposal proposal)
         {
-
-            foreach (Speaker speaker in proposal.Speakers)
+            if(proposal.Speakers is not null)
             {
-                _dbContext.Speakers.Remove(speaker);
+                foreach (Speaker speaker in proposal.Speakers)
+                {
+                    _dbContext.Speakers.Remove(speaker);
+                }
             }
 
             _dbContext.Proposals.Remove(proposal);
