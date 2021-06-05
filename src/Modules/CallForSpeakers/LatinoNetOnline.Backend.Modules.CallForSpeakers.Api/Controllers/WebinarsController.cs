@@ -25,9 +25,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
             => new OperationActionResult(await _service.GetNextWebinarAsync());
 
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> GetAll(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
             => new OperationActionResult(await _service.GetByIdAsync(id));
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+            => new OperationActionResult(await _service.GetAllAsync());
 
 
         [HttpPost]

@@ -10,6 +10,7 @@ using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using Microsoft.EntityFrameworkCore;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input);
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult<WebinarFullDto>> GetByIdAsync(Guid id);
+        Task<OperationResult<IEnumerable<WebinarFullDto>>> GetAllAsync();
         Task<OperationResult<WebinarFullDto>> GetNextWebinarAsync();
     }
 
@@ -39,6 +41,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 
+        public Task<OperationResult<IEnumerable<WebinarFullDto>>> GetAllAsync()
+            => GetAllWebinars()
+                .ToResult("No existen webinars.")
+                .Map(ConvertToFullDto)
+                .FinallyOperationResult();
+
         public Task<OperationResult<WebinarFullDto>> GetByIdAsync(Guid id)
             => GetWebinarById(id)
                 .ToResult("No existe un webinar con ese id.")
@@ -51,6 +59,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .Map(ConvertToFullDto)
                 .FinallyOperationResult();
 
+
         public async Task<OperationResult> DeleteAsync(Guid id)
             => await GetWebinarById(id)
                 .ToResult("No existe un webinar con ese id.")
@@ -59,7 +68,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
 
         private Result<CreateWebinarInput> Validate(CreateWebinarInput input)
-            => new CreateWebinarValidator(_dbContext).Validate(input).ToResult(input);
+        => new CreateWebinarValidator(_dbContext).Validate(input).ToResult(input);
+
+        private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
+            => await _dbContext.Webinars
+                .Include(x => x.Proposal)
+                .ThenInclude(x => x.Speakers)
+                .ToListAsync();
 
 
         private async Task<Maybe<Webinar>> GetWebinarById(Guid id)
@@ -97,8 +112,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private WebinarFullDto ConvertToFullDto(Webinar webinar)
             => new(webinar.ConvertToDto(),
-                webinar.Proposal.ConvertToDto(),
-                webinar.Proposal.Speakers.Select(x => x.ConvertToDto()));
+                 webinar.Proposal.ConvertToDto(),
+                 webinar.Proposal.Speakers.Select(x => x.ConvertToDto()));
+
+        private IEnumerable<WebinarFullDto> ConvertToFullDto(IEnumerable<Webinar> webinars)
+            => webinars.Select(ConvertToFullDto);
 
 
         private async Task RemoveWebinarAsync(Webinar webinar)
