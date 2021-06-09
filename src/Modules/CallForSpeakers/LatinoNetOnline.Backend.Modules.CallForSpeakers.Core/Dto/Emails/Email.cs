@@ -40,7 +40,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails
         public override string ToString()
             => _email;
 
-        
+
 
 
         public override int GetHashCode()
@@ -54,7 +54,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails
                 throw new System.ArgumentNullException(nameof(info));
 
             info.AddValue("Email", _email);
-        }     
+        }
 
     }
 }
