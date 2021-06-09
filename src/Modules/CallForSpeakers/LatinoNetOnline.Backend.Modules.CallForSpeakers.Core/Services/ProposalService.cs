@@ -82,9 +82,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter, bool include)
             => await _dbContext.Proposals.AsNoTracking()
-                    .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.ToLower() == filter.Title.ToLower())
-                    .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.Value)
-                    .WhereIf(filter.IsActive.HasValue, x => x.IsActive == filter.IsActive.Value)
+                    .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.Contains((filter.Title ?? string.Empty).ToLower()))
+                    .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.GetValueOrDefault())
+                    .WhereIf(filter.IsActive.HasValue, x => x.IsActive == filter.IsActive.GetValueOrDefault())
                     .IncludeIf(include, x => x.Speakers).ToListAsync();
 
 
@@ -132,7 +132,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private async Task RemoveProposalAsync(Proposal proposal)
         {
-            if(proposal.Speakers is not null)
+            if (proposal.Speakers is not null)
             {
                 foreach (Speaker speaker in proposal.Speakers)
                 {

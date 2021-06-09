@@ -64,14 +64,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             return speaker;
         }
 
-        private Speaker ConvertToEntity(CreateSpeakerInput input) 
+        private Speaker ConvertToEntity(CreateSpeakerInput input)
             => new(input.Name, input.LastName, input.Email, input.Twitter, input.Description, input.Image);
 
 
-        private SpeakerDto ConvertToDto(Speaker speaker) 
+        private SpeakerDto ConvertToDto(Speaker speaker)
             => speaker.ConvertToDto();
 
-        private IEnumerable<SpeakerDto> ConvertToDto(IEnumerable<Speaker> speakers) 
+        private IEnumerable<SpeakerDto> ConvertToDto(IEnumerable<Speaker> speakers)
             => speakers.Select(x => x.ConvertToDto());
 
 

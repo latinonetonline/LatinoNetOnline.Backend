@@ -1,4 +1,5 @@
 ﻿
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
 
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
         {
         }
 
-        public DbSet<Speaker> Speakers { get; set; }
-        public DbSet<Proposal> Proposals { get; set; }
-        public DbSet<Webinar> Webinars { get; set; }
+        public DbSet<Speaker> Speakers => Set<Speaker>();
+        public DbSet<Proposal> Proposals => Set<Proposal>();
+        public DbSet<Webinar> Webinars => Set<Webinar>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,7 +31,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
                 builder.Property(e => e.Name).IsRequired();
 
                 builder.Property(e => e.LastName).IsRequired();
-                builder.Property(e => e.Email).IsRequired();
+                builder.Property(e => e.Email)
+                .HasConversion(v => v.ToString(), db => new Email(db))
+                .IsRequired();
+
+
                 builder.Property(e => e.Description).IsRequired();
 
                 builder.Property(e => e.Image)

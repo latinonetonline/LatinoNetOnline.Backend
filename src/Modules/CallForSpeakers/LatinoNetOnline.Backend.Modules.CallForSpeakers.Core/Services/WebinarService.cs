@@ -73,14 +73,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
             => await _dbContext.Webinars
                 .Include(x => x.Proposal)
-                .ThenInclude(x => x.Speakers)
+                .ThenInclude(x => x!.Speakers)
                 .ToListAsync();
 
 
         private async Task<Maybe<Webinar>> GetWebinarById(Guid id)
             => await _dbContext.Webinars
                 .Include(x => x.Proposal)
-                .ThenInclude(x => x.Speakers)
+                .ThenInclude(x => x!.Speakers)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
 
@@ -88,9 +88,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         private async Task<Maybe<Webinar>> GetNextWebinar()
             => await _dbContext.Webinars
                 .Include(x => x.Proposal)
-                .ThenInclude(x => x.Speakers)
-                .Where(x => x.Proposal.IsActive && x.Proposal.EventDate > DateTime.Now)
-                .OrderBy(x => x.Proposal.EventDate)
+                .ThenInclude(x => x!.Speakers)
+                .Where(x => x.Proposal!.IsActive && x.Proposal.EventDate > DateTime.Now)
+                .OrderBy(x => x.Proposal!.EventDate)
                 .FirstOrDefaultAsync();
 
 
@@ -112,8 +112,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private WebinarFullDto ConvertToFullDto(Webinar webinar)
             => new(webinar.ConvertToDto(),
-                 webinar.Proposal.ConvertToDto(),
-                 webinar.Proposal.Speakers.Select(x => x.ConvertToDto()));
+                 webinar.Proposal!.ConvertToDto(),
+                 webinar.Proposal!.Speakers.Select(x => x.ConvertToDto()));
 
         private IEnumerable<WebinarFullDto> ConvertToFullDto(IEnumerable<Webinar> webinars)
             => webinars.Select(ConvertToFullDto);

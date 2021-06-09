@@ -10,7 +10,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Ingrese un nombre.");
             RuleFor(x => x.LastName).NotEmpty().WithMessage("Ingrese un apellido.");
-            RuleFor(x => x.Email).EmailAddress().WithMessage("Ingrese un email valido.");
+            RuleFor(x => x.Email).NotNull().WithMessage("Ingrese un email valido.");
             RuleFor(x => x.Description).NotEmpty().WithMessage("Ingrese una descipción personal.");
             RuleFor(x => x.Twitter).Must(BeAValidTwitter).WithMessage("Ingrese un usuario de Twitter valido.");
             RuleFor(x => x.Image).NotNull().WithMessage("Ingrese una imagen.");
@@ -18,7 +18,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
 
         }
 
-        private bool BeAValidTwitter(string twitter)
+        private bool BeAValidTwitter(string? twitter)
         {
             if (string.IsNullOrWhiteSpace(twitter))
                 return true;

@@ -6,7 +6,6 @@ using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -62,7 +61,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
 
         #region GetByIdAsync
-         
+
         [Fact]
         public async Task GetByIdAsync_WithValidId_ResultSuccess()
         {
@@ -342,13 +341,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
         #endregion
 
-        private Proposal GetProposal() 
+        private static Proposal GetProposal()
             => new("test", "tests", string.Empty, string.Empty, string.Empty, new(2046, 08, 18));
 
-        private Proposal GetProposa2()
+        private static Proposal GetProposa2()
             => new("test", "tests", string.Empty, string.Empty, string.Empty, new(2046, 09, 01));
 
-        private Proposal GetProposa3()
+        private static Proposal GetProposa3()
             => new("test", "tests", string.Empty, string.Empty, string.Empty, new(2046, 09, 08));
     }
 }

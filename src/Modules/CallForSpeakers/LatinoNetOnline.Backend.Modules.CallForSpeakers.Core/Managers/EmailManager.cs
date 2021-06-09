@@ -31,7 +31,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers
 
         public async Task<Result> SendEmailAsync(SendEmailInput input)
         {
-            MailjetClient client = new MailjetClient("7a15b8d00d9ae904df4d492a89d03f60", _configuration["MailjetOptions:ClientSecret"]);
+            MailjetClient client = new("7a15b8d00d9ae904df4d492a89d03f60", _configuration["MailjetOptions:ClientSecret"]);
 
             List<JObject> emails = new();
             emails.Add(new JObject {
@@ -43,7 +43,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers
             {
                 emails.Add(new JObject {
 
-                             { "Email", email}
+                             { "Email", email.ToString()}
                          });
             }
 

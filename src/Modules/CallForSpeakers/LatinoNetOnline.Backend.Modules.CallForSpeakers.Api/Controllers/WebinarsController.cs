@@ -37,8 +37,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateWebinarInput input)
-            =>  new OperationActionResult(await _service.CreateAsync(input));
-        
+            => new OperationActionResult(await _service.CreateAsync(input));
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
