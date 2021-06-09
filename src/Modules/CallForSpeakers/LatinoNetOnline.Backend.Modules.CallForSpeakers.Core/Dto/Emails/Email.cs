@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails
 {
-    public record Email : ISerializable
+    public record Email
 
     {
         private readonly string _email;
@@ -45,16 +45,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails
 
         public override int GetHashCode()
             => _email.ToLower().GetHashCode();
-
-
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-                throw new System.ArgumentNullException(nameof(info));
-
-            info.AddValue("Email", _email);
-        }
 
     }
 }

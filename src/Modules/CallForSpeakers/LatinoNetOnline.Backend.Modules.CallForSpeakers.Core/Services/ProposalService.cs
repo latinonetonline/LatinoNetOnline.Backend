@@ -114,7 +114,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
             foreach (var speakerInput in input.Speakers)
             {
-                Speaker speaker = new(speakerInput.Name, speakerInput.LastName, speakerInput.Email, speakerInput.Twitter, speakerInput.Description, speakerInput.Image);
+                Speaker speaker = new(speakerInput.Name, speakerInput.LastName, new(speakerInput.Email), speakerInput.Twitter, speakerInput.Description, speakerInput.Image);
 
                 proposal.Speakers.Add(speaker);
 

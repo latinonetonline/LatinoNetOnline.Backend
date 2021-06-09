@@ -65,7 +65,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         }
 
         private Speaker ConvertToEntity(CreateSpeakerInput input)
-            => new(input.Name, input.LastName, input.Email, input.Twitter, input.Description, input.Image);
+            => new(input.Name, input.LastName, new(input.Email), input.Twitter, input.Description, input.Image);
 
 
         private SpeakerDto ConvertToDto(Speaker speaker)

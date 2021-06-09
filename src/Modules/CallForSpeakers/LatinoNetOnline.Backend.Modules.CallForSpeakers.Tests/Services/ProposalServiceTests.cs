@@ -399,6 +399,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         #endregion
 
         private static CreateSpeakerInput GetCreateSpeakerInput()
-            => new("test", "test", new("test@tests.com"), "test", "test", new("https://tests.com"));
+            => new("test", "test", "test@tests.com", "test", "test", new("https://tests.com"));
     }
 }

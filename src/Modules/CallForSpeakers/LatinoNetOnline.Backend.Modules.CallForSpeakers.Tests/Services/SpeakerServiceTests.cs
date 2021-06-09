@@ -20,7 +20,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new(string.Empty, "lastname", new("test@tests.com"), "@tests", "tests", new("https://tests.com"));
+            CreateSpeakerInput input = new(string.Empty, "lastname", "test@tests.com", "@tests", "tests", new("https://tests.com"));
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
@@ -36,7 +36,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new("test", string.Empty, new("test@tests.com"), "@tests", "tests", new("https://tests.com"));
+            CreateSpeakerInput input = new("test", string.Empty, "test@tests.com", "@tests", "tests", new("https://tests.com"));
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
@@ -68,7 +68,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new("tests", "lastname", new("test@tests.com"), "@tests", string.Empty, new("https://tests.com"));
+            CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", string.Empty, new("https://tests.com"));
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
@@ -83,7 +83,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new("tests", "lastname", new("test@tests.com"), "@tests", "tests", null);
+            CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", "tests", null);
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
@@ -99,7 +99,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new("tests", "lastname", new("test@tests.com"), "@tests", string.Empty, new("https://tests.com"));
+            CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", string.Empty, new("https://tests.com"));
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
@@ -115,7 +115,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new("tests", "lastname", new("test@tests.com"), string.Empty, "tests", new("https://tests.com"));
+            CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", string.Empty, "tests", new("https://tests.com"));
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
@@ -130,7 +130,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             SpeakerService service = new(mockObject.ApplicationDbContext);
 
-            CreateSpeakerInput input = new("tests", "lastname", new("test@tests.com"), "@tests", "tests", new("https://tests.com"));
+            CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", "tests", new("https://tests.com"));
 
 
             OperationResult<SpeakerDto> result = await service.CreateAsync(input);
