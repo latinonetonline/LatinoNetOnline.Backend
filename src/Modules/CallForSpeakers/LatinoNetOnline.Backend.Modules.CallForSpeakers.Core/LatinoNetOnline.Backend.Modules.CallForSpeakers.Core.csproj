@@ -17,8 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.15.0" />
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.2" />
-    <PackageReference Include="FluentValidation" Version="10.1.0" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.3" />
+    <PackageReference Include="FluentValidation" Version="10.2.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
