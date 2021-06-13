@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
-using System;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web.Migrations
 {
@@ -34,13 +32,8 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Lastname = table.Column<string>(type: "text", nullable: false),
-                    TermsAndConditionVersion = table.Column<string>(type: "text", nullable: false),
-                    ImageUri = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<int>(type: "integer", nullable: false),
-                    LastLoginTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    RegistrationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Lastname = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
