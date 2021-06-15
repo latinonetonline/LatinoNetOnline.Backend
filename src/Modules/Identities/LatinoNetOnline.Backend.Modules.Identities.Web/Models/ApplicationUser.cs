@@ -11,24 +11,8 @@ namespace IdentityServerHost.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     class ApplicationUser : IdentityUser
     {
-        private string? _name;
+        public string Name { get; set; }
 
-
-        public virtual string Name
-        {
-            set => _name = value;
-            get => _name
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(_name));
-        }
-
-        private string? _lastname;
-
-
-        public virtual string Lastname
-        {
-            set => _lastname = value;
-            get => _lastname
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(_lastname));
-        }
+        public string Lastname { get; set; }
     }
 }

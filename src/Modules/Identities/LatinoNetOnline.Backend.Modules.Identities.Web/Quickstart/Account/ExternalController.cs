@@ -152,9 +152,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Account
         {
             var externalUser = result.Principal;
 
-            var userIdClaim = externalUser.FindFirst(ClaimTypes.Email) ?? externalUser.FindFirst(JwtClaimTypes.Name) ??
-                              externalUser.FindFirst(ClaimTypes.Name) ??
-                              throw new Exception("Unknown userid");
+            var userIdClaim = externalUser.FindFirst(ClaimTypes.NameIdentifier);
 
             var email = externalUser.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email)?.Value ??
               externalUser.FindFirst(x => x.Type == ClaimTypes.Email)?.Value ??
@@ -163,8 +161,8 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Account
             var username = externalUser.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.PreferredUserName)?.Value ??
               externalUser.FindFirst(x => x.Type == ClaimTypes.Name)?.Value;
 
-            var fullName = externalUser.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)?.Value ??
-                $"{externalUser.FindFirst(x => x.Type == ClaimTypes.GivenName)?.Value ?? string.Empty} {externalUser.FindFirst(x => x.Type == ClaimTypes.Surname)?.Value ?? string.Empty}";
+            var name = externalUser.FindFirst(x => x.Type == ClaimTypes.GivenName)?.Value ?? string.Empty;
+            var lastname = externalUser.FindFirst(x => x.Type == ClaimTypes.Surname)?.Value ?? string.Empty;
 
             var claims = externalUser.Claims.ToList();
             claims.Remove(userIdClaim);
@@ -176,24 +174,27 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Account
 
             var user = _userManager.Users.Where(x => x.UserName == username || x.Email == email).FirstOrDefault();
 
-            if (user == null)
+            if (user is null)
             {
                 string rolDefault = "User";
                 string passwordDefault = Guid.NewGuid().ToString();
 
 
-                ApplicationUser newUser = new ApplicationUser
+                ApplicationUser newUser = new()
                 {
-                    UserName = username,
+                    UserName = email,
                     PasswordHash = passwordDefault,
                     Email = email,
-                    Name = fullName
+                    Name = name,
+                    Lastname = lastname,
+                    EmailConfirmed = true
                 };
+
                 var userFounded = await _userManager.CreateAsync(newUser, passwordDefault);
 
                 if (userFounded.Succeeded)
                 {
-                    var currentUser = await _userManager.FindByNameAsync(username);
+                    var currentUser = await _userManager.FindByNameAsync(email);
 
                     if (!await _roleManager.RoleExistsAsync(rolDefault))
                     {
@@ -205,7 +206,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Account
                     await _userManager.AddClaimsAsync(currentUser, new Claim[]{
                                     new Claim(JwtClaimTypes.Subject, currentUser.Id),
                                     new Claim(JwtClaimTypes.Name, username),
-                                    new Claim(JwtClaimTypes.GivenName, username),
+                                    new Claim(JwtClaimTypes.GivenName, name),
                                     new Claim(JwtClaimTypes.Email,  username),
                                     new Claim(JwtClaimTypes.EmailVerified, true.ToString(), ClaimValueTypes.Boolean)});
 
