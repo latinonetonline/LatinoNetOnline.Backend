@@ -1,4 +1,6 @@
 ﻿
+using IdentityModel;
+
 using IdentityServer4;
 
 using IdentityServerHost.Models;
@@ -22,6 +24,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -98,8 +102,8 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
 
             services.AddLocalApiAuthentication(principal =>
             {
-                //string role = principal.FindFirstValue(ClaimTypes.Role);
-                //principal.Identities.First().AddClaim(new Claim("role", role));
+                string role = principal.FindFirstValue(JwtClaimTypes.Role);
+                principal.Identities.First().AddClaim(new Claim(JwtClaimTypes.Role, role));
 
                 return Task.FromResult(principal);
             });
@@ -110,6 +114,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                 options.AddPolicy(IdentityServerConstants.LocalApi.PolicyName, policy =>
                 {
                     policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
+                    policy.RequireRole("Admin");
                     policy.RequireAuthenticatedUser();
                     // custom requirements
                 });
