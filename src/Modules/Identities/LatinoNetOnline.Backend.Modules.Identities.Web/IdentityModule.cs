@@ -60,7 +60,8 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.GetClients(configuration))
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddProfileService<IdentityProfileService>();
 
             builder.AddDeveloperSigningCredential();
 
