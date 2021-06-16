@@ -1,4 +1,10 @@
-﻿.body-container {
+﻿
+:root {
+    --violet: #5c2d91;
+    --rose: #e91e63;
+}
+
+.body-container {
   margin-top: 60px;
   padding-bottom: 40px; }
 
@@ -22,3 +28,21 @@
       height: 100px; }
   .grants-page .card label {
     font-weight: bold; }
+
+nav.navbar {
+    background-color: var(--violet)
+}
+
+
+.btn-primary {
+    background-color: var(--rose);
+    border-color: var(--rose);
+}
+
+.card-header {
+    background-color: #f2f2f2;
+}
+
+.navbar {
+    padding: .3rem 1rem;
+}

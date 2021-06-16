@@ -2,8 +2,8 @@
 
 <div class="login-page">
     <div class="lead">
-        <h1>Login</h1>
-        <p>Choose how to login</p>
+        <h1>Iniciar Sesion</h1>
+        <p>Elige como iniciar sesion</p>
     </div>
 
     <partial name="_ValidationSummary" />
@@ -15,7 +15,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Local Account</h2>
+                        <h2>Login Clasico</h2>
                     </div>
 
                     <div class="card-body">
@@ -24,11 +24,11 @@
 
                             <div class="form-group">
                                 <label asp-for="Username"></label>
-                                <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
+                                <input class="form-control" placeholder="Usuario" asp-for="Username" autofocus>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Password"></label>
-                                <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                                <input type="password" class="form-control" placeholder="Contraseña" asp-for="Password" autocomplete="off">
                             </div>
                             @if (Model.AllowRememberLogin)
                             {
@@ -36,13 +36,13 @@
                                     <div class="form-check">
                                         <input class="form-check-input" asp-for="RememberLogin">
                                         <label class="form-check-label" asp-for="RememberLogin">
-                                            Remember My Login
+                                            Recuerdame
                                         </label>
                                     </div>
                                 </div>
                             }
-                            <button class="btn btn-primary" name="button" value="login">Login</button>
-                            <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
+                            <button class="btn btn-primary" name="button" value="login">Entrar</button>
+                            <button class="btn btn-secondary" name="button" value="cancel">Cancelar</button>
                         </form>
                     </div>
                 </div>
@@ -54,14 +54,14 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>External Account</h2>
+                        <h2>Login Social</h2>
                     </div>
                     <div class="card-body">
                         <ul class="list-inline">
                             @foreach (var provider in Model.VisibleExternalProviders)
                             {
                                 <li class="list-inline-item">
-                                    <a class="btn btn-secondary"
+                                    <a class="btn btn-info"
                                        asp-controller="External"
                                        asp-action="Challenge"
                                        asp-route-scheme="@provider.AuthenticationScheme"
