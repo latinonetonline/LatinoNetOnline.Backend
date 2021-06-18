@@ -2,6 +2,7 @@ using LatinoNetOnline.Backend.Bootstrapper;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api;
 using LatinoNetOnline.Backend.Modules.Identities.Web;
 using LatinoNetOnline.Backend.Modules.Links.Api;
+using LatinoNetOnline.Backend.Modules.Notifications.Api;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -15,4 +16,5 @@ await Host.CreateDefaultBuilder(args)
     .InitIdentityModule()
     .InitCallForSpeakersModule()
     .InitLinksModule()
+    .InitNotificationModule()
     .RunAsync();
