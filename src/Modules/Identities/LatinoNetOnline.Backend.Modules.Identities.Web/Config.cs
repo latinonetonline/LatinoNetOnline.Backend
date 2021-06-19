@@ -61,6 +61,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     RequirePkce = true,
                     RequireClientSecret = false,
                     AllowedCorsOrigins = { identityOptions.FrontendUrl },
+                    AllowOfflineAccess = true,
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -79,6 +80,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     RequirePkce = true,
                     RequireClientSecret = false,
                     AllowedCorsOrigins = { "https://localhost:44373" },
+                    AllowOfflineAccess = true,
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
