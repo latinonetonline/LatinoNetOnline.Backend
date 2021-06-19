@@ -65,6 +65,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         IdentityServerConstants.LocalApi.ScopeName
                     },
                     RedirectUris = { $"{identityOptions.FrontendUrl}/authentication/login-callback" },
@@ -82,6 +83,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         IdentityServerConstants.LocalApi.ScopeName
                     },
                     RedirectUris = { "https://localhost:44373/authentication/login-callback" },
