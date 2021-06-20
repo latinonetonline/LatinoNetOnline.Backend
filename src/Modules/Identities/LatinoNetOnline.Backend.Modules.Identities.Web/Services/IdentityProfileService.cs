@@ -6,8 +6,6 @@ using IdentityServer4.Services;
 
 using IdentityServerHost.Models;
 
-using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +28,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            List<Claim> newClaims = new ();
+            List<Claim> newClaims = new();
             ApplicationUser? user = default;
 
             string? idUser = context.Subject.FindFirst(JwtClaimTypes.Subject)?.Value;

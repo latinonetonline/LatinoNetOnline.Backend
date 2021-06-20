@@ -1,15 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using LatinoNetOnline.Backend.Modules.Notifications.Core.Entities;
 
-namespace WebPushDemo.Models
+using Microsoft.EntityFrameworkCore;
+
+namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Data
 {
-    public class NotificationDbContext : DbContext
+    class NotificationDbContext : DbContext
     {
         public NotificationDbContext(DbContextOptions<NotificationDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<WebPushDemo.Models.Device> Devices { get; set; }
+        public DbSet<Device> Devices => Set<Device>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

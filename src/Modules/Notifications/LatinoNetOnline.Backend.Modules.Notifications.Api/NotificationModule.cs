@@ -1,13 +1,9 @@
-﻿using LatinoNetOnline.Backend.Modules.Notifications.Api.Options;
+﻿using LatinoNetOnline.Backend.Modules.Notifications.Core;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using WebPushDemo.Models;
 
 namespace LatinoNetOnline.Backend.Modules.Notifications.Api
 {
@@ -15,12 +11,7 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Api
     {
         public static IServiceCollection AddNotificationModule(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<NotificationDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("Default"),
-                    o => o.MigrationsAssembly("LatinoNetOnline.Backend.Bootstrapper")));
-
-            var valipKeysOptions = configuration.GetSection(nameof(VapidKeysOptions)).Get<VapidKeysOptions>();
-            services.AddSingleton(valipKeysOptions);
+            services.AddCore(configuration);
 
             return services;
         }

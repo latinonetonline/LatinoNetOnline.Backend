@@ -1,101 +1,64 @@
-﻿using LatinoNetOnline.Backend.Modules.Notifications.Api.Controllers;
-using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos;
+using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos.Devices;
+using LatinoNetOnline.Backend.Modules.Notifications.Core.Services;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Net.Http.Headers;
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
-using WebPushDemo.Models;
+using WebPush;
 
-namespace WebPushDemo.Controllers
+namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Controllers
 {
     class DevicesController : BaseController
     {
-        private readonly NotificationDbContext _context;
+        private readonly IDeviceService _service;
 
-        private readonly IConfiguration _configuration;
-
-        public DevicesController(NotificationDbContext context, IConfiguration configuration)
+        public DevicesController(IDeviceService service)
         {
-            _context = context;
-            _configuration = configuration;
+            _service = service;
         }
 
-        // GET: Devices
         [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            return Ok(await _context.Devices.ToListAsync());
-        }
+        public async Task<IActionResult> GetAll([FromQuery] DeviceFilter filter)
+            => new OperationActionResult(await _service.GetAllAsync(filter));
 
-        // GET: Devices/Create
-        //public IActionResult Create()
-        //{
-        //    ViewBag.PublicKey = _configuration.GetSection("VapidKeys")["PublicKey"];
-
-        //    return View();
-        //}
-
-        // POST: Devices/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("[action]")]
         [AllowAnonymous]
-        public async Task<IActionResult> Create(Device device)
+        public async Task<IActionResult> Subscribe(SubscribeDeviceInput input)
         {
-            bool alreadyExist = await _context.Devices.AnyAsync(x => x.PushEndpoint == device.PushEndpoint);
+            input.UserAgent = Request.Headers[HeaderNames.UserAgent].ToString();
 
-
-            if (alreadyExist)
+            if (HttpContext.User is not null && HttpContext.User.Identity.IsAuthenticated)
             {
-                device = await _context.Devices.SingleAsync(x => x.PushEndpoint == device.PushEndpoint);
-            }
-            else
-            {
-
-                if (HttpContext.User is not null && HttpContext.User.Identity.IsAuthenticated)
-                {
-                    device.UserId = Guid.Parse(HttpContext.User.FindFirst("sub").Value);
-                }
-
-                _context.Add(device);
-                await _context.SaveChangesAsync();
+                Guid? userId = Guid.Parse(HttpContext.User.FindFirst("sub").Value);
+                input.UserId = userId;
             }
 
-            return Ok(OperationResult<Device>.Success(device));
+            return new OperationActionResult(await _service.SubscribeAsync(input));
         }
 
-        // GET: Devices/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SendNotification(SendNotificationInput input)
+            => new OperationActionResult(await _service.SendNotificationAsync(input));
 
-        //    var devices = await _context.Devices
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (devices == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(devices);
-        //}
-
-        // POST: Devices/Delete/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
+             => new OperationActionResult(await _service.DeleteAsync(id));
+
+
+
+        [AllowAnonymous]
+        [HttpGet("[action]")]
+        public IActionResult GenerateVapidKeys()
         {
-            var devices = await _context.Devices.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Devices.Remove(devices);
-            await _context.SaveChangesAsync();
-            return Ok();
+            var keys = VapidHelper.GenerateVapidKeys();
+
+            return Ok(keys);
         }
     }
 }

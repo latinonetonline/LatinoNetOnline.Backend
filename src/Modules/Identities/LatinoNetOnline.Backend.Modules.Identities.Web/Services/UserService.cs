@@ -84,6 +84,11 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
                 query = query.Where(x => x.Name.ToLower().Contains(filters.Search.ToLower()) || x.Lastname.ToLower().Contains(filters.Search.ToLower()) || x.NormalizedEmail.Contains(filters.Search.ToUpper()));
             }
 
+            if (filters.Users?.Any() ?? false)
+            {
+                query = query.Where(x => filters.Users.Contains(x.Id));
+            }
+
             if (filters.Start.HasValue)
             {
                 query = query.Skip((int)filters.Start);

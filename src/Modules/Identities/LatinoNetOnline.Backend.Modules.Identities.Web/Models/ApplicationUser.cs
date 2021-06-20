@@ -4,8 +4,6 @@
 
 using Microsoft.AspNetCore.Identity;
 
-using System;
-
 namespace IdentityServerHost.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class

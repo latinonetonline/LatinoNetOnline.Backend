@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails

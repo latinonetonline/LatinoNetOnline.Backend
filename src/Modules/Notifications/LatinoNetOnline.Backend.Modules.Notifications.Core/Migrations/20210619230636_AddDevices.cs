@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Migrations
+using System;
+
+namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Migrations
 {
     public partial class AddDevices : Migration
     {
@@ -19,7 +20,9 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Migrations
                     PushEndpoint = table.Column<string>(type: "text", nullable: false),
                     PushP256DH = table.Column<string>(type: "text", nullable: false),
                     PushAuth = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    OperativeSystem = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

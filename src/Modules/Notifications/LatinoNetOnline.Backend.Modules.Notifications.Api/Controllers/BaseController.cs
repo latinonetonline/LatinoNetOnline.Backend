@@ -1,5 +1,3 @@
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Controllers
@@ -9,7 +7,7 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Controllers
     [ApiController]
     [Route(BasePath + "/[controller]")]
     [Produces("application/json")]
-    internal abstract class BaseController : ControllerBase
+    abstract class BaseController : ControllerBase
     {
         protected const string BasePath = "api/v{version:apiVersion}/notifications-module";
     }

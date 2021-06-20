@@ -5,9 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 using System.IO;
 
-using WebPushDemo.Models;
-
-namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Data
+namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Data
 {
     class NotificationDbContextFactory : IDesignTimeDbContextFactory<NotificationDbContext>
     {

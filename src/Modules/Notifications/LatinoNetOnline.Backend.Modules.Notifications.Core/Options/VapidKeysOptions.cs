@@ -1,4 +1,4 @@
-﻿namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Options
+﻿namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Options
 {
     class VapidKeysOptions
     {
