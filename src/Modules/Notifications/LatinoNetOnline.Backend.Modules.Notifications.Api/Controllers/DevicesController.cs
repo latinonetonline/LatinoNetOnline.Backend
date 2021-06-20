@@ -42,6 +42,12 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Api.Controllers
             return new OperationActionResult(await _service.SubscribeAsync(input));
         }
 
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public IActionResult GetVapidPublicKey()
+            => new OperationActionResult(_service.GetVapidPublicKey());
+
         [HttpPost("[action]")]
         public async Task<IActionResult> SendNotification(SendNotificationInput input)
             => new OperationActionResult(await _service.SendNotificationAsync(input));

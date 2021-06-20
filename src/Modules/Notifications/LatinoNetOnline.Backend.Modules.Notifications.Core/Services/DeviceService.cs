@@ -22,6 +22,7 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Services
     {
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult<IEnumerable<DeviceDto>>> GetAllAsync(DeviceFilter filter);
+        OperationResult<VapidPublicKey> GetVapidPublicKey();
         Task<OperationResult<DeviceDto>> SubscribeAsync(SubscribeDeviceInput input);
         Task<OperationResult> SendNotificationAsync(SendNotificationInput input);
     }
@@ -130,5 +131,9 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Services
 
             return OperationResult.Success();
         }
+
+        public OperationResult<VapidPublicKey> GetVapidPublicKey()
+            => OperationResult<VapidPublicKey>.Success(new(_vapidKeysOptions.PublicKey));
+        
     }
 }
