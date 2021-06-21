@@ -82,9 +82,9 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Services
 
             if (input.Devices.Any())
             {
-                var device = await _dbContext.Devices.Where(x => input.Devices.Contains(x.Id)).ToListAsync();
+                var devices = await _dbContext.Devices.Where(x => input.Devices.Contains(x.Id)).ToListAsync();
 
-                await SendNotification(device);
+                await SendNotification(devices);
             }
             else
             {
