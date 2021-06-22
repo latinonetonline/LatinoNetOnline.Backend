@@ -1,7 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
-using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 
 using Microsoft.EntityFrameworkCore;

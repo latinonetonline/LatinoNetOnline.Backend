@@ -1,5 +1,4 @@
 ﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Data;
-using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos.Devices;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Extensions;
@@ -134,6 +133,6 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Services
 
         public OperationResult<VapidPublicKey> GetVapidPublicKey()
             => OperationResult<VapidPublicKey>.Success(new(_vapidKeysOptions.PublicKey));
-        
+
     }
 }

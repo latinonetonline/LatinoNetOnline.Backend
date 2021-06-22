@@ -8,7 +8,6 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators;
-using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 

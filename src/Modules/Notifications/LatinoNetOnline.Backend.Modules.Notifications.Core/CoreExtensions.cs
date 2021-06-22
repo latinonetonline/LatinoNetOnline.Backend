@@ -1,9 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Data;
-using LatinoNetOnline.Backend.Modules.Notifications.Core.Events.External;
-using LatinoNetOnline.Backend.Modules.Notifications.Core.Events.External.Handlers;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Options;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Services;
-using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,8 +14,6 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core
         {
             services.AddScoped<IDeviceService, DeviceService>();
             services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IEventHandler<ProposalCreatedEventInput>, ProposalCreatedEventHandler>();
 
             services.AddDbContext<NotificationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),

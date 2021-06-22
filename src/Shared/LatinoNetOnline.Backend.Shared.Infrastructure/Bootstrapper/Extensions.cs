@@ -2,7 +2,6 @@
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Api;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Api.JsonConvertes;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensions;
-using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

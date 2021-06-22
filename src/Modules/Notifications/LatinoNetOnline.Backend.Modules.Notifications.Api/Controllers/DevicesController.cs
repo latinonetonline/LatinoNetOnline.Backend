@@ -1,5 +1,4 @@
-﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos;
-using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos.Devices;
+﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos.Devices;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Services;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 

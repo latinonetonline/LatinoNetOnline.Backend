@@ -59,7 +59,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Modules
 
         }
 
-        private object TranslateType(object @object, Type type) 
+        private object TranslateType(object @object, Type type)
             => JsonSerializer.Deserialize(JsonSerializer.Serialize(@object), type);
 
 

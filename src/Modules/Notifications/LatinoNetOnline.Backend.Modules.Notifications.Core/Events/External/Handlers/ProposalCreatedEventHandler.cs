@@ -1,6 +1,5 @@
 ﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
-using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
 
 using Microsoft.Extensions.Logging;
 
