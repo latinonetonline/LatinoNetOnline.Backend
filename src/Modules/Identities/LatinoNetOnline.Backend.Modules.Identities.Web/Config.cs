@@ -79,7 +79,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:44373" },
+                    AllowedCorsOrigins = { "https://localhost:44373", "https://localhost:5001"},
                     AllowOfflineAccess = true,
                     AllowedScopes = new List<string>
                     {
@@ -88,8 +88,8 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         IdentityServerConstants.LocalApi.ScopeName
                     },
-                    RedirectUris = { "https://localhost:44373/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:44373/" },
+                    RedirectUris = { "https://localhost:44373/authentication/login-callback", "https://localhost:5001/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:44373/", "https://localhost:5001/" },
                     Enabled = true
                 }
             };
