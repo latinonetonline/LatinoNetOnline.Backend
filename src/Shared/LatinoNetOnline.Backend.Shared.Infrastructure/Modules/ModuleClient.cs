@@ -4,9 +4,8 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-
-using IBufSerializer = GroBuf.ISerializer;
 
 namespace LatinoNetOnline.Backend.Shared.Infrastructure.Modules
 {
@@ -14,13 +13,11 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Modules
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IModuleRegistry _moduleRegistry;
-        private readonly IBufSerializer _serializer;
 
-        public ModuleClient(IServiceProvider serviceProvider, IModuleRegistry moduleRegistry, IBufSerializer serializer)
+        public ModuleClient(IServiceProvider serviceProvider, IModuleRegistry moduleRegistry)
         {
             _serviceProvider = serviceProvider;
             _moduleRegistry = moduleRegistry;
-            _serializer = serializer;
         }
 
         public async Task<TResult> GetAsync<TResult>(string path, object moduleRequest) where TResult : class
@@ -62,7 +59,8 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Modules
 
         }
 
-        private object TranslateType(object @object, Type type) => _serializer.ChangeType(@object.GetType(), type, @object);
+        private object TranslateType(object @object, Type type) 
+            => JsonSerializer.Deserialize(JsonSerializer.Serialize(@object), type);
 
 
     }

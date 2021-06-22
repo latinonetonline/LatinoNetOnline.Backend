@@ -4,9 +4,12 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators;
+using LatinoNetOnline.Backend.Shared.Abstractions.Events;
+using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -32,11 +35,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IEmailManager _emailManager;
+        private readonly IMessageBroker _messageBroker;
 
-        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager)
+        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager, IMessageBroker messageBroker)
         {
             _dbContext = dbContext;
             _emailManager = emailManager;
+            _messageBroker = messageBroker;
         }
 
         public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter)
@@ -69,6 +74,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         public Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input)
             => Validate(input)
                     .Map(CreateProposalAsync)
+                    .Tap(async proposal => await _messageBroker.PublishAsync(new ProposalCreatedEventInput(proposal.Proposal.ProposalId, proposal.Proposal.Title)))
                     .Check(async proposal => await _emailManager.SendEmailAsync(await proposal.ConvertToEmailInput()))
                     .FinallyOperationResult();
 

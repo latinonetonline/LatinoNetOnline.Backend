@@ -41,7 +41,7 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Services
         public async Task<OperationResult<IEnumerable<DeviceDto>>> GetAllAsync(DeviceFilter filter)
         {
             var devices = await _dbContext.Devices
-                .WhereIf(filter.UserId.HasValue, x => x.UserId == filter.UserId)
+                .WhereIf(filter.Users?.Any() ?? false, x => filter.Users.Contains(x.UserId ?? default))
                 .WhereIf(filter.OperativeSystem is not null, x => x.OperativeSystem == filter.OperativeSystem)
                 .WhereIf(filter.Name is not null, x => x.Name == filter.Name)
                 .Select(x => x.ConvertToDto())

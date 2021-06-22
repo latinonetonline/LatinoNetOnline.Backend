@@ -1,4 +1,6 @@
-﻿namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos.Users
+﻿using System;
+
+namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Dtos.Users
 {
-    record UserRolesDto(ApplicationUser User, string Role);
+    record UserRolesDto(Guid Id, string Name, string Lastname, string UserName, string Email, string Role);
 }

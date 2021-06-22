@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using ModularMonolith.Shared.Infrastructure;
+
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -30,12 +32,10 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
                 {
                     manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
                 });
-
+            services.AddInfrastructure();
             services.AddSerilog();
             services.AddSwaggerApiVersioning(assembly);
             services.AddForwardedHeaders();
-            services.AddModuleRequests();
-
 
             return services;
         }
@@ -56,6 +56,8 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
 
                 .UseIPSafe();
             }
+
+            app.UseInfrastructure();
 
             app.UseExceptionHandlingOperationResult(loggerFactory.CreateLogger("ExceptionHandler"))
                 .UseAllowAnyCors()

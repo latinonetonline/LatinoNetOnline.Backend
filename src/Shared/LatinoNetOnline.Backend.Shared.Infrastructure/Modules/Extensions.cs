@@ -1,7 +1,4 @@
 
-using GroBuf;
-using GroBuf.DataMembersExtracters;
-
 using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
 
 using Microsoft.AspNetCore.Builder;
@@ -30,7 +27,6 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Modules
         private static void AddModuleRegistry(this IServiceCollection services)
         {
             services.AddSingleton<IModuleRegistry, ModuleRegistry>();
-            services.AddSingleton<ISerializer>(new Serializer(new PropertiesExtractor(), options: GroBufOptions.WriteEmptyObjects));
         }
     }
 }

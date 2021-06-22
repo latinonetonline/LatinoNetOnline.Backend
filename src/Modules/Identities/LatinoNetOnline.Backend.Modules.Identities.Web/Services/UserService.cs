@@ -158,7 +158,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
         }
 
 
-        UserRolesDto ConvertToDto(ApplicationUser user, string role)
+        static UserRolesDto ConvertToDto(ApplicationUser user, string role)
             => new(Guid.Parse(user.Id), user.Name, user.Lastname, user.UserName, user.Email, role);
 
 
