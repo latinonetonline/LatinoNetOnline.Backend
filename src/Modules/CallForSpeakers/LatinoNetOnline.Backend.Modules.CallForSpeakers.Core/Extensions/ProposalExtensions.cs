@@ -27,7 +27,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
 
 
             return new SendEmailInput($"Confirmación del Call For Speaker de Latino .NET Online",
-          proposal.Speakers.Select(x => x.Email),
+          proposal.Speakers.Select(x => new Email(x.Email)),
           message.ToString(),
           await BuildEmail(proposal));
         }

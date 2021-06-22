@@ -27,6 +27,10 @@ namespace LatinoNETOnline.App.Api.Controllers
         public async Task<IActionResult> GetAll([FromQuery] ProposalFilter filter)
             => new OperationActionResult(await _proposalService.GetAllAsync(filter));
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+            => new OperationActionResult(await _proposalService.GetByIdAsync(id));
+
         [AllowAnonymous]
         [HttpGet("dates")]
         public async Task<IActionResult> GetAllDates()
