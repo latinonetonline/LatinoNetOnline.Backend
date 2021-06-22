@@ -1,10 +1,9 @@
 ﻿
-using IdentityModel;
-
 using IdentityServerHost.Models;
 
 using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
-using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Dto.Roles;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Dto.Users;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
@@ -37,26 +35,13 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
 
         #region MethodPublics
 
-        public async Task<OperationResult<ApplicationUser>> GetByIdAsync(string id)
+        public async Task<OperationResult<IEnumerable<RoleDto>>> GetAllRolesAsync()
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var roles = await _contextRole.Roles.ToListAsync();
 
-            if (user is null)
-                return OperationResult<ApplicationUser>.Fail(new("user_not_found"));
+            var rolesDto = roles.Select(x => new RoleDto(Guid.Parse(x.Id), x.Name));
 
-            return OperationResult<ApplicationUser>.Success(user);
-        }
-
-        public async Task<OperationResult<IEnumerable<ApplicationUser>>> GetAllAsync()
-        {
-            var result = await _context.Users.ToListAsync();
-            return OperationResult<IEnumerable<ApplicationUser>>.Success(result);
-        }
-
-        public async Task<OperationResult<IEnumerable<IdentityRole>>> GetAllRolesAsync()
-        {
-            var result = await _contextRole.Roles.ToListAsync();
-            return OperationResult<IEnumerable<IdentityRole>>.Success(result);
+            return OperationResult<IEnumerable<RoleDto>>.Success(rolesDto);
         }
 
         public async Task<OperationResult<UserRolesDto>> GetFullByIdAsync(string id)
@@ -68,92 +53,55 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             else
             {
                 var getRolById = await _context.GetRolesAsync(user);
-                UserRolesDto usersItems = new(user, getRolById.First());
+                UserRolesDto usersItems = ConvertToDto(user, getRolById.First());
+
                 return OperationResult<UserRolesDto>.Success(usersItems);
             }
         }
-        public async Task<OperationResult<UserQueryFilteredDto>> GetAllAsync(QueryFiltersDto filters)
+        public async Task<OperationResult<IEnumerable<UserRolesDto>>> GetAllAsync(GetAllUserInput filters)
         {
 
-            var query = _context.Users.AsNoTracking();
+            var queryUsers = _context.Users.AsNoTracking();
+            var queryRoles = _contextRole.Roles.AsNoTracking();
 
-            var size = await query.CountAsync();
+            var size = await queryUsers.CountAsync();
 
             if (!string.IsNullOrWhiteSpace(filters.Search))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(filters.Search.ToLower()) || x.Lastname.ToLower().Contains(filters.Search.ToLower()) || x.NormalizedEmail.Contains(filters.Search.ToUpper()));
+                queryUsers = queryUsers.Where(x => x.Name.ToLower().Contains(filters.Search.ToLower()) || x.Lastname.ToLower().Contains(filters.Search.ToLower()) || x.NormalizedEmail.Contains(filters.Search.ToUpper()));
             }
 
             if (filters.Users?.Any() ?? false)
             {
-                query = query.Where(x => filters.Users.Contains(x.Id));
+                queryUsers = queryUsers.Where(x => filters.Users.Contains(x.Id));
             }
 
-            if (filters.Start.HasValue)
+            if (!string.IsNullOrWhiteSpace(filters.Role))
             {
-                query = query.Skip((int)filters.Start);
-            }
-
-            if (filters.Limit.HasValue)
-            {
-                query = query.Take((int)filters.Limit);
+                queryRoles = queryRoles.Where(x => x.Name.ToLower().Contains(filters.Role.ToLower()));
             }
 
 
             // var users = await query.ToListAsync();
 
             var items = await (from r in _applicationContext.UserRoles.AsNoTracking()
-                               join us in query on r.UserId equals us.Id
-                               join ru in _applicationContext.Roles.AsNoTracking() on r.RoleId equals ru.Id
-                               select new UserRolesDto(us, ru.Name)).ToListAsync();
+                               join us in queryUsers on r.UserId equals us.Id
+                               join ru in queryRoles on r.RoleId equals ru.Id
+                               select ConvertToDto(us, ru.Name)).ToListAsync();
 
-            return OperationResult<UserQueryFilteredDto>.Success(new(size, items));
-
-        }
-
-
-        public async Task<OperationResult<UserRolesDto>> CreateAsync(CreateUserInput input)
-        {
-            ApplicationUser user = new();
-
-            user.Id = Guid.NewGuid().ToString();
-            user.Name = input.Name;
-            user.Lastname = input.Lastname;
-            user.UserName = input.Username;
-            user.Email = input.Email;
-            user.EmailConfirmed = true;
-
-
-            var result = await _context.CreateAsync(user, input.Password);
-
-            if (!result.Succeeded)
-                return OperationResult<UserRolesDto>.Fail(new("error_create_user"));
-
-            var asignRoleToUser = await AsignRoleToUser(user, "User");
-            var userById = await _context.Users.SingleAsync(x => x.Id == user.Id);
-
-            result = await _context.AddClaimsAsync(userById, new Claim[]{
-                            new Claim(JwtClaimTypes.GivenName, userById.Name),
-                            new Claim(JwtClaimTypes.FamilyName, userById.Lastname),
-                            new Claim(JwtClaimTypes.Email, userById.Email),
-                            new Claim(JwtClaimTypes.Subject, userById.Id)
-                        });
-
-            if (!result.Succeeded)
-                return OperationResult<UserRolesDto>.Fail(new("error_add_claims_user"));
-
-            UserRolesDto resultView = new(user, "User");
-            return OperationResult<UserRolesDto>.Success(resultView);
-
+            return OperationResult<IEnumerable<UserRolesDto>>.Success(items);
 
         }
+
         public async Task<OperationResult<UserRolesDto>> EditAsync(UserRolesDto user)
         {
 
-            var getUser = _context.FindByIdAsync(user.User.Id).Result;
-            getUser.Id = user.User.Id;
-            getUser.Email = user.User.Email;
-            getUser.UserName = user.User.UserName;
+            var getUser = _context.FindByIdAsync(user.Id.ToString()).Result;
+
+            getUser.Email = user.Email;
+            getUser.Name = user.Name;
+            getUser.Lastname = user.Lastname;
+            getUser.UserName = user.UserName;
 
             var response = await _context.UpdateAsync(getUser);
 
@@ -161,9 +109,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
                 return OperationResult<UserRolesDto>.Fail(new("error_edit_user"));
 
             var asignRoleToUser = await AsignRoleToUser(getUser, user.Role);
-            var userById = await _context.Users.SingleAsync(x => x.Id == user.User.Id);
+            var userById = await _context.Users.SingleAsync(x => x.Id == user.Id.ToString());
 
-            UserRolesDto resultView = new(userById, user.Role);
+            UserRolesDto resultView = ConvertToDto(userById, user.Role);
             return OperationResult<UserRolesDto>.Success(resultView);
 
         }
@@ -189,7 +137,7 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
         #endregion
 
         #region MethodsPrivate
-        public async Task<OperationResult> AsignRoleToUser(ApplicationUser user, string role)
+        private async Task<OperationResult> AsignRoleToUser(ApplicationUser user, string role)
         {
             var findUserById = await _context.Users.SingleOrDefaultAsync(x => x.Id == user.Id);
 
@@ -208,6 +156,12 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             return OperationResult.Success();
 
         }
+
+
+        UserRolesDto ConvertToDto(ApplicationUser user, string role)
+            => new(Guid.Parse(user.Id), user.Name, user.Lastname, user.UserName, user.Email, role);
+
+
         #endregion
 
 

@@ -1,7 +1,5 @@
 ﻿
-using IdentityServerHost.Models;
-
-using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Dto.Users;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Services;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
@@ -31,17 +29,10 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Controllers
         }
 
         [HttpGet("Suggestions")]
-        [ProducesResponseType(typeof(OperationResult<UserQueryFilteredDto>), 200)]
-        public async Task<IActionResult> GetSuggestions([FromQuery()] QueryFiltersDto filters)
+        [ProducesResponseType(typeof(OperationResult<IEnumerable<UserRolesDto>>), 200)]
+        public async Task<IActionResult> GetSuggestions([FromQuery()] GetAllUserInput filters)
         {
             return new OperationActionResult(await _userService.GetAllAsync(filters));
-        }
-
-        [HttpGet("All")]
-        [ProducesResponseType(typeof(OperationResult<IEnumerable<ApplicationUser>>), 200)]
-        public async Task<IActionResult> GetAll()
-        {
-            return new OperationActionResult(await _userService.GetAllAsync());
         }
 
         [HttpGet("GetAllRoles")]
@@ -49,13 +40,6 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Controllers
         public async Task<IActionResult> GetAllRoles()
         {
             return new OperationActionResult(await _userService.GetAllRolesAsync());
-        }
-
-        [HttpPost]
-        [ProducesResponseType(typeof(OperationResult<UserRolesDto>), 200)]
-        public async Task<IActionResult> CreateAsync(CreateUserInput input)
-        {
-            return new OperationActionResult(await _userService.CreateAsync(input));
         }
 
         [HttpDelete("{userId}")]

@@ -7,7 +7,7 @@ using IdentityServerHost.Models;
 
 using LatinoNetOnline.Backend.Modules.Identities.Web.Controllers;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Data;
-using LatinoNetOnline.Backend.Modules.Identities.Web.Dto;
+using LatinoNetOnline.Backend.Modules.Identities.Web.Dto.Users;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
@@ -135,10 +135,10 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
             app.UseIdentityServer();
 
             app.UseModuleRequests()
-                .Subscribe<GetUserInput>("modules/users/get", async (sp, query) =>
+                .Subscribe<GetAllUserInput>("modules/users/get", async (sp, query) =>
                 {
                     var handler = sp.GetRequiredService<IUserService>();
-                    return await handler.GetByIdAsync(query.Id.ToString());
+                    return await handler.GetAllAsync(query);
                 });
 
             app.UseAuthorization();
