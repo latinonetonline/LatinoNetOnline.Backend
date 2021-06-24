@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
 {
@@ -15,9 +14,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProposalId = table.Column<Guid>(type: "uuid", nullable: false),
-                    YoutubeLink = table.Column<string>(type: "text", nullable: false),
-                    MeetupLink = table.Column<string>(type: "text", nullable: false),
-                    FlyerLink = table.Column<string>(type: "text", nullable: false)
+                    MeetupId = table.Column<long>(type: "bigint", nullable: false),
+                    LiveStreaming = table.Column<string>(type: "text", nullable: true),
+                    Flyer = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

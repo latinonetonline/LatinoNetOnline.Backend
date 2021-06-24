@@ -6,9 +6,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
     static class WebinarExtensions
     {
         public static Webinar ConvertToEntity(this CreateWebinarInput input)
-            => new(input.ProposalId, input.YoutubeLink, input.MeetupLink, input.FlyerLink);
+            => new(input.ProposalId, input.MeetupId, null,  null);
 
         public static WebinarDto ConvertToDto(this Webinar webinar)
-            => new(webinar.Id, webinar.ProposalId, webinar.YoutubeLink, webinar.MeetupLink, webinar.FlyerLink);
+            => new(webinar.Id, webinar.ProposalId, webinar.MeetupId, webinar.LiveStreaming, webinar.Flyer);
     }
 }

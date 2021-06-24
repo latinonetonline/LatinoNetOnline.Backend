@@ -22,15 +22,20 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
                 );
 
             EmailManagerMock = new();
-            EventDispatcherMock = new();
+            MessageBrokerMock = new();
+            MeetupService = new();
         }
 
         public ApplicationDbContext ApplicationDbContext { get; set; }
         public Mock<IEmailManager> EmailManagerMock { get; set; }
-        public Mock<IMessageBroker> EventDispatcherMock { get; set; }
+        public Mock<IMessageBroker> MessageBrokerMock { get; set; }
+        public Mock<IMeetupService> MeetupService { get; set; }
 
 
-        public ProposalService GetService()
-            => new(ApplicationDbContext, EmailManagerMock.Object, EventDispatcherMock.Object);
+        public ProposalService GetProposalService()
+            => new(ApplicationDbContext, EmailManagerMock.Object, MessageBrokerMock.Object);
+
+        public WebinarService GetWebinarService()
+            => new(ApplicationDbContext, MeetupService.Object);
     }
 }

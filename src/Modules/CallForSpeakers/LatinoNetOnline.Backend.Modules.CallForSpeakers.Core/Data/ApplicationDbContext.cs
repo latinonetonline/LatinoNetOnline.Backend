@@ -70,19 +70,15 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
 
                 builder.HasKey(e => e.Id);
 
-                builder.Property(e => e.YoutubeLink)
-                    .HasConversion(v => v.ToString(), db => new Uri(db))
-                    .IsRequired();
+                builder.Property(e => e.LiveStreaming)
+                    .HasConversion(v => v == null ? null : v.ToString(), db => db == null ? null : new Uri(db));
 
 
-                builder.Property(e => e.MeetupLink)
-                    .HasConversion(v => v.ToString(), db => new Uri(db))
-                    .IsRequired();
+                builder.Property(e => e.MeetupId);
 
 
-                builder.Property(e => e.FlyerLink)
-                    .HasConversion(v => v.ToString(), db => new Uri(db))
-                    .IsRequired();
+                builder.Property(e => e.Flyer)
+                    .HasConversion(v => v == null ? null : v.ToString(), db => db == null ? null : new Uri(db));
             });
 
             base.OnModelCreating(modelBuilder);

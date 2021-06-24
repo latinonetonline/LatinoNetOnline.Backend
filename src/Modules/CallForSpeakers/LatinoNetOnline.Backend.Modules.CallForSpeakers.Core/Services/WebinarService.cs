@@ -28,10 +28,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
     class WebinarService : IWebinarService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IMeetupService _meetupService;
 
-        public WebinarService(ApplicationDbContext dbContext)
+        public WebinarService(ApplicationDbContext dbContext, IMeetupService meetupService)
         {
             _dbContext = dbContext;
+            _meetupService = meetupService;
         }
 
         public Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input)
@@ -68,7 +70,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
 
         private Result<CreateWebinarInput> Validate(CreateWebinarInput input)
-        => new CreateWebinarValidator(_dbContext).Validate(input).ToResult(input);
+        => new CreateWebinarValidator(_dbContext, _meetupService).Validate(input).ToResult(input);
 
         private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
             => await _dbContext.Webinars

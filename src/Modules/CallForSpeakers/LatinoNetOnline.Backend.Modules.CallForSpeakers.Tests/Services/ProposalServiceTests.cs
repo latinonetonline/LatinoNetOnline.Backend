@@ -30,7 +30,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         {
             MockObject mockObject = new();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetAllAsync(new());
 
@@ -57,7 +57,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetAllAsync(new()
             {
@@ -88,7 +88,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetAllAsync(new()
             {
@@ -118,7 +118,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetAllAsync(new()
             {
@@ -139,7 +139,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         {
             MockObject mockObject = new();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetAllDatesAsync();
 
@@ -161,7 +161,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetAllDatesAsync();
 
@@ -184,7 +184,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetByIdAsync(proposal.Id);
 
@@ -197,7 +197,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         {
             MockObject mockObject = new();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.GetByIdAsync(Guid.NewGuid());
 
@@ -217,7 +217,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
 
 
@@ -236,7 +236,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.EmailManagerMock.Setup(s => s.SendEmailAsync(It.IsAny<SendEmailInput>())).ReturnsAsync(Result.Success());
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             var result = await service.CreateAsync(
                 new("test", "tests", new(2046, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>()));
@@ -251,7 +251,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult<ProposalFullDto> result = await service.CreateAsync(
                 new(string.Empty, "tests", new(2046, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
@@ -266,7 +266,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult<ProposalFullDto> result = await service.CreateAsync(
                 new("test", string.Empty, new(2046, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
@@ -281,7 +281,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult<ProposalFullDto> result = await service.CreateAsync(
                 new("test", "tests", new(2020, 08, 18), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
@@ -296,7 +296,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult<ProposalFullDto> result = await service.CreateAsync(
                 new("test", "tests", new(2046, 08, 19), "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
@@ -317,7 +317,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             CreateSpeakerInput speakerInput = GetCreateSpeakerInput();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult<ProposalFullDto> result = await service.CreateAsync(
                 new("test", "tests", eventDate, "test", "test", "test", new List<CreateSpeakerInput>() { speakerInput }));
@@ -340,7 +340,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult result = await service.DeleteAsync(proposal.Id);
 
@@ -352,7 +352,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         {
             MockObject mockObject = new();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult result = await service.DeleteAsync(Guid.NewGuid());
 
@@ -377,7 +377,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             entry.State = EntityState.Detached;
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult result = await service.DeleteAllAsync();
 
@@ -389,7 +389,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         {
             MockObject mockObject = new();
 
-            ProposalService service = mockObject.GetService();
+            ProposalService service = mockObject.GetProposalService();
 
             OperationResult result = await service.DeleteAllAsync();
 

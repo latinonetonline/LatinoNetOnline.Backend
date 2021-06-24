@@ -17,7 +17,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
             modelBuilder
                 .HasDefaultSchema("cfs")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities.Proposal", b =>
@@ -97,20 +97,17 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("FlyerLink")
-                        .IsRequired()
+                    b.Property<string>("Flyer")
                         .HasColumnType("text");
 
-                    b.Property<string>("MeetupLink")
-                        .IsRequired()
+                    b.Property<string>("LiveStreaming")
                         .HasColumnType("text");
+
+                    b.Property<long>("MeetupId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("ProposalId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("YoutubeLink")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
