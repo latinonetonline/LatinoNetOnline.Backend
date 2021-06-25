@@ -30,6 +30,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
             => new OperationActionResult(await _service.GetByIdAsync(id));
 
         [AllowAnonymous]
+        [HttpGet("Proposals/{proposalId}")]
+        public async Task<IActionResult> GetByProposal(Guid proposalId)
+            => new OperationActionResult(await _service.GetByProposalAsync(proposalId));
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
             => new OperationActionResult(await _service.GetAllAsync());

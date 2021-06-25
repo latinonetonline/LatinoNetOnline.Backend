@@ -21,6 +21,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input);
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult<WebinarFullDto>> GetByIdAsync(Guid id);
+        Task<OperationResult<WebinarFullDto>> GetByProposalAsync(Guid proposalId);
         Task<OperationResult<IEnumerable<WebinarFullDto>>> GetAllAsync();
         Task<OperationResult<WebinarFullDto>> GetNextWebinarAsync();
     }
@@ -68,6 +69,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .Tap(RemoveWebinarAsync)
                 .FinallyOperationResult();
 
+        public async Task<OperationResult<WebinarFullDto>> GetByProposalAsync(Guid proposalId)
+            => await GetWebinarByProposal(proposalId)
+                .ToResult("No existe un webinar con esa propuesta.")
+                .Map(ConvertToFullDto)
+                .FinallyOperationResult();
+
 
         private Result<CreateWebinarInput> Validate(CreateWebinarInput input)
         => new CreateWebinarValidator(_dbContext, _meetupService).Validate(input).ToResult(input);
@@ -85,6 +92,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .ThenInclude(x => x!.Speakers)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
+        private async Task<Maybe<Webinar>> GetWebinarByProposal(Guid proposalId)
+            => await _dbContext.Webinars
+                .Include(x => x.Proposal)
+                .ThenInclude(x => x!.Speakers)
+                .SingleOrDefaultAsync(x => x.ProposalId == proposalId);
+
 
 
         private async Task<Maybe<Webinar>> GetNextWebinar()
@@ -95,7 +108,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .OrderBy(x => x.Proposal!.EventDate)
                 .FirstOrDefaultAsync();
 
-
+        
 
         private async Task<Webinar> AddWebinarAsync(Webinar webinar)
         {
@@ -105,8 +118,17 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             return webinar;
         }
 
-        private Webinar ConvertToEntity(CreateWebinarInput input)
-            => input.ConvertToEntity();
+        private async Task<Webinar> ConvertToEntity(CreateWebinarInput input)
+        {
+            var webinar = input.ConvertToEntity();
+
+            var meetup = await _meetupService.GetMeetupAsync(input.MeetupId);
+
+            webinar.LiveStreaming = meetup.Result.How_To_Find_Us;
+            webinar.Flyer = new(meetup.Result.Featured_Photo.Highres_Link);
+
+            return webinar;
+        }
 
         private WebinarDto ConvertToDto(Webinar webinar)
             => webinar.ConvertToDto();
