@@ -116,7 +116,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.ApplicationDbContext.SaveChanges();
 
-            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, default)));
+            Uri uri = new("https://tests.com");
+
+            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri.ToString(), uri.ToString(), uri.ToString()))));
 
             WebinarService service = mockObject.GetWebinarService();
 
