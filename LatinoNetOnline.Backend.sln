@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30914.41
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31423.177
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DCC93AA0-7939-468A-9871-A2F742D2D30B}"
 EndProject
@@ -41,7 +41,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notificati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Notifications.Api", "src\Modules\Notifications\LatinoNetOnline.Backend.Modules.Notifications.Api\LatinoNetOnline.Backend.Modules.Notifications.Api.csproj", "{B8B82D21-48A7-48DA-A3F5-2091139D0783}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatinoNetOnline.Backend.Modules.Notifications.Core", "src\Modules\Notifications\LatinoNetOnline.Backend.Modules.Notifications.Core\LatinoNetOnline.Backend.Modules.Notifications.Core.csproj", "{93F1841A-D071-4524-BB97-89FC2FF9C5AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Notifications.Core", "src\Modules\Notifications\LatinoNetOnline.Backend.Modules.Notifications.Core\LatinoNetOnline.Backend.Modules.Notifications.Core.csproj", "{93F1841A-D071-4524-BB97-89FC2FF9C5AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{D76B26F7-CFAF-4F35-AEA4-73A6FFD0817E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Events.Api", "src\Modules\Events\LatinoNetOnline.Backend.Modules.Events.Api\LatinoNetOnline.Backend.Modules.Events.Api.csproj", "{BA973335-1505-4FA8-A6FB-7550823607E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Events.Core", "src\Modules\Events\LatinoNetOnline.Backend.Modules.Events.Core\LatinoNetOnline.Backend.Modules.Events.Core.csproj", "{313F152C-9243-4830-9E44-F467BB7A2EBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Events.Tests", "src\Modules\Events\LatinoNetOnline.Backend.Modules.Events.Tests\LatinoNetOnline.Backend.Modules.Events.Tests.csproj", "{46994D8A-FD5B-42DD-9610-83669F9278D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -197,6 +205,42 @@ Global
 		{93F1841A-D071-4524-BB97-89FC2FF9C5AA}.Release|x64.Build.0 = Release|Any CPU
 		{93F1841A-D071-4524-BB97-89FC2FF9C5AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{93F1841A-D071-4524-BB97-89FC2FF9C5AA}.Release|x86.Build.0 = Release|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Debug|x64.Build.0 = Debug|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Release|x64.ActiveCfg = Release|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Release|x64.Build.0 = Release|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA973335-1505-4FA8-A6FB-7550823607E6}.Release|x86.Build.0 = Release|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Debug|x64.Build.0 = Debug|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Debug|x86.Build.0 = Debug|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Release|x64.ActiveCfg = Release|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Release|x64.Build.0 = Release|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{313F152C-9243-4830-9E44-F467BB7A2EBC}.Release|x86.Build.0 = Release|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Debug|x64.Build.0 = Debug|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Debug|x86.Build.0 = Debug|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Release|x64.ActiveCfg = Release|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Release|x64.Build.0 = Release|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Release|x86.ActiveCfg = Release|Any CPU
+		{46994D8A-FD5B-42DD-9610-83669F9278D9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,6 +265,10 @@ Global
 		{DD7A33E5-6E9C-4E29-B6E1-961FC173077F} = {412B1691-20CB-4621-AABA-1A08A214F683}
 		{B8B82D21-48A7-48DA-A3F5-2091139D0783} = {DD7A33E5-6E9C-4E29-B6E1-961FC173077F}
 		{93F1841A-D071-4524-BB97-89FC2FF9C5AA} = {DD7A33E5-6E9C-4E29-B6E1-961FC173077F}
+		{D76B26F7-CFAF-4F35-AEA4-73A6FFD0817E} = {412B1691-20CB-4621-AABA-1A08A214F683}
+		{BA973335-1505-4FA8-A6FB-7550823607E6} = {D76B26F7-CFAF-4F35-AEA4-73A6FFD0817E}
+		{313F152C-9243-4830-9E44-F467BB7A2EBC} = {D76B26F7-CFAF-4F35-AEA4-73A6FFD0817E}
+		{46994D8A-FD5B-42DD-9610-83669F9278D9} = {D76B26F7-CFAF-4F35-AEA4-73A6FFD0817E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E700AE28-81C8-4ED1-BAA2-C9D2627F34F2}

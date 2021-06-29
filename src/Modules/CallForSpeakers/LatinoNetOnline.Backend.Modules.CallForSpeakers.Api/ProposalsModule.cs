@@ -1,6 +1,9 @@
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +34,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
                 FileProvider = new PhysicalFileProvider(Path.Combine(new FileInfo(typeof(ApplicationDbContext).Assembly.Location).DirectoryName ?? string.Empty, "Files")),
                 RequestPath = new PathString("/callforspeakers-module")
             });
+
+            app.UseModuleRequests()
+                .Subscribe<GetProposalInput>("modules/proposals/get", async (sp, query) =>
+                {
+                    var handler = sp.GetRequiredService<IProposalService>();
+                    return await handler.GetByIdAsync(query);
+                });
 
             return app;
         }

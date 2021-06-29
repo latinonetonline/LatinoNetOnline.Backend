@@ -29,7 +29,7 @@ namespace LatinoNETOnline.App.Api.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
-            => new OperationActionResult(await _proposalService.GetByIdAsync(id));
+            => new OperationActionResult(await _proposalService.GetByIdAsync(new(id)));
 
         [AllowAnonymous]
         [HttpGet("dates")]

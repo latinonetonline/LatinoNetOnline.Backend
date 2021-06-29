@@ -18,13 +18,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core
         {
             services.AddScoped<ISpeakerService, SpeakerService>();
             services.AddScoped<IProposalService, ProposalService>();
-            services.AddScoped<IWebinarService, WebinarService>();
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<IEmailManager, EmailManager>();
-            services.AddScoped<IMeetupService, MeetupService>();
-
-            services.AddHttpClient<IMeetupService, MeetupService>(o => o.BaseAddress = new("https://api.meetup.com/"));
-
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),

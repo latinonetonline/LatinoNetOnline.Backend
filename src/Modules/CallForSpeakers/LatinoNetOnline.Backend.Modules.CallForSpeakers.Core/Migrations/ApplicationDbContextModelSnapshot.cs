@@ -17,7 +17,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
             modelBuilder
                 .HasDefaultSchema("cfs")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities.Proposal", b =>
@@ -91,31 +91,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
                     b.ToTable("Speakers");
                 });
 
-            modelBuilder.Entity("LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities.Webinar", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Flyer")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LiveStreaming")
-                        .HasColumnType("text");
-
-                    b.Property<long>("MeetupId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("ProposalId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProposalId");
-
-                    b.ToTable("Webinars");
-                });
-
             modelBuilder.Entity("ProposalSpeaker", b =>
                 {
                     b.Property<Guid>("ProposalsId")
@@ -129,17 +104,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
                     b.HasIndex("SpeakersId");
 
                     b.ToTable("ProposalSpeaker");
-                });
-
-            modelBuilder.Entity("LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities.Webinar", b =>
-                {
-                    b.HasOne("LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities.Proposal", "Proposal")
-                        .WithMany()
-                        .HasForeignKey("ProposalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Proposal");
                 });
 
             modelBuilder.Entity("ProposalSpeaker", b =>

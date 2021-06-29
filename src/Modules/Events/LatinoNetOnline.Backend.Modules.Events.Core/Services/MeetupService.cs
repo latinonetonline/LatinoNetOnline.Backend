@@ -1,4 +1,4 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Meetups;
+﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 {
     interface IMeetupService
     {

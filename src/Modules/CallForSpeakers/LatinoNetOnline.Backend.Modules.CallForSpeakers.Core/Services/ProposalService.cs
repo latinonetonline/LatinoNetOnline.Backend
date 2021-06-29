@@ -27,7 +27,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult> DeleteAllAsync();
         Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter);
         Task<OperationResult<ProposalDateDto>> GetAllDatesAsync();
-        Task<OperationResult<ProposalFullDto>> GetByIdAsync(Guid id);
+        Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input);
     }
 
     class ProposalService : IProposalService
@@ -56,8 +56,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .FinallyOperationResult();
 
 
-        public Task<OperationResult<ProposalFullDto>> GetByIdAsync(Guid id)
-            => GetProposalById(id, true)
+        public Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input)
+            => GetProposalById(input.Id, true)
                 .ToResult("No existe una propuesta con ese id.")
                 .Map(ConvertToFullDto)
                 .FinallyOperationResult();

@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Webinars;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators;
+using LatinoNetOnline.Backend.Modules.Events.Core.Data;
+using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
+using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
+using LatinoNetOnline.Backend.Modules.Events.Core.Validators;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -14,27 +14,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 {
     interface IWebinarService
     {
         Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input);
         Task<OperationResult> DeleteAsync(Guid id);
-        Task<OperationResult<WebinarFullDto>> GetByIdAsync(Guid id);
-        Task<OperationResult<WebinarFullDto>> GetByProposalAsync(Guid proposalId);
-        Task<OperationResult<IEnumerable<WebinarFullDto>>> GetAllAsync();
-        Task<OperationResult<WebinarFullDto>> GetNextWebinarAsync();
+        Task<OperationResult<WebinarDto>> GetByIdAsync(Guid id);
+        Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId);
+        Task<OperationResult<IEnumerable<WebinarDto>>> GetAllAsync();
+        Task<OperationResult<WebinarDto>> GetNextWebinarAsync();
     }
 
     class WebinarService : IWebinarService
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly EventDbContext _dbContext;
         private readonly IMeetupService _meetupService;
+        private readonly IProposalService _proposalService;
 
-        public WebinarService(ApplicationDbContext dbContext, IMeetupService meetupService)
+        public WebinarService(EventDbContext dbContext, IMeetupService meetupService, IProposalService proposalService)
         {
             _dbContext = dbContext;
             _meetupService = meetupService;
+            _proposalService = proposalService;
         }
 
         public Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input)
@@ -44,22 +46,22 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 
-        public Task<OperationResult<IEnumerable<WebinarFullDto>>> GetAllAsync()
+        public Task<OperationResult<IEnumerable<WebinarDto>>> GetAllAsync()
             => GetAllWebinars()
                 .ToResult("No existen webinars.")
-                .Map(ConvertToFullDto)
+                .Map(ConvertToDto)
                 .FinallyOperationResult();
 
-        public Task<OperationResult<WebinarFullDto>> GetByIdAsync(Guid id)
+        public Task<OperationResult<WebinarDto>> GetByIdAsync(Guid id)
             => GetWebinarById(id)
                 .ToResult("No existe un webinar con ese id.")
-                .Map(ConvertToFullDto)
+                .Map(ConvertToDto)
                 .FinallyOperationResult();
 
-        public Task<OperationResult<WebinarFullDto>> GetNextWebinarAsync()
+        public Task<OperationResult<WebinarDto>> GetNextWebinarAsync()
             => GetNextWebinar()
                 .ToResult("No hay un siguiente webinar creado.")
-                .Map(ConvertToFullDto)
+                .Map(ConvertToDto)
                 .FinallyOperationResult();
 
 
@@ -69,46 +71,38 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .Tap(RemoveWebinarAsync)
                 .FinallyOperationResult();
 
-        public async Task<OperationResult<WebinarFullDto>> GetByProposalAsync(Guid proposalId)
+        public async Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId)
             => await GetWebinarByProposal(proposalId)
                 .ToResult("No existe un webinar con esa propuesta.")
-                .Map(ConvertToFullDto)
+                .Map(ConvertToDto)
                 .FinallyOperationResult();
 
 
         private Result<CreateWebinarInput> Validate(CreateWebinarInput input)
-        => new CreateWebinarValidator(_dbContext, _meetupService).Validate(input).ToResult(input);
+        => new CreateWebinarValidator(_proposalService, _meetupService).Validate(input).ToResult(input);
 
         private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
             => await _dbContext.Webinars
-                .Include(x => x.Proposal)
-                .ThenInclude(x => x!.Speakers)
                 .ToListAsync();
 
 
         private async Task<Maybe<Webinar>> GetWebinarById(Guid id)
             => await _dbContext.Webinars
-                .Include(x => x.Proposal)
-                .ThenInclude(x => x!.Speakers)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
         private async Task<Maybe<Webinar>> GetWebinarByProposal(Guid proposalId)
             => await _dbContext.Webinars
-                .Include(x => x.Proposal)
-                .ThenInclude(x => x!.Speakers)
                 .SingleOrDefaultAsync(x => x.ProposalId == proposalId);
 
 
 
         private async Task<Maybe<Webinar>> GetNextWebinar()
             => await _dbContext.Webinars
-                .Include(x => x.Proposal)
-                .ThenInclude(x => x!.Speakers)
-                .Where(x => x.Proposal!.IsActive && x.Proposal.EventDate > DateTime.Now)
-                .OrderBy(x => x.Proposal!.EventDate)
+                .Where(x => x.Time > DateTime.Now)
+                .OrderBy(x => x.Time)
                 .FirstOrDefaultAsync();
 
-        
+
 
         private async Task<Webinar> AddWebinarAsync(Webinar webinar)
         {
@@ -133,14 +127,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         private WebinarDto ConvertToDto(Webinar webinar)
             => webinar.ConvertToDto();
 
-
-        private WebinarFullDto ConvertToFullDto(Webinar webinar)
-            => new(webinar.ConvertToDto(),
-                 webinar.Proposal!.ConvertToDto(),
-                 webinar.Proposal!.Speakers.Select(x => x.ConvertToDto()));
-
-        private IEnumerable<WebinarFullDto> ConvertToFullDto(IEnumerable<Webinar> webinars)
-            => webinars.Select(ConvertToFullDto);
+        private IEnumerable<WebinarDto> ConvertToDto(IEnumerable<Webinar> webinars)
+            => webinars.Select(ConvertToDto);
 
 
         private async Task RemoveWebinarAsync(Webinar webinar)

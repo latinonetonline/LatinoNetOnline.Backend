@@ -1,5 +1,5 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Webinars;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
+using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
+namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
 {
     class WebinarsController : BaseController
     {

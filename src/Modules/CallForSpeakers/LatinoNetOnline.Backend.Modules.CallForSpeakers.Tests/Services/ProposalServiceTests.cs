@@ -186,7 +186,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             ProposalService service = mockObject.GetProposalService();
 
-            var result = await service.GetByIdAsync(proposal.Id);
+            var result = await service.GetByIdAsync(new(proposal.Id));
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Result);
@@ -199,7 +199,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             ProposalService service = mockObject.GetProposalService();
 
-            var result = await service.GetByIdAsync(Guid.NewGuid());
+            var result = await service.GetByIdAsync(new(Guid.NewGuid()));
 
             Assert.False(result.IsSuccess);
         }
