@@ -9,13 +9,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
         {
         }
 
-        public Webinar(Guid proposalId, string title, string description, long meetupId, DateTime time, Uri? liveStreaming, Uri? flyer)
+        public Webinar(Guid proposalId, string title, string description, long meetupId, DateTime startDateTime, Uri? liveStreaming, Uri? flyer)
         {
             ProposalId = proposalId;
             LiveStreaming = liveStreaming;
             MeetupId = meetupId;
             Flyer = flyer;
-            Time = time;
+            StartDateTime = startDateTime;
             _title = title;
             _description = description;
         }
@@ -43,7 +43,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
 
 
         public long MeetupId { get; set; }
-        public DateTime Time { get; set; }
+        public DateTime StartDateTime { get; set; }
         public Uri? LiveStreaming { get; set; }
         public Uri? Flyer { get; set; }
     }

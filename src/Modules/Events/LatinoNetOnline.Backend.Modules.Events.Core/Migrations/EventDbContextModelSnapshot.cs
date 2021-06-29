@@ -42,7 +42,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                     b.Property<Guid>("ProposalId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Time")
+                    b.Property<DateTime>("StartDateTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Title")

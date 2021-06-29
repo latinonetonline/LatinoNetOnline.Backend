@@ -20,7 +20,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     MeetupId = table.Column<long>(type: "bigint", nullable: false),
-                    Time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    StartDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LiveStreaming = table.Column<string>(type: "text", nullable: true),
                     Flyer = table.Column<string>(type: "text", nullable: true)
                 },

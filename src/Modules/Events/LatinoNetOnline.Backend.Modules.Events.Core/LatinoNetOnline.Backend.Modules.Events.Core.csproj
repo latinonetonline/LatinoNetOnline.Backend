@@ -13,6 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.3" />
     <PackageReference Include="FluentValidation" Version="10.2.3" />
+    <PackageReference Include="GraphQL.Client" Version="3.2.4" />
+    <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="3.2.4" />
   </ItemGroup>
 
   <ItemGroup>

@@ -98,8 +98,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         private async Task<Maybe<Webinar>> GetNextWebinar()
             => await _dbContext.Webinars
-                .Where(x => x.Time > DateTime.Now)
-                .OrderBy(x => x.Time)
+                .Where(x => x.StartDateTime > DateTime.Now)
+                .OrderBy(x => x.StartDateTime)
                 .FirstOrDefaultAsync();
 
 

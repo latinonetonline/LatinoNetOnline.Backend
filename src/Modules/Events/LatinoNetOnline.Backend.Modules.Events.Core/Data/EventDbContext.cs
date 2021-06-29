@@ -29,7 +29,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Data
 
 
                 builder.Property(e => e.MeetupId);
+                builder.Property(e => e.Title).IsRequired();
 
+                builder.Property(e => e.Description).IsRequired();
 
                 builder.Property(e => e.Flyer)
                     .HasConversion(v => v == null ? null : v.ToString(), db => db == null ? null : new Uri(db));

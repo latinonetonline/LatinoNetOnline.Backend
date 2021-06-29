@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20210629014451_AddWebinars")]
+    [Migration("20210629051638_AddWebinars")]
     partial class AddWebinars
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                     b.Property<Guid>("ProposalId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Time")
+                    b.Property<DateTime>("StartDateTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Title")
