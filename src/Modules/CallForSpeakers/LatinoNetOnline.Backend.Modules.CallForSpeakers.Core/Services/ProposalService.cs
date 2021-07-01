@@ -23,6 +23,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
     interface IProposalService
     {
         Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input);
+        Task<OperationResult<ProposalFullDto>> UpdateAsync(UpdateProposalInput input);
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult> DeleteAllAsync();
         Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter);
@@ -77,16 +78,22 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                     .Check(async proposal => await _emailManager.SendEmailAsync(await proposal.ConvertToEmailInput()))
                     .FinallyOperationResult();
 
-
-        public async Task<OperationResult> DeleteAllAsync()
-            => await GetProposals(new(), false)
-                    .ToResult("No hay ninguna propuesta.")
-                    .Tap(RemoveProposalAsync)
+        public Task<OperationResult<ProposalFullDto>> UpdateAsync(UpdateProposalInput input)
+            => Validate(input)
+                    .Map(UpdateProposalAsync)
+                    .Tap(async proposal => await _messageBroker.PublishAsync(new ProposalUpdatedEventInput(proposal.Proposal.ProposalId)))
                     .FinallyOperationResult();
 
 
+        public async Task<OperationResult> DeleteAllAsync()
+            => await GetProposals(new(), false)
+                        .ToResult("No hay ninguna propuesta.")
+                        .Tap(RemoveProposalAsync)
+                        .FinallyOperationResult();
+
+
         private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter, bool include)
-            => await _dbContext.Proposals.AsNoTracking()
+        => await _dbContext.Proposals.AsNoTracking()
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.Contains((filter.Title ?? string.Empty).ToLower()))
                     .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.GetValueOrDefault())
                     .WhereIf(filter.IsActive.HasValue, x => x.IsActive == filter.IsActive.GetValueOrDefault())
@@ -94,7 +101,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
 
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
-            => await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
+        => await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
 
 
         private async Task<Maybe<Proposal>> GetProposalById(Guid id, bool include)
@@ -104,6 +111,16 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         private Result<CreateProposalInput> Validate(CreateProposalInput input)
         {
             CreateProposalValidator validator = new(_dbContext);
+
+            var validationResult = validator.Validate(input);
+
+            return validationResult.ToResult(input);
+
+        }
+
+        private Result<UpdateProposalInput> Validate(UpdateProposalInput input)
+        {
+            UpdateProposalValidator validator = new(_dbContext);
 
             var validationResult = validator.Validate(input);
 
@@ -127,6 +144,50 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             }
 
             await _dbContext.AddAsync(proposal);
+
+            await _dbContext.SaveChangesAsync();
+
+            ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), speakerdtos); ;
+
+            return proposalFullDto;
+        }
+
+        private async Task<ProposalFullDto> UpdateProposalAsync(UpdateProposalInput input)
+        {
+            Proposal proposal = await _dbContext.Proposals.Include(x => x.Speakers).SingleAsync(x => x.Id == input.Id);
+
+            proposal.Title = input.Title;
+            proposal.Description = input.Description;
+            proposal.AudienceAnswer = input.AudienceAnswer;
+            proposal.KnowledgeAnswer = input.KnowledgeAnswer;
+            proposal.UseCaseAnswer = input.UseCaseAnswer;
+            proposal.EventDate = input.Date;
+
+            proposal.Speakers = new List<Speaker>();
+
+            List<SpeakerDto> speakerdtos = new();
+
+            foreach (var speakerInput in input.Speakers)
+            {
+
+                Speaker speaker = await _dbContext.Speakers.SingleOrDefaultAsync(x => x.Id == speakerInput.Id);
+
+                if (speaker is not null)
+                {
+                    speaker.Name = speakerInput.Name;
+                    speaker.LastName = speakerInput.LastName;
+                    speaker.Email = new(speakerInput.Email);
+                    speaker.Twitter = speakerInput.Twitter;
+                    speaker.Description = speakerInput.Description;
+
+                    proposal.Speakers.Add(speaker);
+
+                    speakerdtos.Add(speaker.ConvertToDto());
+
+                }
+            }
+
+            _dbContext.Update(proposal);
 
             await _dbContext.SaveChangesAsync();
 

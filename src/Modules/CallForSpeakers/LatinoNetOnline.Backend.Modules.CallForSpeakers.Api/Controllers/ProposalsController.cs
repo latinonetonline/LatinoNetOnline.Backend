@@ -52,6 +52,10 @@ namespace LatinoNETOnline.App.Api.Controllers
             return new OperationActionResult(result);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateProposalInput input)
+            => new OperationActionResult(await _proposalService.UpdateAsync(input));
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
