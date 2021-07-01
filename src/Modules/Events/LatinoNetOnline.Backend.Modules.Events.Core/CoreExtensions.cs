@@ -1,4 +1,5 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Data;
+using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core
             services.AddScoped<IWebinarService, WebinarService>();
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IMeetupService, MeetupService>();
+            services.AddScoped<IGraphQLManager, GraphQLManager>();
 
             services.AddDbContext<EventDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),
