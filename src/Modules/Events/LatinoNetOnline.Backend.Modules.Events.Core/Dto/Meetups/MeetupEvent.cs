@@ -1,8 +1,51 @@
 ﻿
 using System;
+using System.Text.Json.Serialization;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
 {
-    record MeetupEvent(long Id, string Name, string Local_Time, DateTime Local_Date, Uri Link, string Plain_Text_Description, Uri How_To_Find_Us, MeetupPhoto Featured_Photo);
+    partial record MeetupEvent
+    {
+        public MeetupEvent()
+        {
+        }
+
+        public MeetupEvent(string? id, string? title, string? localTime, string? localDate, Uri? link, string? description, Uri? howToFindUs, MeetupPhoto? photo)
+        {
+            Id = id;
+            Title = title;
+            LocalTime = localTime;
+            LocalDate = localDate;
+            Link = link;
+            Description = description;
+            HowToFindUs = howToFindUs;
+            Photo = photo;
+        }
+
+        public string? Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string? Title { get; set; }
+
+        [JsonPropertyName("local_time")]
+        public string? LocalTime { get; set; }
+
+        [JsonPropertyName("local_date")]
+        public string? LocalDate { get; set; }
+
+        public Uri? Link { get; set; }
+
+        [JsonPropertyName("plain_text_description")]
+        public string? Description { get; set; }
+
+        [JsonPropertyName("how_to_find_us")]
+        public Uri? HowToFindUs { get; set; }
+
+        [JsonPropertyName("featured_photo")]
+        public MeetupPhoto? Photo { get; set; }
+
+
+
+    }
 
 }

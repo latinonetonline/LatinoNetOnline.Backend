@@ -1,4 +1,31 @@
-﻿namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
+﻿using System;
+using System.Text.Json.Serialization;
+
+namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
 {
-    record MeetupPhoto(long Id, string Highres_Link, string Photo_Link, string Thumb_Link);
+    record MeetupPhoto
+    {
+        public MeetupPhoto()
+        {
+        }
+
+        public MeetupPhoto(long id, Uri? highresLink, Uri? photoLink, Uri? thumbLink)
+        {
+            Id = id;
+            HighresLink = highresLink;
+            PhotoLink = photoLink;
+            ThumbLink = thumbLink;
+        }
+
+        public long Id { get; set; }
+
+        [JsonPropertyName("highres_link")]
+        public Uri? HighresLink { get; set; }
+
+        [JsonPropertyName("photo_link")]
+        public Uri? PhotoLink { get; set; }
+
+        [JsonPropertyName("thumb_link")]
+        public Uri? ThumbLink { get; set; }
+    }
 }

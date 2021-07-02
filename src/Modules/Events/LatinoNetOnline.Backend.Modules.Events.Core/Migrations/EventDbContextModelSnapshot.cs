@@ -39,11 +39,20 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                     b.Property<long>("MeetupId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("ProposalId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Streamyard")
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()

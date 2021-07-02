@@ -1,4 +1,6 @@
 ﻿
+using LatinoNetOnline.Backend.Modules.Events.Core.Enums;
+
 using System;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
@@ -9,11 +11,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
         {
         }
 
-        public Webinar(Guid proposalId, string title, string description, long meetupId, DateTime startDateTime, Uri? liveStreaming, Uri? flyer)
+        public Webinar(Guid proposalId, string title, string description, int number, long meetupId, DateTime startDateTime, Uri? streamyard, Uri? liveStreaming, Uri? flyer)
         {
             ProposalId = proposalId;
             LiveStreaming = liveStreaming;
+            Streamyard = streamyard;
             MeetupId = meetupId;
+            Number = number;
             Flyer = flyer;
             StartDateTime = startDateTime;
             _title = title;
@@ -42,9 +46,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
         }
 
 
+        public int Number { get; set; }
         public long MeetupId { get; set; }
         public DateTime StartDateTime { get; set; }
+        public Uri? Streamyard { get; set; }
         public Uri? LiveStreaming { get; set; }
         public Uri? Flyer { get; set; }
+
+        public WebinarStatus Status { get; set; }
     }
 }

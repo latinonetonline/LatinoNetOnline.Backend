@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using System;
-
 namespace LatinoNetOnline.Backend.Modules.Events.Core
 {
     static class CoreExtensions
@@ -18,6 +16,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IMeetupService, MeetupService>();
             services.AddScoped<IGraphQLManager, GraphQLManager>();
+            services.AddScoped<ITokenRefresherManager, TokenRefresherManager>();
 
             services.AddDbContext<EventDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),

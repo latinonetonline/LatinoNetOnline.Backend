@@ -114,12 +114,19 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         private async Task<Webinar> ConvertToEntity(CreateWebinarInput input)
         {
+            int? maxWebinarNumber = await _dbContext.Webinars.MaxNumberAsync();
+            input.Number = maxWebinarNumber.GetValueOrDefault() + 1;
+
             var webinar = input.ConvertToEntity();
 
-            var meetup = await _meetupService.GetMeetupAsync(input.MeetupId);
+            var meetup = await _meetupService.CreateEventAsync(new(input.Title, input.Description, input.StartDateTime));
 
-            webinar.LiveStreaming = meetup.Result.How_To_Find_Us;
-            webinar.Flyer = new(meetup.Result.Featured_Photo.Highres_Link);
+            if (meetup.IsSuccess && meetup.Result.Id is not null)
+            {
+                webinar.MeetupId = long.Parse(meetup.Result.Id.Replace("!chp", ""));
+                webinar.Status = Enums.WebinarStatus.Draft;
+            }
+                
 
             return webinar;
         }

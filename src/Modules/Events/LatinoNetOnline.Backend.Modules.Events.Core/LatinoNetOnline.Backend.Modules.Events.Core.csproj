@@ -15,6 +15,8 @@
     <PackageReference Include="FluentValidation" Version="10.2.3" />
     <PackageReference Include="GraphQL.Client" Version="3.2.4" />
     <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="3.2.4" />
+    <PackageReference Include="AivenEcommerce.V1.Modules.GitHub.DependencyInjection" Version="0.0.8" />
+
   </ItemGroup>
 
   <ItemGroup>
