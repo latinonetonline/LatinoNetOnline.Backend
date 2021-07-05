@@ -1,4 +1,5 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
+using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups.GraphTypes;
 using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
@@ -94,9 +95,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 }
             };
 
-            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<MeetupEvent>(_endpoint, "event", mutation, variables, token.AccessToken);
+            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<CreateEventDraftResponse>(_endpoint, "createEventDraft", mutation, variables, token.AccessToken);
 
-            return OperationResult<MeetupEvent>.Success(meetupEvent);
+            return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
         }
 
         public async Task<OperationResult<MeetupPhoto>> UploadPhotoAsync(long meetupId, Stream stream)

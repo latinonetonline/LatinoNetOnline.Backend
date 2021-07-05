@@ -45,7 +45,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
 
             mockObject.WebinarDbContext.Webinars.Add(
-                new(Guid.NewGuid(), "Title", "Description", 1, 1, DateTime.Now, uri, uri, uri)
+                new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri)
                 );
 
             mockObject.WebinarDbContext.SaveChanges();
@@ -71,7 +71,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             Uri uri = new("https://tests.com");
 
-            Webinar webinar = new(Guid.NewGuid(), "Title", "Description", 1, 1, DateTime.Now, uri, uri, uri); ;
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri); ;
             mockObject.WebinarDbContext.Webinars.Add(webinar);
 
             mockObject.WebinarDbContext.SaveChanges();
@@ -114,12 +114,17 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new("123", default, default, default, default, default, default, new(default, uri, uri, uri))));
 
 
-            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(default, default)));
+            SpeakerDto speakerDto = new(Guid.NewGuid(), "Name", "LastName", "Email", "Twitter", "Description", default);
+
+            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(new(Guid.NewGuid(), "Title", "Description", DateTime.Now, DateTime.Now, default, default, default, true), new List<SpeakerDto>()
+            {
+                speakerDto
+            })));
 
 
             WebinarService service = mockObject.GetWebinarService();
 
-            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), "Title", "Description", DateTime.Now));
+            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), DateTime.Now));
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Result);
@@ -138,12 +143,17 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Fail(new("error")));
 
 
-            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(default, default)));
+            SpeakerDto speakerDto = new(Guid.NewGuid(), "Name", "LastName", "Email", "Twitter", "Description", default);
+
+            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(new(Guid.NewGuid(), "Title", "Description", DateTime.Now, DateTime.Now, default, default, default, true), new List<SpeakerDto>()
+                {
+                    speakerDto
+                })));
 
 
             WebinarService service = mockObject.GetWebinarService();
 
-            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), "Title", "Description", DateTime.Now));
+            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), DateTime.Now));
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Result);
@@ -160,7 +170,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri, uri, uri))));
 
-            Webinar webinar = new(Guid.NewGuid(), "Title", "Description", 1, 1, DateTime.Now, uri, uri, uri);
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri);
             mockObject.WebinarDbContext.Webinars.Add(webinar);
 
             mockObject.WebinarDbContext.SaveChanges();
@@ -168,12 +178,17 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri, uri, uri))));
 
 
-            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(default, default)));
+            SpeakerDto speakerDto = new(Guid.NewGuid(), "Name", "LastName", "Email", "Twitter", "Description", default);
+
+            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(new(Guid.NewGuid(), "Title", "Description", DateTime.Now, DateTime.Now, default, default, default, true), new List<SpeakerDto>()
+                {
+                    speakerDto
+                })));
 
 
             WebinarService service = mockObject.GetWebinarService();
 
-            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), "Title", "Description", DateTime.Now));
+            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), DateTime.Now));
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Result);
@@ -191,43 +206,10 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             WebinarService service = mockObject.GetWebinarService();
 
-            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), "Title", "Description", DateTime.Now));
+            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), DateTime.Now));
 
             Assert.False(result.IsSuccess);
         }
-
-        [Fact]
-        public async Task CreateAsync_WithTitleEmply_ResultError()
-        {
-            MockObject mockObject = new();
-
-            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Fail(new("error")));
-
-            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(default, default)));
-
-            WebinarService service = mockObject.GetWebinarService();
-
-            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), string.Empty, "Description", DateTime.Now));
-
-            Assert.False(result.IsSuccess);
-        }
-
-        [Fact]
-        public async Task CreateAsync_WithDescriptionEmply_ResultError()
-        {
-            MockObject mockObject = new();
-
-            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Fail(new("error")));
-
-            mockObject.ProposalService.Setup(x => x.GetByIdAsync(It.IsAny<GetProposalInput>())).ReturnsAsync(OperationResult<ProposalFullDto>.Success(new(default, default)));
-
-            WebinarService service = mockObject.GetWebinarService();
-
-            OperationResult<WebinarDto> result = await service.CreateAsync(new(Guid.NewGuid(), "Title", string.Empty, DateTime.Now));
-
-            Assert.False(result.IsSuccess);
-        }
-
 
         #endregion
 
@@ -240,7 +222,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             Uri uri = new("https://tests.com");
 
-            Webinar webinar = new(Guid.NewGuid(), "Title", "Description", 1, 1, DateTime.Now, uri, uri, uri);
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri);
             mockObject.WebinarDbContext.Webinars.Add(webinar);
 
             mockObject.WebinarDbContext.SaveChanges();
@@ -288,7 +270,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             Uri uri = new("https://tests.com");
 
-            Webinar webinar = new(Guid.NewGuid(), "Title", "Description", 1, 1, DateTime.Now.AddDays(1), uri, uri, uri);
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now.AddDays(1), uri, uri, uri);
             mockObject.WebinarDbContext.Webinars.Add(webinar);
 
             mockObject.WebinarDbContext.SaveChanges();
@@ -310,8 +292,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             Uri uri = new("https://tests.com");
 
 
-            Webinar webinar = new(Guid.NewGuid(), "Title", "Description", 1, 1, DateTime.Now.AddDays(1), uri, uri, uri);
-            Webinar webinar2 = new(Guid.NewGuid(), "Title", "Description", 2, 2, DateTime.Now.AddDays(2), uri, uri, uri);
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now.AddDays(1), uri, uri, uri);
+            Webinar webinar2 = new(Guid.NewGuid(), 2, 2, DateTime.Now.AddDays(2), uri, uri, uri);
 
             mockObject.WebinarDbContext.Webinars.Add(webinar);
             mockObject.WebinarDbContext.Webinars.Add(webinar2);
@@ -335,9 +317,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             Uri uri = new("https://tests.com");
 
-            Webinar webinar = new(Guid.NewGuid(), "Title", "Description",1, 1, DateTime.Now.AddDays(3), uri, uri, uri);
-            Webinar webinar2 = new(Guid.NewGuid(), "Title", "Description",2, 2, DateTime.Now.AddDays(2), uri, uri, uri);
-            Webinar webinar3 = new(Guid.NewGuid(), "Title", "Description",3, 3, DateTime.Now.AddDays(1), uri, uri, uri);
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now.AddDays(3), uri, uri, uri);
+            Webinar webinar2 = new(Guid.NewGuid(), 2, 2, DateTime.Now.AddDays(2), uri, uri, uri);
+            Webinar webinar3 = new(Guid.NewGuid(), 3, 3, DateTime.Now.AddDays(1), uri, uri, uri);
             mockObject.WebinarDbContext.Webinars.Add(webinar2);
             mockObject.WebinarDbContext.Webinars.Add(webinar3);
             mockObject.WebinarDbContext.Webinars.Add(webinar);

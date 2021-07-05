@@ -1,14 +1,14 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core;
 using LatinoNetOnline.Backend.Modules.Events.Core.Data;
+using LatinoNetOnline.Backend.Modules.Events.Core.Events.External;
+using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using System;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Api
 {
@@ -23,6 +23,17 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
 
         public static IApplicationBuilder UseEventsModule(this IApplicationBuilder app)
         {
+            app.UseModuleBroadcast()
+                .Subscribe<ProposalCreatedEventInput>((sp, input)
+                    => sp.CreateScope().ServiceProvider
+                        .GetService<IEventHandler<ProposalCreatedEventInput>>()
+                        .HandleAsync(input))
+
+                .Subscribe<ProposalUpdatedEventInput>((sp, input)
+                    => sp.CreateScope().ServiceProvider
+                        .GetService<IEventHandler<ProposalUpdatedEventInput>>()
+                        .HandleAsync(input));
+
             return app;
         }
 

@@ -22,13 +22,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Validators
             _proposalService = proposalService;
             _meetupService = meetupService;
 
-            //RuleFor(x => x.MeetupId).GreaterThan(0).WithMessage("Ingrese un Id de Meetup valido.");
-            //RuleFor(x => x.MeetupId).MustAsync(BeValidMeetupAsync).WithMessage("No existe un Meetup con ese Id.");
-
             RuleFor(x => x.ProposalId).MustAsync(BeExistProposalAsync).WithMessage("No existe una propuesta con ese Id.");
-            RuleFor(x => x.Title).NotEmpty().WithMessage("Ingrese un Titulo valido.");
-            RuleFor(x => x.Description).NotEmpty().WithMessage("Ingrese una Descripción valida.");
-
         }
 
         private async Task<bool> BeExistProposalAsync(Guid proposalId, CancellationToken cancellationToken)

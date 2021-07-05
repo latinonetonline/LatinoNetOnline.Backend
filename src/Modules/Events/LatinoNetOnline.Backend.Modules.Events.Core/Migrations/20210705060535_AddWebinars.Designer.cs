@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20210701163749_AddWebinars")]
+    [Migration("20210705060535_AddWebinars")]
     partial class AddWebinars
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,10 +27,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("Flyer")
                         .HasColumnType("text");
@@ -54,10 +50,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Streamyard")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

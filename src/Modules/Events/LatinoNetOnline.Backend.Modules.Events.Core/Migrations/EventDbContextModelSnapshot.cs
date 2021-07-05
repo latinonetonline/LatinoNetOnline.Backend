@@ -26,10 +26,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Flyer")
                         .HasColumnType("text");
 
@@ -52,10 +48,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Streamyard")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

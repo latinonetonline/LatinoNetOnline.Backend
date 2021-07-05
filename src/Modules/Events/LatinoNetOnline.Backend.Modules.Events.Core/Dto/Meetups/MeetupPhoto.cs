@@ -27,5 +27,16 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
 
         [JsonPropertyName("thumb_link")]
         public Uri? ThumbLink { get; set; }
+
+        //Graph Properties
+
+        [JsonPropertyName("highresLink")]
+        public Uri? HighresLinkGraph { set { HighresLink = value; } }
+
+        [JsonPropertyName("photoLink")]
+        public Uri? PhotoLinkGraph { set { PhotoLink = value; } }
+
+        [JsonPropertyName("thumbLink")]
+        public Uri? ThumbLinkGraph { set { ThumbLink = value; } }
     }
 }

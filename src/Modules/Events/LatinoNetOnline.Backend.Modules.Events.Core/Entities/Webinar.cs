@@ -11,7 +11,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
         {
         }
 
-        public Webinar(Guid proposalId, string title, string description, int number, long meetupId, DateTime startDateTime, Uri? streamyard, Uri? liveStreaming, Uri? flyer)
+        public Webinar(Guid proposalId, int number, long meetupId, DateTime startDateTime, Uri? streamyard, Uri? liveStreaming, Uri? flyer)
         {
             ProposalId = proposalId;
             LiveStreaming = liveStreaming;
@@ -20,31 +20,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
             Number = number;
             Flyer = flyer;
             StartDateTime = startDateTime;
-            _title = title;
-            _description = description;
         }
 
         public Guid Id { get; set; }
         public Guid ProposalId { get; set; }
-
-        private string? _title;
-
-        public string Title
-        {
-            set => _title = value;
-            get => _title
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Title));
-        }
-
-        private string? _description;
-
-        public string Description
-        {
-            set => _description = value;
-            get => _description
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Description));
-        }
-
 
         public int Number { get; set; }
         public long MeetupId { get; set; }

@@ -17,8 +17,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProposalId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
                     Number = table.Column<int>(type: "integer", nullable: false),
                     MeetupId = table.Column<long>(type: "bigint", nullable: false),
                     StartDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),

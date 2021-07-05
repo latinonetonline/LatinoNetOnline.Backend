@@ -19,6 +19,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
     interface IWebinarService
     {
         Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input);
+        Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input);
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult<WebinarDto>> GetByIdAsync(Guid id);
         Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId);
@@ -42,7 +43,16 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         public Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input)
             => Validate(input)
                 .Map(ConvertToEntity)
+                .Map(SetWebinarNumberAsync)
+                .Map(CreateMeetupAsync)
                 .Map(AddWebinarAsync)
+                .Map(ConvertToDto)
+                .FinallyOperationResult();
+
+
+        public Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input)
+            => Validate(input)
+                .Map(UpdateWebinarAsync)
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 
@@ -79,7 +89,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
 
         private Result<CreateWebinarInput> Validate(CreateWebinarInput input)
-        => new CreateWebinarValidator(_proposalService, _meetupService).Validate(input).ToResult(input);
+            => new CreateWebinarValidator(_proposalService, _meetupService).Validate(input).ToResult(input);
+
+        private Result<UpdateWebinarInput> Validate(UpdateWebinarInput input)
+            => new UpdateWebinarValidator( _meetupService).Validate(input).ToResult(input);
 
         private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
             => await _dbContext.Webinars
@@ -112,24 +125,48 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             return webinar;
         }
 
-        private async Task<Webinar> ConvertToEntity(CreateWebinarInput input)
+        private async Task<Webinar> UpdateWebinarAsync(UpdateWebinarInput input)
         {
-            int? maxWebinarNumber = await _dbContext.Webinars.MaxNumberAsync();
-            input.Number = maxWebinarNumber.GetValueOrDefault() + 1;
+            var webinar = await _dbContext.Webinars.SingleAsync(x => x.Id == input.Id);
 
-            var webinar = input.ConvertToEntity();
+            webinar.Number = input.Number;
+            webinar.StartDateTime = input.StartDateTime;
+            webinar.Streamyard = input.Streamyard;
+            webinar.LiveStreaming = input.LiveStreaming;
+            webinar.Flyer = input.Flyer;
+            webinar.Status = input.Status;
 
-            var meetup = await _meetupService.CreateEventAsync(new(input.Title, input.Description, input.StartDateTime));
-
-            if (meetup.IsSuccess && meetup.Result.Id is not null)
-            {
-                webinar.MeetupId = long.Parse(meetup.Result.Id.Replace("!chp", ""));
-                webinar.Status = Enums.WebinarStatus.Draft;
-            }
-                
+            await _dbContext.SaveChangesAsync();
 
             return webinar;
         }
+
+        private async Task<Webinar> CreateMeetupAsync(Webinar webinar)
+        {
+            var proposalResult = await _proposalService.GetByIdAsync(new(webinar.ProposalId));
+
+            var meetup = await _meetupService.CreateEventAsync(new(proposalResult.Result.Proposal.Title, webinar.GetDescription(proposalResult.Result), webinar.StartDateTime));
+
+            if (meetup.IsSuccess && meetup.Result.Id is not null)
+            {
+                webinar.MeetupId = meetup.Result.NormalizeId();
+                webinar.Status = Enums.WebinarStatus.Draft;
+            }
+                
+            return webinar;
+        }
+
+        private async Task<Webinar> SetWebinarNumberAsync(Webinar webinar)
+        {
+            int? maxWebinarNumber = await _dbContext.Webinars.MaxNumberAsync();
+            webinar.Number = maxWebinarNumber.GetValueOrDefault() + 1;
+
+            return webinar;
+        }
+
+        private Webinar ConvertToEntity(CreateWebinarInput input)
+            => input.ConvertToEntity();
+
 
         private WebinarDto ConvertToDto(Webinar webinar)
             => webinar.ConvertToDto();
