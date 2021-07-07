@@ -11,6 +11,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
     interface ITokenRefresherManager
     {
         Task<Token> GetMeetupTokenAsync();
+        Task<Token> GetGoogleTokenAsync();
     }
 
     class TokenRefresherManager : ITokenRefresherManager
@@ -18,6 +19,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
         private readonly IGitHubService _githubService;
 
         const long REPOSITORY_ID = 382245667;
+        const string FOLDER_PATH = "refresh-tokens";
 
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
@@ -30,19 +32,20 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
             _githubService = githubService;
         }
 
-        public async Task<Token> GetMeetupTokenAsync()
+        public Task<Token> GetMeetupTokenAsync()
+            => GetTokenAsync("meetup.json");
+
+        public Task<Token> GetGoogleTokenAsync()
+            => GetTokenAsync("google.json");
+
+        private async Task<Token> GetTokenAsync(string fileName)
         {
-
-            string path = "refresh-tokens";
-            string fileName = "meetup.json";
-
-            var file = await _githubService.GetFileContentAsync(REPOSITORY_ID, path, fileName);
-
+            var file = await _githubService.GetFileContentAsync(REPOSITORY_ID, FOLDER_PATH, fileName);
 
             Token? token = JsonSerializer.Deserialize<Token>(file.Content, _jsonOptions);
 
             if (token is null)
-                throw new NullReferenceException("Meetup Token is Null");
+                throw new NullReferenceException("Token is Null");
 
             return token;
         }

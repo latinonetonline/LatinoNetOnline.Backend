@@ -145,7 +145,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         {
             var proposalResult = await _proposalService.GetByIdAsync(new(webinar.ProposalId));
 
-            var meetup = await _meetupService.CreateEventAsync(new(proposalResult.Result.Proposal.Title, webinar.GetDescription(proposalResult.Result), webinar.StartDateTime));
+            var meetup = await _meetupService.CreateEventAsync(new(proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), webinar.StartDateTime));
 
             if (meetup.IsSuccess && meetup.Result.Id is not null)
             {

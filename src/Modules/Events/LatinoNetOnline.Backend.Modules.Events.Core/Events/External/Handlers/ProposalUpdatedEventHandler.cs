@@ -1,4 +1,5 @@
-﻿using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
+﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
+using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 
@@ -50,7 +51,23 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
             }
 
             //TODO: Agregar para modificar el evento de Meetup
+            var eventMeetupResult = await _meetupService.GetMeetupAsync(webinarResult.Result.MeetupId);
 
+            if (!eventMeetupResult.IsSuccess)
+            {
+                _logger.LogError($"Hubo un error al traer el Meetup.");
+                return;
+            }
+
+            UpdateMeetupEventInput updateMeetupEventInput = new(webinarResult.Result.MeetupId, proposalResult.Result.Proposal.Title, webinarResult.Result.GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinarResult.Result.LiveStreaming, eventMeetupResult.Result?.Photo?.Id);
+
+            eventMeetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
+
+            if (!eventMeetupResult.IsSuccess)
+            {
+                _logger.LogError($"Hubo un error al modificar el Meetup.");
+                return;
+            }
 
             _logger.LogInformation($"Finish ProposalUpdatedEventHandler");
         }

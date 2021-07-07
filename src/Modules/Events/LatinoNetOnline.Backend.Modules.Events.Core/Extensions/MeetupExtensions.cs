@@ -1,5 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
 using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 
 using System.Linq;
@@ -24,7 +25,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Extensions
             }
         }
 
-        public static string GetDescription(this Webinar webinar, ProposalFullDto proposal)
+        public static string GetDescription(this WebinarDto webinar, ProposalFullDto proposal)
         {
             StringBuilder description = new();
             description.AppendLine($"Webinar Nro {webinar.Number} de la comunidad Latino .NET Online realizado el {webinar.StartDateTime.ToLongDateString()}");

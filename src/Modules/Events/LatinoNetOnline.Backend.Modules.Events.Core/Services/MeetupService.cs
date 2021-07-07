@@ -19,6 +19,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         Task<OperationResult<IEnumerable<MeetupEvent>?>> GetEventsAsync();
         Task<OperationResult<MeetupPhoto>> UploadPhotoAsync(long meetupId, Stream stream);
         Task<OperationResult<MeetupEvent>> CreateEventAsync(CreateMeetupEventInput input);
+        Task<OperationResult<MeetupEvent>> UpdateEventAsync(UpdateMeetupEventInput input);
     }
 
     class MeetupService : IMeetupService
@@ -39,7 +40,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         public async Task<OperationResult<MeetupEvent>> GetMeetupAsync(long meetupId)
         {
-            var response = await _httpClient.GetAsync($"{URLNAME}/events/{meetupId}?fields=featured_photo,plain_text_description");
+            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
+
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+
+            var response = await _httpClient.GetAsync($"https://api.meetup.com/{URLNAME}/events/{meetupId}?fields=featured_photo,plain_text_description");
 
             if (!response.IsSuccessStatusCode)
                 return OperationResult<MeetupEvent>.Fail(new("meetup_not_found"));
@@ -54,7 +59,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         public async Task<OperationResult<IEnumerable<MeetupEvent>?>> GetEventsAsync()
         {
-            var result = await _httpClient.GetFromJsonAsync<IEnumerable<MeetupEvent>>($"{URLNAME}/events?fields=featured_photo,plain_text_description");
+            var result = await _httpClient.GetFromJsonAsync<IEnumerable<MeetupEvent>>($"https://api.meetup.com/{URLNAME}/events?fields=featured_photo,plain_text_description");
 
             return OperationResult<IEnumerable<MeetupEvent>?>.Success(result);
         }
@@ -100,13 +105,57 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
         }
 
+
+        public async Task<OperationResult<MeetupEvent>> UpdateEventAsync(UpdateMeetupEventInput input)
+        {
+            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
+
+            string mutation = @"
+                         mutation($input: EditEventInput!) {
+                              editEvent(input: $input) {
+                                event {
+                                  id
+                                  title
+                                  eventUrl
+                                  description
+                                  dateTime
+                                  howToFindUs
+                                }
+                                errors {
+                                  message
+                                  code
+                                  field
+                                }
+                              }
+                            }";
+
+            var variables = new
+            {
+                Input = new
+                {
+                    EventId = input.EventId,
+                    Title = input.Title,
+                    Description = input.Description,
+                    StartDateTime = input.StartDateTime.AddHours(10).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
+                    HowToFindUs = input.HowToFindUs,
+                    FeaturedPhotoId = input.PhotoId,
+                    VenueId = "online",
+                    Duration = "PT2H",
+                }
+            };
+
+            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<CreateEventDraftResponse>(_endpoint, "editEvent", mutation, variables, token.AccessToken);
+
+            return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
+        }
+
         public async Task<OperationResult<MeetupPhoto>> UploadPhotoAsync(long meetupId, Stream stream)
         {
             var content = new StreamContent(stream);
             var mpcontent = new MultipartFormDataContent();
             content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
             mpcontent.Add(content);
-            var response = await _httpClient.PostAsync($"/{URLNAME}/events/{meetupId}/photos?fields=base_url,id,self,comment_count", mpcontent);
+            var response = await _httpClient.PostAsync($"https://api.meetup.com/{URLNAME}/events/{meetupId}/photos?fields=base_url,id,self,comment_count", mpcontent);
 
             if (response.IsSuccessStatusCode)
             {

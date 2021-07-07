@@ -98,6 +98,13 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                     options.CallbackPath = new PathString("/callbacks/google");
                     options.ClientId = googleOptions.ClientId;
                     options.ClientSecret = googleOptions.ClientSecret;
+                    //options.scope.add("https://www.googleapis.com/auth/calendar");
+                    //options.SaveTokens = true;
+                    //options.AccessType = "offline";
+                    //options.Events.OnCreatingTicket = (ticket) =>
+                    //{
+                    //    return Task.CompletedTask;
+                    //};
                 });
 
             services.AddLocalApiAuthentication(principal =>
