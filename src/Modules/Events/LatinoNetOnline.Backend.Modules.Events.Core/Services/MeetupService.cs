@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -20,6 +19,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         Task<OperationResult<MeetupPhoto>> UploadPhotoAsync(long meetupId, Stream stream);
         Task<OperationResult<MeetupEvent>> CreateEventAsync(CreateMeetupEventInput input);
         Task<OperationResult<MeetupEvent>> UpdateEventAsync(UpdateMeetupEventInput input);
+        Task<OperationResult<MeetupEvent>> PublishEventAsync(long meetupId);
+        Task<OperationResult<MeetupEvent>> AnnounceEventAsync(long meetupId);
     }
 
     class MeetupService : IMeetupService
@@ -151,11 +152,19 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         public async Task<OperationResult<MeetupPhoto>> UploadPhotoAsync(long meetupId, Stream stream)
         {
-            var content = new StreamContent(stream);
-            var mpcontent = new MultipartFormDataContent();
-            content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-            mpcontent.Add(content);
-            var response = await _httpClient.PostAsync($"https://api.meetup.com/{URLNAME}/events/{meetupId}/photos?fields=base_url,id,self,comment_count", mpcontent);
+            var formData = new MultipartFormDataContent();
+            formData.Add(new StreamContent(stream), "photo", "photo");
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.meetup.com/{URLNAME}/events/{meetupId}/photos?fields=base_url,id,self,comment_count")
+            {
+                Content = formData
+            };
+
+            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
+
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+
+            var response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
@@ -165,7 +174,90 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                     return OperationResult<MeetupPhoto>.Success(photo);
             }
 
+            var stringresponse = await response.Content.ReadAsStringAsync();
+
             return OperationResult<MeetupPhoto>.Fail(new("error_meetup_upload_photo"));
+        }
+
+        public async Task<OperationResult<MeetupEvent>> PublishEventAsync(long meetupId)
+        {
+            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
+
+            string mutation = @"
+                         mutation($input: publishEventDraftInput!) {
+                              publishEventDraft(input: $input) {
+                                event {
+                                  id
+                                  title
+                                  eventUrl
+                                  description
+                                  dateTime
+                                }
+                                errors {
+                                  message
+                                  code
+                                  field
+                                }
+                              }
+                            }";
+
+            var variables = new
+            {
+                Input = new
+                {
+                    EventId = meetupId
+                }
+            };
+
+            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<CreateEventDraftResponse>(_endpoint, "publishEventDraft", mutation, variables, token.AccessToken);
+
+
+            if (meetupEvent is null || meetupEvent.Event is null)
+            {
+                return OperationResult<MeetupEvent>.Fail(new("meetup_publish_error"));
+            }
+
+            return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
+        }
+
+        public async Task<OperationResult<MeetupEvent>> AnnounceEventAsync(long meetupId)
+        {
+            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
+
+            string mutation = @"
+                         mutation($input: AnnounceEventInput!) {
+                              announceEvent(input: $input) {
+                                event {
+                                  id
+                                  title
+                                  eventUrl
+                                  description
+                                  dateTime
+                                }
+                                errors {
+                                  message
+                                  code
+                                  field
+                                }
+                              }
+                            }";
+
+            var variables = new
+            {
+                Input = new
+                {
+                    EventId = meetupId
+                }
+            };
+
+            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<CreateEventDraftResponse>(_endpoint, "announceEvent", mutation, variables, token.AccessToken);
+
+            if (meetupEvent is null || meetupEvent.Event is null)
+            {
+                return OperationResult<MeetupEvent>.Fail(new("meetup_announce_error"));
+            }
+
+            return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
         }
     }
 }

@@ -3,6 +3,7 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System;
@@ -43,6 +44,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateWebinarInput input)
             => new OperationActionResult(await _service.CreateAsync(input));
+
+
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Confirm(IFormFile file, [FromForm]ConfirmWebinarInput input)
+            => new OperationActionResult(await _service.ConfirmAsync(input, file.OpenReadStream()));
+        
 
 
         [HttpDelete("{id}")]

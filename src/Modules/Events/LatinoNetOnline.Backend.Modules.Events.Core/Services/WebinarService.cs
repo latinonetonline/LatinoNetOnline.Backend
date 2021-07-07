@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 
 using LatinoNetOnline.Backend.Modules.Events.Core.Data;
+using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
 using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +22,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
     {
         Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input);
         Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input);
+        //Task<OperationResult<WebinarDto>> ConfirmAsync2(ConfirmWebinarInput input);
+        Task<OperationResult<WebinarDto>> ConfirmAsync(ConfirmWebinarInput input, Stream Image);
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult<WebinarDto>> GetByIdAsync(Guid id);
         Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId);
@@ -92,7 +96,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             => new CreateWebinarValidator(_proposalService, _meetupService).Validate(input).ToResult(input);
 
         private Result<UpdateWebinarInput> Validate(UpdateWebinarInput input)
-            => new UpdateWebinarValidator( _meetupService).Validate(input).ToResult(input);
+            => new UpdateWebinarValidator(_meetupService).Validate(input).ToResult(input);
 
         private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
             => await _dbContext.Webinars
@@ -136,6 +140,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             webinar.Flyer = input.Flyer;
             webinar.Status = input.Status;
 
+            _dbContext.Update(webinar);
+
             await _dbContext.SaveChangesAsync();
 
             return webinar;
@@ -152,7 +158,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 webinar.MeetupId = meetup.Result.NormalizeId();
                 webinar.Status = Enums.WebinarStatus.Draft;
             }
-                
+
             return webinar;
         }
 
@@ -180,5 +186,61 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             _dbContext.Webinars.Remove(webinar);
             await _dbContext.SaveChangesAsync();
         }
+
+        private async Task<Webinar> MappingFlyerLinkAsync(Webinar webinar, Stream image)
+        {
+            var proposalResult = await _proposalService.GetByIdAsync(new(webinar.ProposalId));
+
+            var photoResult = await _meetupService.UploadPhotoAsync(webinar.MeetupId, image);
+
+
+            webinar.Flyer = photoResult.Result.HighresLink;
+
+            UpdateMeetupEventInput updateMeetupEventInput = new(webinar.MeetupId, proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinar.LiveStreaming, photoResult.Result?.Id);
+
+            await _meetupService.UpdateEventAsync(updateMeetupEventInput);
+
+            
+
+            return webinar;
+        }
+
+
+        private Webinar UpdateLinks(Webinar webinar, ConfirmWebinarInput input)
+        {
+            webinar.Streamyard = input.Streamyard;
+            webinar.LiveStreaming = input.LiveStreaming;
+
+            return webinar;
+        }
+
+        private async Task<Webinar> PublishEventAsync(Webinar webinar)
+        {
+            var result = await _meetupService.PublishEventAsync(webinar.MeetupId);
+
+            if (result.IsSuccess)
+                result = await _meetupService.AnnounceEventAsync(webinar.MeetupId);
+
+            if (result.IsSuccess)
+            {
+                webinar.Status = Enums.WebinarStatus.Published;
+
+                _dbContext.Update(webinar);
+
+                await _dbContext.SaveChangesAsync();
+            }
+                
+
+            return webinar;
+        }
+
+        public Task<OperationResult<WebinarDto>> ConfirmAsync(ConfirmWebinarInput input, Stream image)
+            => GetWebinarById(input.Id)
+                .ToResult("No existe un webinar con ese id.")
+                .Map(webinar => UpdateLinks(webinar, input))
+                .Map(webinar => MappingFlyerLinkAsync(webinar, image))
+                .Map(PublishEventAsync)
+                .Map(ConvertToDto)
+                .FinallyOperationResult();
     }
 }

@@ -50,7 +50,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
 
             }
 
-            //TODO: Agregar para modificar el evento de Meetup
             var eventMeetupResult = await _meetupService.GetMeetupAsync(webinarResult.Result.MeetupId);
 
             if (!eventMeetupResult.IsSuccess)
@@ -63,7 +62,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
 
             eventMeetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
 
-            if (!eventMeetupResult.IsSuccess)
+            if (!eventMeetupResult.IsSuccess || eventMeetupResult.Result is null)
             {
                 _logger.LogError($"Hubo un error al modificar el Meetup.");
                 return;
