@@ -184,7 +184,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             var token = await _tokenRefresherManager.GetMeetupTokenAsync();
 
             string mutation = @"
-                         mutation($input: publishEventDraftInput!) {
+                         mutation($input: PublishEventDraftInput!) {
                               publishEventDraft(input: $input) {
                                 event {
                                   id

@@ -7,6 +7,7 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Events.Core.Events;
 using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.Events.Core.Validators;
+using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
@@ -39,14 +40,14 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         private readonly EventDbContext _dbContext;
         private readonly IMeetupService _meetupService;
         private readonly IProposalService _proposalService;
-        private readonly IMessageBroker _messageBroker;
+        private readonly IEventDispatcher _eventDispatcher;
 
-        public WebinarService(EventDbContext dbContext, IMeetupService meetupService, IProposalService proposalService, IMessageBroker messageBroker)
+        public WebinarService(EventDbContext dbContext, IMeetupService meetupService, IProposalService proposalService, IEventDispatcher eventDispatcher)
         {
             _dbContext = dbContext;
             _meetupService = meetupService;
             _proposalService = proposalService;
-            _messageBroker = messageBroker;
+            _eventDispatcher = eventDispatcher;
         }
 
         public Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input)
@@ -62,7 +63,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         public Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input)
             => Validate(input)
                 .Map(UpdateWebinarAsync)
-                .Tap(async webinar => await _messageBroker.PublishAsync(new WebinarUpdatedEventInput(webinar.Id)))
+                .Tap(async webinar => await _eventDispatcher.PublishAsync(new WebinarUpdatedEventInput(webinar.Id)))
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 
