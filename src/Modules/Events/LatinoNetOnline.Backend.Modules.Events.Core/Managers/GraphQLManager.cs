@@ -50,7 +50,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                     Query = completeQueryString
                 };
 
-                if(variables is not null)
+                if (variables is not null)
                 {
                     request.Variables = variables;
                 }

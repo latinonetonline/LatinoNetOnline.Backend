@@ -1,7 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
-using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 
 using System.Linq;
 using System.Text;

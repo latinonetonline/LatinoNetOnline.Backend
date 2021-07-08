@@ -8,7 +8,6 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Events;
 using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.Events.Core.Validators;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
-using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;

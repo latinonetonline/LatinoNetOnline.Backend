@@ -152,8 +152,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         public async Task<OperationResult<MeetupPhoto>> UploadPhotoAsync(long meetupId, Stream stream)
         {
-            var formData = new MultipartFormDataContent();
-            formData.Add(new StreamContent(stream), "photo", "photo");
+            var formData = new MultipartFormDataContent
+            {
+                { new StreamContent(stream), "photo", "photo" }
+            };
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.meetup.com/{URLNAME}/events/{meetupId}/photos?fields=base_url,id,self,comment_count")
             {

@@ -3,7 +3,6 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 
 using Microsoft.Extensions.Logging;
 
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers

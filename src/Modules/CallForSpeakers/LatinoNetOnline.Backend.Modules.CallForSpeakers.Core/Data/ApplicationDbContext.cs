@@ -63,7 +63,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
 
             });
 
-            
+
 
             base.OnModelCreating(modelBuilder);
         }

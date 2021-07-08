@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
 
-using LatinoNetOnline.Backend.Modules.Events.Core.Data;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
-
-using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Threading;
