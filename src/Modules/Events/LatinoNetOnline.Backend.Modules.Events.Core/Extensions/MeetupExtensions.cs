@@ -2,6 +2,7 @@
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
 
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -27,7 +28,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Extensions
         public static string GetDescription(this WebinarDto webinar, ProposalFullDto proposal)
         {
             StringBuilder description = new();
-            description.AppendLine($"Webinar Nro {webinar.Number} de la comunidad Latino .NET Online realizado el {webinar.StartDateTime.ToLongDateString()}");
+
+            CultureInfo culture = new("es-ES");
+            
+            description.AppendLine($"Webinar Nro {webinar.Number} de la comunidad Latino .NET Online realizado el {culture.DateTimeFormat.GetDayName(webinar.StartDateTime.DayOfWeek)} {webinar.StartDateTime.Day} de {culture.DateTimeFormat.GetMonthName(webinar.StartDateTime.Month)} del {webinar.StartDateTime.Year}");
             description.AppendLine();
             description.Append($"🎤Speakers: ");
 
