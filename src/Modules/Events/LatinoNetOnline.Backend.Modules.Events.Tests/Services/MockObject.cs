@@ -1,5 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Data;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
+using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 
 using Microsoft.EntityFrameworkCore;
@@ -22,16 +23,16 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
 
             MeetupService = new();
             ProposalService = new();
-            MessageBroker = new();
+            EventDispatcher = new();
         }
 
         public EventDbContext WebinarDbContext { get; set; }
         public Mock<IMeetupService> MeetupService { get; set; }
         public Mock<IProposalService> ProposalService { get; set; }
-        public Mock<IMessageBroker> MessageBroker { get; set; }
+        public Mock<IEventDispatcher> EventDispatcher { get; set; }
 
 
         public WebinarService GetWebinarService()
-            => new(WebinarDbContext, MeetupService.Object, ProposalService.Object, MessageBroker.Object);
+            => new(WebinarDbContext, MeetupService.Object, ProposalService.Object, EventDispatcher.Object);
     }
 }
