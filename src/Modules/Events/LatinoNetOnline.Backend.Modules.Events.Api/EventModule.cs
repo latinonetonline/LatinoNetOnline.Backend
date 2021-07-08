@@ -1,5 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core;
 using LatinoNetOnline.Backend.Modules.Events.Core.Data;
+using LatinoNetOnline.Backend.Modules.Events.Core.Events;
 using LatinoNetOnline.Backend.Modules.Events.Core.Events.External;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
@@ -32,6 +33,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
                 .Subscribe<ProposalUpdatedEventInput>((sp, input)
                     => sp.CreateScope().ServiceProvider
                         .GetService<IEventHandler<ProposalUpdatedEventInput>>()
+                        .HandleAsync(input))
+
+                .Subscribe<WebinarUpdatedEventInput>((sp, input)
+                    => sp.CreateScope().ServiceProvider
+                        .GetService<IEventHandler<WebinarUpdatedEventInput>>()
                         .HandleAsync(input));
 
             return app;

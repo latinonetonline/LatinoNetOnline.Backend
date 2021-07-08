@@ -45,12 +45,20 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
         public async Task<IActionResult> Create(CreateWebinarInput input)
             => new OperationActionResult(await _service.CreateAsync(input));
 
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateWebinarInput input)
+            => new OperationActionResult(await _service.UpdateAsync(input));
 
-        [AllowAnonymous]
+
         [HttpPost("[action]")]
-        public async Task<IActionResult> Confirm(IFormFile file, [FromForm]ConfirmWebinarInput input)
-            => new OperationActionResult(await _service.ConfirmAsync(input, file.OpenReadStream()));
-        
+        public async Task<IActionResult> Confirm(ConfirmWebinarInput input)
+            => new OperationActionResult(await _service.ConfirmAsync(input));
+
+
+        [HttpPost("{id}/[action]")]
+        public async Task<IActionResult> Photo(Guid id, IFormFile file)
+            => new OperationActionResult(await _service.ChangePhotoAsync(id, file.OpenReadStream()));
+
 
 
         [HttpDelete("{id}")]

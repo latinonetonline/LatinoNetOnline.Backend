@@ -42,11 +42,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             MockObject mockObject = new();
 
             Uri uri = new("https://tests.com");
-
-
-            mockObject.WebinarDbContext.Webinars.Add(
-                new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri)
-                );
+            Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri);
+            webinar.Status = WebinarStatus.Draft;
+            mockObject.WebinarDbContext.Webinars.Add(webinar);
 
             mockObject.WebinarDbContext.SaveChanges();
 
