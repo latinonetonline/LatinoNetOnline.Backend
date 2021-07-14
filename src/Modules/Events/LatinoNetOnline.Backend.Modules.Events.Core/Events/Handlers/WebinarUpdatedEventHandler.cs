@@ -28,7 +28,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
         {
             _logger.LogInformation($"Starting WebinarUpdatedEventHandler");
 
-            var webinarResult = await _webinarService.GetByIdAsync(@event.Id);
+            var webinarResult = await _webinarService.GetByIdAsync(new(@event.Id));
 
 
             if (!webinarResult.IsSuccess)

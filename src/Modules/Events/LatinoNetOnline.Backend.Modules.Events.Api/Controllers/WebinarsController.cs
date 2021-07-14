@@ -28,7 +28,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
-            => new OperationActionResult(await _service.GetByIdAsync(id));
+            => new OperationActionResult(await _service.GetByIdAsync(new(id)));
 
         [AllowAnonymous]
         [HttpGet("Proposals/{proposalId}")]

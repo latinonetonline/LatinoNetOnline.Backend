@@ -76,7 +76,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             WebinarService service = mockObject.GetWebinarService();
 
-            var result = await service.GetByIdAsync(webinar.Id);
+            var result = await service.GetByIdAsync(new(webinar.Id));
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Result);
@@ -89,7 +89,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             WebinarService service = mockObject.GetWebinarService();
 
-            var result = await service.GetByIdAsync(Guid.NewGuid());
+            var result = await service.GetByIdAsync(new(Guid.NewGuid()));
 
             Assert.False(result.IsSuccess);
             Assert.Null(result.Result);

@@ -1,7 +1,9 @@
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
@@ -41,6 +43,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
                     var handler = sp.GetRequiredService<IProposalService>();
                     return await handler.GetByIdAsync(query);
                 });
+
+            app.UseModuleBroadcast()
+                .Subscribe<WebinarConfirmedEventInput>((sp, input)
+                    => sp.CreateScope().ServiceProvider
+                        .GetService<IEventHandler<WebinarConfirmedEventInput>>()
+                        .HandleAsync(input));
 
             return app;
         }

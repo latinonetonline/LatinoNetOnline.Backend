@@ -75,7 +75,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             => Validate(input)
                     .Map(CreateProposalAsync)
                     .Tap(async proposal => await _messageBroker.PublishAsync(new ProposalCreatedEventInput(proposal.Proposal.ProposalId, proposal.Proposal.Title)))
-                    .Check(async proposal => await _emailManager.SendEmailAsync(await proposal.ConvertToEmailInput()))
+                    .Check(async proposal => await _emailManager.SendEmailAsync(await proposal.ConvertToProposalCreatedEmailInput()))
                     .FinallyOperationResult();
 
         public Task<OperationResult<ProposalFullDto>> UpdateAsync(UpdateProposalInput input)

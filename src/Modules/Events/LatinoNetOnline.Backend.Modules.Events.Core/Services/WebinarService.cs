@@ -8,6 +8,7 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Events;
 using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.Events.Core.Validators;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
+using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +25,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
     {
         Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input);
         Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input);
-        //Task<OperationResult<WebinarDto>> ConfirmAsync2(ConfirmWebinarInput input);
         Task<OperationResult<WebinarDto>> ConfirmAsync(ConfirmWebinarInput input);
         Task<OperationResult<WebinarDto>> ChangePhotoAsync(Guid id, Stream image);
         Task<OperationResult> DeleteAsync(Guid id);
-        Task<OperationResult<WebinarDto>> GetByIdAsync(Guid id);
+        Task<OperationResult<WebinarDto>> GetByIdAsync(GetWebinarInput input);
         Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId);
         Task<OperationResult<IEnumerable<WebinarDto>>> GetAllAsync();
         Task<OperationResult<WebinarDto>> GetNextWebinarAsync();
@@ -40,13 +40,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         private readonly IMeetupService _meetupService;
         private readonly IProposalService _proposalService;
         private readonly IEventDispatcher _eventDispatcher;
+        private readonly IMessageBroker _messageBroker;
 
-        public WebinarService(EventDbContext dbContext, IMeetupService meetupService, IProposalService proposalService, IEventDispatcher eventDispatcher)
+        public WebinarService(EventDbContext dbContext, IMeetupService meetupService, IProposalService proposalService, IEventDispatcher eventDispatcher, IMessageBroker messageBroker)
         {
             _dbContext = dbContext;
             _meetupService = meetupService;
             _proposalService = proposalService;
             _eventDispatcher = eventDispatcher;
+            _messageBroker = messageBroker;
         }
 
         public Task<OperationResult<WebinarDto>> CreateAsync(CreateWebinarInput input)
@@ -72,8 +74,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 
-        public Task<OperationResult<WebinarDto>> GetByIdAsync(Guid id)
-            => GetWebinarById(id)
+        public Task<OperationResult<WebinarDto>> GetByIdAsync(GetWebinarInput input)
+            => GetWebinarById(input.Id)
                 .ToResult("No existe un webinar con ese id.")
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
@@ -252,6 +254,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         public Task<OperationResult<WebinarDto>> ConfirmAsync(ConfirmWebinarInput input)
             => Validate(input)
                 .Map(PublishEventAsync)
+                .Tap(webinar => _messageBroker.PublishAsync(new WebinarConfirmedEventInput(webinar.Id)))
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 

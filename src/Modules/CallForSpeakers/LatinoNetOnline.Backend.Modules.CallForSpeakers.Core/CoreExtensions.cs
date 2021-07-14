@@ -18,6 +18,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core
         {
             services.AddScoped<ISpeakerService, SpeakerService>();
             services.AddScoped<IProposalService, ProposalService>();
+            services.AddScoped<IWebinarService, WebinarService>();
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<IEmailManager, EmailManager>();
 

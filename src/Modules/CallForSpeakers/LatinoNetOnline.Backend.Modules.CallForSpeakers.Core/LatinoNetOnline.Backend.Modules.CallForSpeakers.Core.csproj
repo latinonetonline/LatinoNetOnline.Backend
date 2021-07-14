@@ -6,11 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Files\mail.html" />
+    <None Remove="Files\mail-proposal-created.html" />
+    <None Remove="Files\mail-proposal-confirmed.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Files\mail.html">
+    <Content Include="Files\mail-proposal-created.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\mail-proposal-confirmed.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -34,7 +38,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Resource Include="Files\mail.html" />
+    <Resource Include="Files\mail-proposal-created.html" />
   </ItemGroup>
 
 </Project>
