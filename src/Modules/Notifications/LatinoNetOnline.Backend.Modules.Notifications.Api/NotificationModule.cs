@@ -1,38 +1,40 @@
-﻿using LatinoNetOnline.Backend.Modules.Notifications.Core;
+﻿using LatinoNetOnline.Backend.Modules.Notifications.Core.Data;
 using LatinoNetOnline.Backend.Modules.Notifications.Core.Events.External;
+using LatinoNetOnline.Backend.Modules.Notifications.Core.Options;
+using LatinoNetOnline.Backend.Modules.Notifications.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
+using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace LatinoNetOnline.Backend.Modules.Notifications.Api
 {
-    static class NotificationModule
+    public class NotificationModule : Module
     {
-        public static IServiceCollection AddNotificationModule(this IServiceCollection services, IConfiguration configuration)
+        public override void Load(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddCore(configuration);
 
-            return services;
+            services.AddScoped<IDeviceService, DeviceService>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddDbContext<NotificationDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("Default"),
+                    o => o.MigrationsAssembly("LatinoNetOnline.Backend.Bootstrapper")));
+
+            var valipKeysOptions = configuration.GetSection(nameof(VapidKeysOptions)).Get<VapidKeysOptions>();
+            services.AddSingleton(valipKeysOptions);
         }
 
-        public static IApplicationBuilder UseNotificationModule(this IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app)
         {
             app.UseModuleBroadcast().Subscribe<ProposalCreatedEventInput>((sp, input)
                 => sp.CreateScope().ServiceProvider
                         .GetService<IEventHandler<ProposalCreatedEventInput>>()
                         .HandleAsync(input));
-
-
-            return app;
-        }
-
-        public static IHost InitNotificationModule(this IHost host)
-        {
-            return host;
         }
     }
 }

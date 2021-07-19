@@ -11,6 +11,7 @@ using LatinoNetOnline.Backend.Modules.Identities.Web.Dto.Users;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Options;
 using LatinoNetOnline.Backend.Modules.Identities.Web.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
@@ -31,13 +32,20 @@ using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Identities.Web
 {
-    static class IdentityExtensions
+    public class IdentityModule: Module
     {
-        public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+        private readonly IWebHostEnvironment _env;
+
+        public IdentityModule(IWebHostEnvironment env)
+        {
+            _env = env;
+        }
+
+        public override void Load(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("Default"),
-                    o => o.MigrationsAssembly(typeof(Config).Assembly.FullName)));
+               options.UseNpgsql(configuration.GetConnectionString("Default"),
+                   o => o.MigrationsAssembly(typeof(Config).Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -128,11 +136,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
             });
 
             services.AddScoped<IUserService, UserService>();
-
-            return services;
         }
 
-        public static IApplicationBuilder UseIdentityModule(this IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -149,18 +155,14 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web
                 });
 
             app.UseAuthorization();
-            return app;
         }
 
-        public static IHost InitIdentityModule(this IHost host)
+        public override void InitialConfiguration(IConfiguration configuration)
         {
-            var configuration = host.Services.GetRequiredService<IConfiguration>();
             var connectionString = configuration.GetConnectionString("Default");
             var settingOptions = configuration.GetSection(nameof(SettingOptions)).Get<SettingOptions>();
             var identityOptions = configuration.GetSection(nameof(Options.IdentityOptions)).Get<Options.IdentityOptions>();
             SeedData.EnsureSeedData(connectionString, settingOptions, identityOptions);
-
-            return host;
         }
     }
 }

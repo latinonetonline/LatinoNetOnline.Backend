@@ -1,30 +1,23 @@
+using AivenEcommerce.V1.Modules.GitHub.DependencyInjection.Extensions;
+
 using LatinoNetOnline.Backend.Modules.Links.Core;
+using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
+
+using LatinoNETOnline.App.Infrastructure.Services;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 
 namespace LatinoNetOnline.Backend.Modules.Links.Api
 {
-    static class LinksModule
+    public class LinksModule : Module
     {
-        public static IServiceCollection AddLinksModule(this IServiceCollection services, IConfiguration configuration)
+        public override void Load(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddCore(configuration);
+            services.AddScoped<ILinkService, LinkService>();
 
-            return services;
-        }
-
-        public static IApplicationBuilder UseLinksModule(this IApplicationBuilder app)
-        {
-            return app;
-        }
-
-        public static IHost InitLinksModule(this IHost host)
-        {
-            return host;
+            services.AddGitHubClient();
         }
     }
 }

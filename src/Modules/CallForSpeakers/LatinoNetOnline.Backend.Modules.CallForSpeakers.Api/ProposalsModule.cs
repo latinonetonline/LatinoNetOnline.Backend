@@ -1,36 +1,46 @@
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core;
+using AivenEcommerce.V1.Modules.GitHub.DependencyInjection.Extensions;
+
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External;
+using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
+using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 
 using System.IO;
 
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
 {
-    static class ProposalsModule
+    public class CallForSpeakersModule : Module
     {
-        public static IServiceCollection AddCallForSpeakersModule(this IServiceCollection services, IConfiguration configuration)
+        public override void Load(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddCore(configuration);
+            services.AddScoped<ISpeakerService, SpeakerService>();
+            services.AddScoped<IProposalService, ProposalService>();
+            services.AddScoped<IWebinarService, WebinarService>();
+            services.AddScoped<IStorageService, StorageService>();
+            services.AddScoped<IEmailManager, EmailManager>();
 
-            return services;
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("Default"),
+                    o => o.MigrationsAssembly("LatinoNetOnline.Backend.Bootstrapper")));
+
+            services.AddGitHubClient();
         }
 
-        public static IApplicationBuilder UseCallForSpeakersModule(this IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app)
         {
-
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(new FileInfo(typeof(ApplicationDbContext).Assembly.Location).DirectoryName ?? string.Empty, "Files")),
@@ -49,18 +59,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
                     => sp.CreateScope().ServiceProvider
                         .GetService<IEventHandler<WebinarConfirmedEventInput>>()
                         .HandleAsync(input));
-
-            return app;
         }
 
-        public static IHost InitCallForSpeakersModule(this IHost host)
+        public override void InitialConfiguration(IConfiguration configuration)
         {
-            var configuration = host.Services.GetRequiredService<IConfiguration>();
             var connectionString = configuration.GetConnectionString("Default");
             var settingOptions = configuration.GetSection(nameof(SettingOptions)).Get<SettingOptions>();
             SeedData.EnsureSeedData(connectionString, settingOptions);
-
-            return host;
         }
     }
 }

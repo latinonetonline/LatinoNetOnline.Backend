@@ -7,6 +7,7 @@ using LatinoNetOnline.Backend.Modules.Identities.Web;
 using LatinoNetOnline.Backend.Modules.Links.Api;
 using LatinoNetOnline.Backend.Modules.Notifications.Api;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
+using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,22 +33,18 @@ namespace LatinoNetOnline.Backend.Bootstrapper
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(this.GetType().Assembly);
-            services.AddCallForSpeakersModule(Configuration);
-            services.AddEventsModule(Configuration);
-            services.AddLinksModule(Configuration);
-            services.AddNotificationModule(Configuration);
-            services.AddIdentityModule(Configuration, Environment);
+            services.RegisterModule<IdentityModule>();
+            services.RegisterModule<CallForSpeakersModule>();
+            services.RegisterModule<EventsModule>();
+            services.RegisterModule<LinksModule>();
+            services.RegisterModule<NotificationModule>();
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider, ILoggerFactory loggerFactory)
         {
             app.UseInfrastructure(Environment, provider, loggerFactory);
             app.UseRouting();
-            app.UseCallForSpeakersModule();
-            app.UseEventsModule();
-            app.UseLinksModule();
-            app.UseNotificationModule();
-            app.UseIdentityModule();
+            app.UseRegisterModules();
 
             app.UseEndpoints(endpoints =>
             {
