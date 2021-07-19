@@ -4,5 +4,5 @@ using System;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External
 {
-    record WebinarConfirmedEventInput(Guid Id): IEvent;
+    record WebinarConfirmedEventInput(Guid Id) : IEvent;
 }

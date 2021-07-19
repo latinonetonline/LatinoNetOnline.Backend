@@ -4,5 +4,5 @@ using System;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Events
 {
-    record WebinarConfirmedEventInput(Guid Id): IEvent;
+    record WebinarConfirmedEventInput(Guid Id) : IEvent;
 }

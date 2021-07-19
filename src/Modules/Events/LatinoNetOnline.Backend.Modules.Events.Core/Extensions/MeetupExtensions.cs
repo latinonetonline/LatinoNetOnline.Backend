@@ -30,7 +30,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Extensions
             StringBuilder description = new();
 
             CultureInfo culture = new("es-ES");
-            
+
             description.AppendLine($"Webinar Nro {webinar.Number} de la comunidad Latino .NET Online realizado el {culture.DateTimeFormat.GetDayName(webinar.StartDateTime.DayOfWeek)} {webinar.StartDateTime.Day} de {culture.DateTimeFormat.GetMonthName(webinar.StartDateTime.Month)} del {webinar.StartDateTime.Year}");
             description.AppendLine();
             description.Append($"🎤Speakers: ");

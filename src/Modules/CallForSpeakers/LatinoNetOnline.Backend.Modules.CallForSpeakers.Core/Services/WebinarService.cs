@@ -2,7 +2,6 @@
 using LatinoNetOnline.Backend.Shared.Abstractions.Modules;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
-using System;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services

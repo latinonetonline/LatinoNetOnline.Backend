@@ -5,7 +5,6 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 
 using Microsoft.Extensions.Logging;
 
-using System;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External.Handlers
