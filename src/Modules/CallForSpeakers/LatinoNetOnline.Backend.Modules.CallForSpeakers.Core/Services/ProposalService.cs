@@ -94,10 +94,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter, bool include)
         => await _dbContext.Proposals.AsNoTracking()
+                    
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.Contains((filter.Title ?? string.Empty).ToLower()))
                     .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.GetValueOrDefault())
                     .WhereIf(filter.IsActive.HasValue, x => x.IsActive == filter.IsActive.GetValueOrDefault())
-                    .IncludeIf(include, x => x.Speakers).ToListAsync();
+                    .WhereIf(filter.Oldest.HasValue && filter.Oldest.Value, x => x.EventDate.Date < DateTime.Today)
+                    .WhereIf(!filter.Oldest.HasValue || !filter.Oldest.Value, x => x.EventDate.Date >= DateTime.Today)
+                    .IncludeIf(include, x => x.Speakers)
+                    .OrderByDescending(x => x.EventDate).ToListAsync();
 
 
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
