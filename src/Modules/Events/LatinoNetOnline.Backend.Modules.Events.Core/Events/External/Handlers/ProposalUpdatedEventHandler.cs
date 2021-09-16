@@ -38,7 +38,20 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
 
             var webinarResult = await _webinarService.GetByProposalAsync(@event.Id);
 
-            if (!webinarResult.IsSuccess)
+            if (webinarResult.IsSuccess)
+            {
+                webinarResult = await _webinarService.UpdateAsync(new(
+                    webinarResult.Result.Id, 
+                    webinarResult.Result.Number,
+                    webinarResult.Result.MeetupId,
+                    proposalResult.Result.Proposal.EventDate,
+                    webinarResult.Result.Streamyard,
+                    webinarResult.Result.LiveStreaming,
+                    webinarResult.Result.Flyer,
+                    webinarResult.Result.Status
+                    ));
+            }
+            else
             {
                 webinarResult = await _webinarService.CreateAsync(new(proposalResult.Result.Proposal.ProposalId, proposalResult.Result.Proposal.EventDate));
 
