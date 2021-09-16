@@ -121,6 +121,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         private async Task<Maybe<IEnumerable<Webinar>>> GetAllWebinars()
             => await _dbContext.Webinars
                 .Where(x => x.Status == Enums.WebinarStatus.Draft || x.Status == Enums.WebinarStatus.Published)
+                .Where(x => x.StartDateTime.Date >= DateTime.Today)
+                .OrderByDescending(x => x.Number)
                 .ToListAsync();
 
 
