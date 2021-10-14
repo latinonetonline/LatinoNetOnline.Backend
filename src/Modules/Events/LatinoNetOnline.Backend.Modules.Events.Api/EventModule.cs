@@ -22,6 +22,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
             services.AddScoped<IWebinarService, WebinarService>();
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IMeetupService, MeetupService>();
+            services.AddScoped<IMetricoolService, MetricoolService>();
             services.AddScoped<IGraphQLManager, GraphQLManager>();
             services.AddScoped<ITokenRefresherManager, TokenRefresherManager>();
 
