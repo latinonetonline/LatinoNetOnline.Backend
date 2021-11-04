@@ -70,8 +70,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             var token = await _tokenRefresherManager.GetMeetupTokenAsync();
 
             string mutation = @"
-                         mutation($input: CreateEventDraftInput!) {
-                              createEventDraft(input: $input) {
+                         mutation($input: CreateEventInput!) {
+                              createEvent(input: $input) {
                                 event {
                                   id
                                   title
@@ -98,10 +98,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                     StartDateTime = input.StartDateTime.AddHours(10).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
                     VenueId = "online",
                     Duration = "PT2H",
+                    PublishStatus = "DRAFT"
                 }
             };
 
-            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<CreateEventDraftResponse>(_endpoint, "createEventDraft", mutation, variables, token.AccessToken);
+            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<CreateEventDraftResponse>(_endpoint, "createEvent", mutation, variables, token.AccessToken);
 
             return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
         }
