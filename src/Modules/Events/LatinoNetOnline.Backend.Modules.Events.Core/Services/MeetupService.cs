@@ -95,7 +95,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                     GroupUrlname = "latino-net-online",
                     Title = input.TItle,
                     Description = input.Description,
-                    StartDateTime = input.StartDateTime.AddHours(10).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
+                    StartDateTime = input.StartDateTime.AddHours(9).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
                     VenueId = "online",
                     Duration = "PT2H",
                     PublishStatus = "DRAFT"
