@@ -64,5 +64,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
             => new OperationActionResult(await _service.DeleteAsync(id));
+
+        [HttpPut("UpdateNumbers")]
+        public async Task<IActionResult> UpdateNumbers()
+            => new OperationActionResult(await _service.UpdateWebinarNumbersAsync());
     }
 }

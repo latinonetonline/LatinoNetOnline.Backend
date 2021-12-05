@@ -5,6 +5,7 @@
         Created,
         Draft,
         Published,
-        Old
+        Old,
+        Deleted
     }
 }

@@ -28,6 +28,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
         {
             _logger.LogInformation($"Starting WebinarUpdatedEventHandler");
 
+
             var webinarResult = await _webinarService.GetByIdAsync(new(@event.Id));
 
 
@@ -36,6 +37,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
                 _logger.LogError($"Hubo un error al traer el Webinar.");
                 return;
             }
+
+
 
             var proposalResult = await _proposalService.GetByIdAsync(new(webinarResult.Result.ProposalId));
 
@@ -53,6 +56,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
                 return;
             }
 
+            
+
+
             UpdateMeetupEventInput updateMeetupEventInput = new(webinarResult.Result.MeetupId, proposalResult.Result.Proposal.Title, webinarResult.Result.GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinarResult.Result.LiveStreaming, eventMeetupResult.Result?.Photo?.Id);
 
             eventMeetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
@@ -62,6 +68,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
                 _logger.LogError($"Hubo un error al modificar el Meetup.");
                 return;
             }
+
 
             _logger.LogInformation($"Finish WebinarUpdatedEventHandler");
         }

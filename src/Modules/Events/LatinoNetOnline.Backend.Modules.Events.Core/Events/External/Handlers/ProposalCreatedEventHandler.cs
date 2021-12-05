@@ -41,6 +41,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
                 return;
             }
 
+            var result = await _webinarService.UpdateWebinarNumbersAsync();
+
+            if (!result.IsSuccess)
+            {
+                _logger.LogError($"Hubo un error al actualizar los numeros de Webinars.");
+                return;
+            }
+
+
             _logger.LogInformation($"Finish ProposalCreatedEventHandler");
         }
     }

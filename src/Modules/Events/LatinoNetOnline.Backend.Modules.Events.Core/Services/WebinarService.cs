@@ -28,10 +28,12 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         Task<OperationResult<WebinarDto>> ConfirmAsync(ConfirmWebinarInput input);
         Task<OperationResult<WebinarDto>> ChangePhotoAsync(Guid id, Stream image);
         Task<OperationResult> DeleteAsync(Guid id);
+        Task<OperationResult> RemoveAsync(Guid id);
         Task<OperationResult<WebinarDto>> GetByIdAsync(GetWebinarInput input);
         Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId);
         Task<OperationResult<IEnumerable<WebinarDto>>> GetAllAsync();
         Task<OperationResult<WebinarDto>> GetNextWebinarAsync();
+        Task<OperationResult> UpdateWebinarNumbersAsync();
     }
 
     class WebinarService : IWebinarService
@@ -64,7 +66,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         public Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input)
             => Validate(input)
                 .Map(UpdateWebinarAsync)
-                .Tap(async webinar => await _eventDispatcher.PublishAsync(new WebinarUpdatedEventInput(webinar.Id)))
+                .Tap(UpdateWebinarNumbersAsync)
+                //.Tap(async webinar => await _eventDispatcher.PublishAsync(new WebinarUpdatedEventInput(webinar.Id)))
                 .Map(ConvertToDto)
                 .FinallyOperationResult();
 
@@ -88,6 +91,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
 
         public async Task<OperationResult> DeleteAsync(Guid id)
+            => await GetWebinarById(id)
+                .ToResult("No existe un webinar con ese id.")
+                .Tap(DeleteWebinarAsync)
+                .Tap(async webinar => await _eventDispatcher.PublishAsync(new WebinarDeletedEventInput(webinar.Id)))
+                .FinallyOperationResult();
+
+        public async Task<OperationResult> RemoveAsync(Guid id)
             => await GetWebinarById(id)
                 .ToResult("No existe un webinar con ese id.")
                 .Tap(RemoveWebinarAsync)
@@ -156,7 +166,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         {
             var webinar = await _dbContext.Webinars.SingleAsync(x => x.Id == input.Id);
 
-            webinar.Number = input.Number;
             webinar.StartDateTime = input.StartDateTime;
             webinar.Streamyard = input.Streamyard;
             webinar.LiveStreaming = input.LiveStreaming;
@@ -203,6 +212,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         private IEnumerable<WebinarDto> ConvertToDto(IEnumerable<Webinar> webinars)
             => webinars.Select(ConvertToDto);
 
+
+        private async Task DeleteWebinarAsync(Webinar webinar)
+        {
+            webinar.Status = Enums.WebinarStatus.Deleted;
+            _dbContext.Webinars.Update(webinar);
+            await _dbContext.SaveChangesAsync();
+        }
 
         private async Task RemoveWebinarAsync(Webinar webinar)
         {
@@ -266,5 +282,38 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                     .Map(webinar => MappingFlyerLinkAsync(webinar, image))
                     .Map(ConvertToDto)
                     .FinallyOperationResult();
+
+        public async Task<OperationResult> UpdateWebinarNumbersAsync()
+        {
+            var webinars = await _dbContext.Webinars
+                .Where(x => x.Status == Enums.WebinarStatus.Draft || x.Status == Enums.WebinarStatus.Published)
+                .Where(x => x.StartDateTime.Date >= DateTime.Today)
+                .ToListAsync();
+
+
+            if (!webinars.Any()) return OperationResult.Fail(new("No hay webinars"));
+
+
+            var lastWebinarNumberConfirmated = await _dbContext.Webinars
+                .Where(x => x.Status == Enums.WebinarStatus.Published)
+                .OrderByDescending(x => x.StartDateTime)
+                .Select(x => x.Number)
+                .FirstOrDefaultAsync();
+
+
+            webinars.UpdateWebinarNumber(lastWebinarNumberConfirmated);
+
+            _dbContext.Webinars.UpdateRange(webinars);
+
+            await _dbContext.SaveChangesAsync();
+
+
+            foreach (var item in webinars)
+            {
+                await _eventDispatcher.PublishAsync(new WebinarUpdatedEventInput(item.Id));
+            }
+
+            return OperationResult.Success();
+        }
     }
 }

@@ -68,6 +68,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             => await GetProposalById(id, false)
                 .ToResult("No existe una propuesta con ese id.")
                 .Tap(RemoveProposalAsync)
+                .Tap(async () => await _messageBroker.PublishAsync(new ProposalDeletedEventInput(id)))
                 .FinallyOperationResult();
 
 
@@ -94,7 +95,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
         private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter, bool include)
         => await _dbContext.Proposals.AsNoTracking()
-                    
+
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.Contains((filter.Title ?? string.Empty).ToLower()))
                     .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.GetValueOrDefault())
                     .WhereIf(filter.IsActive.HasValue, x => x.IsActive == filter.IsActive.GetValueOrDefault())

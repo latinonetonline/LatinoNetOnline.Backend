@@ -21,7 +21,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Validators
 
             //RuleFor(x => x.Title).NotEmpty().WithMessage("Ingrese un Titulo valido.");
             //RuleFor(x => x.Description).NotEmpty().WithMessage("Ingrese una Descripción valida.");
-            RuleFor(x => x.Number).GreaterThan(0).WithMessage("El número del Webinar debe ser mayor a 0.");
             RuleFor(x => x.Status).IsInEnum().WithMessage("El estado no es valido.");
 
         }

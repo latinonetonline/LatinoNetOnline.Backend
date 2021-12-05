@@ -50,6 +50,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
                 .Subscribe<ProposalUpdatedEventInput>((sp, input)
                     => sp.CreateScope().ServiceProvider
                         .GetService<IEventHandler<ProposalUpdatedEventInput>>()
+                        .HandleAsync(input))
+
+                .Subscribe<ProposalDeletedEventInput>((sp, input)
+                    => sp.CreateScope().ServiceProvider
+                        .GetService<IEventHandler<ProposalDeletedEventInput>>()
                         .HandleAsync(input));
         }
 

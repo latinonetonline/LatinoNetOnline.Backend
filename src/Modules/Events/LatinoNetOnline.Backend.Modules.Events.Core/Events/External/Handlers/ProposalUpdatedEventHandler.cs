@@ -41,8 +41,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
             if (webinarResult.IsSuccess)
             {
                 webinarResult = await _webinarService.UpdateAsync(new(
-                    webinarResult.Result.Id, 
-                    webinarResult.Result.Number,
+                    webinarResult.Result.Id,
                     webinarResult.Result.MeetupId,
                     proposalResult.Result.Proposal.EventDate,
                     webinarResult.Result.Streamyard,
@@ -50,6 +49,12 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
                     webinarResult.Result.Flyer,
                     webinarResult.Result.Status
                     ));
+
+                if (!webinarResult.IsSuccess)
+                {
+                    _logger.LogError($"Hubo un error al modificar el Webinar.");
+                    return;
+                }
             }
             else
             {
@@ -63,23 +68,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.External.Handlers
 
             }
 
-            var eventMeetupResult = await _meetupService.GetMeetupAsync(webinarResult.Result.MeetupId);
-
-            if (!eventMeetupResult.IsSuccess)
-            {
-                _logger.LogError($"Hubo un error al traer el Meetup.");
-                return;
-            }
-
-            UpdateMeetupEventInput updateMeetupEventInput = new(webinarResult.Result.MeetupId, proposalResult.Result.Proposal.Title, webinarResult.Result.GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinarResult.Result.LiveStreaming, eventMeetupResult.Result?.Photo?.Id);
-
-            eventMeetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
-
-            if (!eventMeetupResult.IsSuccess || eventMeetupResult.Result is null)
-            {
-                _logger.LogError($"Hubo un error al modificar el Meetup.");
-                return;
-            }
 
             _logger.LogInformation($"Finish ProposalUpdatedEventHandler");
         }

@@ -20,6 +20,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         Task<OperationResult<MeetupEvent>> CreateEventAsync(CreateMeetupEventInput input);
         Task<OperationResult<MeetupEvent>> UpdateEventAsync(UpdateMeetupEventInput input);
         Task<OperationResult<MeetupEvent>> PublishEventAsync(long meetupId);
+        Task<OperationResult> DeleteEventAsync(long meetupId);
         Task<OperationResult<MeetupEvent>> AnnounceEventAsync(long meetupId);
     }
 
@@ -261,6 +262,37 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             }
 
             return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
+        }
+
+        public async Task<OperationResult> DeleteEventAsync(long meetupId)
+        {
+            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
+
+            string mutation = @"
+                         mutation($input: DeleteEventInput!) {
+                              deleteEvent(input: $input) {
+                                success
+
+                                errors {
+                                  message
+                                  code
+                                  field
+                                }
+                              }
+                            }";
+
+            var variables = new
+            {
+                Input = new
+                {
+                    EventId = meetupId,
+                    RemoveFromCalendar = true
+                }
+            };
+
+            var meetupEvent = await _graphQLManager.ExceuteMutationAsync<DeleteEventResponse>(_endpoint, "deleteEvent", mutation, variables, token.AccessToken);
+
+            return OperationResult.Success();
         }
     }
 }
