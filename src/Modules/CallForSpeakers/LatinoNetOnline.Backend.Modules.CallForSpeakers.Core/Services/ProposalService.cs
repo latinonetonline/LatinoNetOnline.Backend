@@ -27,7 +27,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult> DeleteAsync(Guid id);
         Task<OperationResult> DeleteAllAsync();
         Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter);
-        Task<OperationResult<ProposalDateDto>> GetAllDatesAsync();
+        Task<OperationResult<ProposalDateDto>> GetDatesAsync();
         Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input);
     }
 
@@ -50,7 +50,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
                 .Map(ConvertToFullDto)
                 .FinallyOperationResult();
 
-        public Task<OperationResult<ProposalDateDto>> GetAllDatesAsync()
+        public Task<OperationResult<ProposalDateDto>> GetDatesAsync()
             => GetProposalDates()
                 .ToResult("No hay ninguna propuesta.")
                 .Map(dates => new ProposalDateDto(dates))
@@ -94,7 +94,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
 
         private async Task<Maybe<List<Proposal>>> GetProposals(ProposalFilter filter, bool include)
-        => await _dbContext.Proposals.AsNoTracking()
+            => await _dbContext.Proposals.AsNoTracking()
 
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Title), x => x.Title.Contains((filter.Title ?? string.Empty).ToLower()))
                     .WhereIf(filter.Date.HasValue, x => x.EventDate.Date == filter.Date.GetValueOrDefault())
@@ -106,7 +106,13 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
 
         private async Task<Maybe<List<DateTime>>> GetProposalDates()
-        => await _dbContext.Proposals.AsNoTracking().Select(x => x.EventDate).ToListAsync();
+            => await _dbContext.Proposals.AsNoTracking()
+            .Where(x => x.EventDate >= DateTime.Today)
+            .Select(x => x.EventDate)
+            .Union(_dbContext.UnavailableDates.AsNoTracking()
+                .Where(x => x.Date >= DateTime.Today)
+                .Select(x => x.Date))
+            .ToListAsync();
 
 
         private async Task<Maybe<Proposal>> GetProposalById(Guid id, bool include)

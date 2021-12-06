@@ -141,7 +141,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             ProposalService service = mockObject.GetProposalService();
 
-            var result = await service.GetAllDatesAsync();
+            var result = await service.GetDatesAsync();
 
             Assert.True(result.IsSuccess);
             Assert.Empty(result.Result.Dates);
@@ -163,7 +163,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             ProposalService service = mockObject.GetProposalService();
 
-            var result = await service.GetAllDatesAsync();
+            var result = await service.GetDatesAsync();
 
             Assert.True(result.IsSuccess);
             Assert.Equal(eventDate, result.Result.Dates.Single());

@@ -16,6 +16,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
 
         public DbSet<Speaker> Speakers => Set<Speaker>();
         public DbSet<Proposal> Proposals => Set<Proposal>();
+        public DbSet<UnavailableDate> UnavailableDates => Set<UnavailableDate>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,6 +61,18 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
 
                 builder.Property(e => e.KnowledgeAnswer);
                 builder.Property(e => e.UseCaseAnswer);
+
+            });
+
+            modelBuilder.Entity<UnavailableDate>(builder =>
+            {
+                builder.ToTable("UnavailableDates");
+
+                builder.HasKey(e => e.Id);
+
+                builder.Property(e => e.Reason).IsRequired();
+                builder.Property(e => e.Date).IsRequired();
+  
 
             });
 
