@@ -295,7 +295,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
 
             var lastWebinarNumberConfirmated = await _dbContext.Webinars
-                .Where(x => x.Status == Enums.WebinarStatus.Published)
+                .Where(x => x.Status == Enums.WebinarStatus.Published && x.StartDateTime.Date < DateTime.Today)
                 .OrderByDescending(x => x.StartDateTime)
                 .Select(x => x.Number)
                 .FirstOrDefaultAsync();
