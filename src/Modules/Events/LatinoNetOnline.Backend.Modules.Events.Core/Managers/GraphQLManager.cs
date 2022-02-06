@@ -58,15 +58,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                 var response = await graphQLHttpClient.SendQueryAsync<object>(request);
 
                 var stringResult = response.Data.ToString();
-                stringResult = stringResult.Replace($"\"{graphQLQueryType}\":", string.Empty);
+                stringResult = stringResult!.Replace($"\"{graphQLQueryType}\":", string.Empty);
                 stringResult = stringResult.Remove(0, 1);
                 stringResult = stringResult.Remove(stringResult.Length - 1, 1);
 
                 var result = JsonSerializer.Deserialize<T>(stringResult, _jsonOptions);
 
-                return result;
+                return result!;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -95,15 +95,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                 var response = await graphQLHttpClient.SendQueryAsync<object>(request);
 
                 var stringResult = response.Data.ToString();
-                stringResult = stringResult.Replace($"\"{graphQLQueryType}\":", string.Empty);
+                stringResult = stringResult!.Replace($"\"{graphQLQueryType}\":", string.Empty);
                 stringResult = stringResult.Remove(0, 1);
                 stringResult = stringResult.Remove(stringResult.Length - 1, 1);
 
                 var result = JsonSerializer.Deserialize<List<T>>(stringResult, _jsonOptions);
 
-                return result;
+                return result!;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -132,15 +132,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                 var response = await graphQLHttpClient.SendMutationAsync<object>(request);
 
                 var stringResult = response.Data.ToString();
-                stringResult = stringResult.Replace($"\"{graphQLQueryType}\":", string.Empty);
+                stringResult = stringResult!.Replace($"\"{graphQLQueryType}\":", string.Empty);
                 stringResult = stringResult.Remove(0, 1);
                 stringResult = stringResult.Remove(stringResult.Length - 1, 1);
 
                 var result = JsonSerializer.Deserialize<T>(stringResult, _jsonOptions);
 
-                return result;
+                return result!;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

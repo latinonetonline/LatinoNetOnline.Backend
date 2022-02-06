@@ -230,12 +230,14 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         {
             var proposalResult = await _proposalService.GetByIdAsync(new(webinar.ProposalId));
 
-            var photoResult = await _meetupService.UploadPhotoAsync(webinar.MeetupId, image);
+            UploadImageInput uploadImageInput = new("EVENT_PHOTO", webinar.Id + ".jpeg", "JPEG", image);
+
+            var photoResult = await _meetupService.UploadPhotoAsync(uploadImageInput);
 
 
-            webinar.Flyer = photoResult.Result.HighresLink;
+            webinar.Flyer = new Uri(Path.Combine("https://secure.meetupstatic.com/", photoResult.Result.ImagePath));
 
-            UpdateMeetupEventInput updateMeetupEventInput = new(webinar.MeetupId, proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinar.LiveStreaming, photoResult.Result?.Id);
+            UpdateMeetupEventInput updateMeetupEventInput = new(webinar.MeetupId, proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinar.LiveStreaming, photoResult.Result.Image.Id);
 
             var meetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
 
