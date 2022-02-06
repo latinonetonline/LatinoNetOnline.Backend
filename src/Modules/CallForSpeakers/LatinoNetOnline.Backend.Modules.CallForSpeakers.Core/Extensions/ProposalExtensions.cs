@@ -67,12 +67,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
 
             string webinarDate = proposal.Proposal.EventDate.ToString("dddd dd 'de' MMMM 'del' yyyy", culture);
 
-            document.GetElementById("webinar-flyer").SetAttribute("src", webinar.Flyer.ToString());
+            document.GetElementById("webinar-flyer").SetAttribute("src", webinar.Flyer!.ToString());
             document.GetElementById("proposal-title").TextContent = proposal.Proposal.Title;
             document.GetElementById("proposal-description").TextContent = proposal.Proposal.Description;
 
-            document.GetElementById("streamyard-link-1").SetAttribute("href", webinar.Streamyard.ToString());
-            document.GetElementById("streamyard-link-2").SetAttribute("href", webinar.Streamyard.ToString());
+            document.GetElementById("streamyard-link-1").SetAttribute("href", webinar.Streamyard!.ToString());
+            document.GetElementById("streamyard-link-2").SetAttribute("href", webinar.Streamyard!.ToString());
             document.GetElementById("streamyard-link-2").TextContent = ShortLink(webinar.Streamyard);
 
             Uri meetupLink = new($"https://www.meetup.com/latino-net-online/events/{webinar.MeetupId}/");
@@ -81,7 +81,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
             document.GetElementById("meetup-link-2").SetAttribute("href", meetupLink.ToString());
             document.GetElementById("meetup-link-2").TextContent = ShortLink(meetupLink);
 
-            string ShortLink(Uri link)
+            static string ShortLink(Uri link)
                 => link.ToString().Replace("https://", string.Empty).Replace("www.", string.Empty);
 
 

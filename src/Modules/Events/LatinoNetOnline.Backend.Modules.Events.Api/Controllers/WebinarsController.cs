@@ -56,6 +56,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
 
 
         [HttpPost("{id}/[action]")]
+        [AllowAnonymous]
         public async Task<IActionResult> Photo(Guid id, IFormFile file)
             => new OperationActionResult(await _service.ChangePhotoAsync(id, file.OpenReadStream()));
 

@@ -61,7 +61,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         }
 
 
-        void AddEnUnaHoraComenzamosPosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
+        static void AddEnUnaHoraComenzamosPosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
         {
             string enUnaHoraComenzamosText = string.Format(GetEnUnaHoraComenzamosTemplate(), webinar.MeetupId);
 
@@ -70,7 +70,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             metricoolText.AppendLine($"\"{enUnaHoraComenzamosText}\";\"{proposal.Proposal.EventDate:yyyy-MM-dd}\";\"10:45\";false;true;false;false;false;false;;\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";false;;");
         }
 
-        void AddEstamosOnlinePosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
+        static void AddEstamosOnlinePosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
         {
             var speaker = proposal.Speakers.ElementAt(0);
 
@@ -91,7 +91,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             metricoolText.AppendLine($"\"{estamosOnlineText}\";\"{proposal.Proposal.EventDate:yyyy-MM-dd}\";\"12:10\";false;true;false;false;false;false;;\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";false;;");
         }
 
-        void AddWebinarDescriptionPosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
+        static void AddWebinarDescriptionPosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
         {
             string descriptionText = string.Format(GetDescriptionTemplate(), proposal.Proposal.Description, webinar.MeetupId);
 
@@ -101,7 +101,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         }
 
 
-        void AddWebinarAlertPosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
+        static void AddWebinarAlertPosts(StringBuilder metricoolText, ProposalFullDto proposal, Webinar webinar)
         {
             var speaker = proposal.Speakers.ElementAt(0);
             StringBuilder speakerText = new(speaker.Twitter);
@@ -134,10 +134,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         }
 
 
-        string GetFileHeader()
+        static string GetFileHeader()
             => "Text;Date;Time;Facebook;Twitter;LinkedIn;GMB;Instagram;Pinterest;Picture Url 1;Picture Url 2;Picture Url 3;Picture Url 4;Picture Url 5;Picture Url 6;Picture Url 7;Picture Url 8;Picture Url 9;Picture Url 10;Shortener;Pinterest Board;Pinterest Pin Title";
 
-        string GetWebinarAlertTemplate()
+        static string GetWebinarAlertTemplate()
             => @"🚨 Webinar Alert 🚨
 
 🕙 Cuando: {0} a las 15:00 UTC
@@ -153,7 +153,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 Los esperamos! 😉";
 
 
-        string GetEnUnaHoraComenzamosTemplate()
+        static string GetEnUnaHoraComenzamosTemplate()
             => @"En una hora arrancamos 👇👇👇
 
 https://www.meetup.com/es/latino-net-online/events/{0}/
@@ -162,7 +162,7 @@ https://www.meetup.com/es/latino-net-online/events/{0}/
 
 
 
-        string GetEstamosOnlineTemplate()
+        static string GetEstamosOnlineTemplate()
             => @"Estamos Online 🔥🔥
 Junto a 🎤 {0}
 
@@ -170,7 +170,7 @@ Junto a 🎤 {0}
 
 #dotnet #webinar ";
 
-        string GetDescriptionTemplate()
+        static string GetDescriptionTemplate()
             => @"{0}
 
 https://www.meetup.com/es/latino-net-online/events/{1}/
@@ -180,7 +180,7 @@ Los Esperamos 😉
 #dotnet #webinar";
 
 
-        string GetDateString(DateTime dateTime)
+        static string GetDateString(DateTime dateTime)
         {
             CultureInfo culture = new("es-ES");
             return $"{culture.TextInfo.ToTitleCase(culture.DateTimeFormat.GetDayName(dateTime.DayOfWeek))} {dateTime.Day} de {culture.TextInfo.ToTitleCase(culture.DateTimeFormat.GetMonthName(dateTime.Month))} del {dateTime.Year}";

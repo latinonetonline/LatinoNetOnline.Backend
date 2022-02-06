@@ -25,11 +25,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Modules
 
         public bool TryAddRequestAction(string path, Type receiverType, Func<IServiceProvider, object, Task<object>> action)
         {
-            var registration = new ModuleRequestRegistration
-            {
-                ReceiverType = receiverType,
-                Action = action
-            };
+            var registration = new ModuleRequestRegistration(receiverType, action);
 
             var isValid = _requestActions.TryAdd(path, registration);
 
