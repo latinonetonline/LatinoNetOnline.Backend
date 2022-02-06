@@ -1,4 +1,6 @@
 ﻿
+using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups.Objects;
+
 using System;
 using System.Text.Json.Serialization;
 
@@ -10,7 +12,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
         {
         }
 
-        public MeetupEvent(string? id, string? title, string? localTime, string? localDate, Uri? link, string? description, Uri? howToFindUs, MeetupPhoto? photo)
+        public MeetupEvent(string? id, string? title, string? localTime, string? localDate, Uri? link, string? description, Uri? howToFindUs, Image? image)
         {
             Id = id;
             Title = title;
@@ -19,7 +21,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
             Link = link;
             Description = description;
             HowToFindUs = howToFindUs;
-            Photo = photo;
+            Image = image;
         }
 
         public string? Id { get; set; }
@@ -41,8 +43,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups
         [JsonPropertyName("how_to_find_us")]
         public Uri? HowToFindUs { get; set; }
 
-        [JsonPropertyName("featured_photo")]
-        public MeetupPhoto? Photo { get; set; }
+        public Image? Image { get; set; }
 
 
         //Graph Properties

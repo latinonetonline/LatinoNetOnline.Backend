@@ -18,11 +18,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> GetEvents()
-            => new OperationActionResult(await _service.GetEventsAsync());
-
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(long id)
             => new OperationActionResult(await _service.GetMeetupAsync(id));

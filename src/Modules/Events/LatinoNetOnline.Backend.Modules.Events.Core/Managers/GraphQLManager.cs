@@ -10,9 +10,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
 {
     interface IGraphQLManager
     {
-        Task<T> ExceuteMutationAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object variables, string accessToken);
-        Task<T> ExceuteQueryAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object variables, string accessToken);
-        Task<IEnumerable<T>> ExceuteQueryReturnListAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object variables, string accessToken);
+        Task<T> ExceuteMutationAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object? variables, string accessToken);
+        Task<T> ExceuteQueryAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object? variables, string accessToken);
+        Task<IEnumerable<T>> ExceuteQueryReturnListAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object? variables, string accessToken);
     }
 
     class GraphQLManager : IGraphQLManager
@@ -35,7 +35,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
             graphQLHttpClient = new GraphQLHttpClient(graphQLOptions, new GraphQL.Client.Serializer.SystemTextJson.SystemTextJsonSerializer());
         }
 
-        public async Task<T> ExceuteQueryAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object variables, string accessToken)
+        public async Task<T> ExceuteQueryAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object? variables, string accessToken)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
             }
         }
 
-        public async Task<IEnumerable<T>> ExceuteQueryReturnListAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object variables, string accessToken)
+        public async Task<IEnumerable<T>> ExceuteQueryReturnListAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object? variables, string accessToken)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
             }
         }
 
-        public async Task<T> ExceuteMutationAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object variables, string accessToken)
+        public async Task<T> ExceuteMutationAsync<T>(Uri endpoint, string graphQLQueryType, string completeQueryString, object? variables, string accessToken)
         {
             try
             {

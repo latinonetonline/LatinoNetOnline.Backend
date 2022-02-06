@@ -107,9 +107,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             Uri uri = new("https://tests.com");
 
-            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri, uri, uri))));
+            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri.ToString(), uri.ToString()))));
 
-            mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new("123", default, default, default, default, default, default, new(default, uri, uri, uri))));
+            mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new("123", default, default, default, default, default, default, new(default, uri.ToString(), uri.ToString()))));
 
 
             SpeakerDto speakerDto = new(Guid.NewGuid(), "Name", "LastName", "Email", "Twitter", "Description", default);
@@ -136,7 +136,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             Uri uri = new("https://tests.com");
 
-            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri, uri, uri))));
+            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri.ToString(), uri.ToString()))));
 
             mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Fail(new("error")));
 
@@ -166,14 +166,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
             Uri uri = new("https://tests.com");
 
 
-            mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri, uri, uri))));
+            mockObject.MeetupService.Setup(x => x.CreateEventAsync(It.IsAny<CreateMeetupEventInput>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri.ToString(), uri.ToString()))));
 
             Webinar webinar = new(Guid.NewGuid(), 1, 1, DateTime.Now, uri, uri, uri);
             mockObject.WebinarDbContext.Webinars.Add(webinar);
 
             mockObject.WebinarDbContext.SaveChanges();
 
-            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri, uri, uri))));
+            mockObject.MeetupService.Setup(x => x.GetMeetupAsync(It.IsAny<long>())).ReturnsAsync(OperationResult<MeetupEvent>.Success(new(default, default, default, default, default, default, default, new(default, uri.ToString(), uri.ToString()))));
 
 
             SpeakerDto speakerDto = new(Guid.NewGuid(), "Name", "LastName", "Email", "Twitter", "Description", default);

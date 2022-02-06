@@ -17,7 +17,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
     interface IMeetupService
     {
         Task<OperationResult<MeetupEvent>> GetMeetupAsync(long meetupId);
-        Task<OperationResult<IEnumerable<MeetupEvent>?>> GetEventsAsync();
         Task<OperationResult<ImageUploadResponse>> UploadPhotoAsync(UploadImageInput input);
         Task<OperationResult<MeetupEvent>> CreateEventAsync(CreateMeetupEventInput input);
         Task<OperationResult<MeetupEvent>> UpdateEventAsync(UpdateMeetupEventInput input);
@@ -32,43 +31,43 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         private readonly ITokenRefresherManager _tokenRefresherManager;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        private readonly HttpClient _httpClient;
         const string URLNAME = "latino-net-online";
         const long GROUPID = 34573949;
         private readonly Uri _endpoint = new("https://api.meetup.com/gql");
 
-        public MeetupService(ITokenRefresherManager tokenRefresherManager, IGraphQLManager graphQLManager, HttpClient httpClient, IHttpClientFactory httpClientFactory)
+        public MeetupService(ITokenRefresherManager tokenRefresherManager, IGraphQLManager graphQLManager, IHttpClientFactory httpClientFactory)
         {
             _tokenRefresherManager = tokenRefresherManager;
             _graphQLManager = graphQLManager;
-            _httpClient = httpClient;
             _httpClientFactory = httpClientFactory;
         }
+
 
         public async Task<OperationResult<MeetupEvent>> GetMeetupAsync(long meetupId)
         {
             var token = await _tokenRefresherManager.GetMeetupTokenAsync();
 
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            string query = @"
+                         query {
+                              event(id: "+ meetupId  + @") {
+                           
+                                  id
+                                  title
+                                  eventUrl
+                                  description
+                                  dateTime
+                                  howToFindUs
+                                  image{
+                                    id
+                                  }
 
-            var response = await _httpClient.GetAsync($"https://api.meetup.com/{URLNAME}/events/{meetupId}?fields=featured_photo,plain_text_description");
+                              }
+                            }";
 
-            if (!response.IsSuccessStatusCode)
-                return OperationResult<MeetupEvent>.Fail(new("meetup_not_found"));
 
-            var meetup = await response.Content.ReadFromJsonAsync<MeetupEvent>();
+            var meetupEvent = await _graphQLManager.ExceuteQueryAsync<MeetupEvent>(_endpoint, "event", query, null, token.AccessToken);
 
-            if (meetup is null)
-                return OperationResult<MeetupEvent>.Fail(new("meetup_not_found"));
-
-            return OperationResult<MeetupEvent>.Success(meetup);
-        }
-
-        public async Task<OperationResult<IEnumerable<MeetupEvent>?>> GetEventsAsync()
-        {
-            var result = await _httpClient.GetFromJsonAsync<IEnumerable<MeetupEvent>>($"https://api.meetup.com/{URLNAME}/events?fields=featured_photo,plain_text_description");
-
-            return OperationResult<IEnumerable<MeetupEvent>?>.Success(result);
+            return OperationResult<MeetupEvent>.Success(meetupEvent);
         }
 
         public async Task<OperationResult<MeetupEvent>> CreateEventAsync(CreateMeetupEventInput input)
@@ -99,7 +98,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 Input = new
                 {
                     GroupUrlname = "latino-net-online",
-                    input.TItle,
+                    input.Title,
                     input.Description,
                     StartDateTime = input.StartDateTime.AddHours(9).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
                     VenueId = "online",
@@ -157,35 +156,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             return OperationResult<MeetupEvent>.Success(meetupEvent.Event);
         }
 
-        public async Task<OperationResult<MeetupPhoto>> UploadPhotoOldAsync(long meetupId, Stream stream)
-        {
-            var formData = new MultipartFormDataContent
-            {
-                { new StreamContent(stream), "photo", "photo" }
-            };
-
-            var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.meetup.com/{URLNAME}/events/{meetupId}/photos?fields=base_url,id,self,comment_count")
-            {
-                Content = formData
-            };
-
-            var token = await _tokenRefresherManager.GetMeetupTokenAsync();
-
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
-
-            var response = await _httpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var photo = await response.Content.ReadFromJsonAsync<MeetupPhoto>();
-
-                if (photo is not null)
-                    return OperationResult<MeetupPhoto>.Success(photo);
-            }
-
-            return OperationResult<MeetupPhoto>.Fail(new("error_meetup_upload_photo"));
-        }
-
         public async Task<OperationResult<ImageUploadResponse>> UploadPhotoAsync(UploadImageInput input)
         {
             var token = await _tokenRefresherManager.GetMeetupTokenAsync();
@@ -200,11 +170,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                                   preview
                                 }
                                 imagePath
-                                errors {
-                                  message
-                                  code
-                                  field
-                                }
                               }
                             }";
 

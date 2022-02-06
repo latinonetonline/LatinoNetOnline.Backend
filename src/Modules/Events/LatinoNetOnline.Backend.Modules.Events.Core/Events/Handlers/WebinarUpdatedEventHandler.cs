@@ -56,10 +56,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
                 return;
             }
 
-            
 
 
-            UpdateMeetupEventInput updateMeetupEventInput = new(webinarResult.Result.MeetupId, proposalResult.Result.Proposal.Title, webinarResult.Result.GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinarResult.Result.LiveStreaming, eventMeetupResult.Result?.Photo?.Id);
+
+            UpdateMeetupEventInput updateMeetupEventInput = new(webinarResult.Result.MeetupId,
+                proposalResult.Result.Proposal.Title,
+                webinarResult.Result.GetDescription(proposalResult.Result),
+                proposalResult.Result.Proposal.EventDate,
+                webinarResult.Result.LiveStreaming,
+                eventMeetupResult.Result?.Image is not null ? long.Parse(eventMeetupResult.Result.Image.Id) : null);
 
             eventMeetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
 
