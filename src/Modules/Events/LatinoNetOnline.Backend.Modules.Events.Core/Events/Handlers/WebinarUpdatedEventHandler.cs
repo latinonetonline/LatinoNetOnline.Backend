@@ -62,7 +62,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Events.Handlers
             UpdateMeetupEventInput updateMeetupEventInput = new(webinarResult.Result.MeetupId,
                 proposalResult.Result.Proposal.Title,
                 webinarResult.Result.GetDescription(proposalResult.Result),
-                proposalResult.Result.Proposal.EventDate,
+                proposalResult.Result.Proposal.EventDate.Date,
                 webinarResult.Result.LiveStreaming,
                 eventMeetupResult.Result?.Image is not null ? long.Parse(eventMeetupResult.Result.Image.Id) : null);
 

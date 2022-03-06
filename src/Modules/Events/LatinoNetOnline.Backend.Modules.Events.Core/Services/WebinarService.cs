@@ -183,7 +183,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         {
             var proposalResult = await _proposalService.GetByIdAsync(new(webinar.ProposalId));
 
-            var meetup = await _meetupService.CreateEventAsync(new(proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), webinar.StartDateTime));
+            var meetup = await _meetupService.CreateEventAsync(new(proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), webinar.StartDateTime.Date));
 
             if (meetup.IsSuccess && meetup.Result.Id is not null)
             {
@@ -237,7 +237,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
             webinar.Flyer = new Uri("https://secure.meetupstatic.com" + photoResult.Result.ImagePath);
 
-            UpdateMeetupEventInput updateMeetupEventInput = new(webinar.MeetupId, proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate, webinar.LiveStreaming, long.Parse(photoResult.Result.Image.Id));
+            UpdateMeetupEventInput updateMeetupEventInput = new(webinar.MeetupId, proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate.Date, webinar.LiveStreaming, long.Parse(photoResult.Result.Image.Id));
 
             var meetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
 
