@@ -100,7 +100,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                     GroupUrlname = "latino-net-online",
                     input.Title,
                     input.Description,
-                    StartDateTime = input.StartDateTime.AddHours(9).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
+                    StartDateTime = input.StartDateTime.AddHours(10).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
                     VenueId = "online",
                     Duration = "PT2H",
                     PublishStatus = "DRAFT"
@@ -143,7 +143,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                     input.EventId,
                     input.Title,
                     input.Description,
-                    StartDateTime = input.StartDateTime.AddHours(9).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
+                    StartDateTime = input.StartDateTime.AddHours(10).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",
                     input.HowToFindUs,
                     FeaturedPhotoId = input.PhotoId,
                     VenueId = "online",
