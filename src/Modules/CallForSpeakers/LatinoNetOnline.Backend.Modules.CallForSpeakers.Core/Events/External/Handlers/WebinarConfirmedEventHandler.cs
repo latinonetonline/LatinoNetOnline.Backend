@@ -1,6 +1,7 @@
 ﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External.H
 
         public async Task HandleAsync(WebinarConfirmedEventInput @event)
         {
-            var webinarResult = await _webinarService.GetAsync(new(@event.Id));
+            var webinarResult = await _webinarService.GetByIdAsync(new(@event.Id));
 
             if (!webinarResult.IsSuccess)
             {

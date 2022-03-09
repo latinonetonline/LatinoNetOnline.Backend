@@ -5,6 +5,8 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
@@ -32,6 +34,12 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
             services.AddScoped<IUnavailableDateService, UnavailableDateService>();
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<IEmailManager, EmailManager>();
+
+            services.AddScoped<IMeetupService, MeetupService>();
+            services.AddScoped<IMetricoolService, MetricoolService>();
+            services.AddScoped<IGraphQLManager, GraphQLManager>();
+            services.AddScoped<ITokenRefresherManager, TokenRefresherManager>();
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),

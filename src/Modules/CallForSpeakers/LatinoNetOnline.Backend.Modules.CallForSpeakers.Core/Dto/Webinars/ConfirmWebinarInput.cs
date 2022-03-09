@@ -2,5 +2,5 @@
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars
 {
-    record GetWebinarInput(Guid Id);
+    record ConfirmWebinarInput(Guid Id);
 }

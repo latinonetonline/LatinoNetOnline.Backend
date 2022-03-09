@@ -2,8 +2,8 @@
 
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Webinars;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
 
 using System;
 using System.Globalization;

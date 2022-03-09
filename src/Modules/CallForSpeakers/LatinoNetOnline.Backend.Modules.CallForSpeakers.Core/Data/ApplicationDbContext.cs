@@ -17,6 +17,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
         public DbSet<Speaker> Speakers => Set<Speaker>();
         public DbSet<Proposal> Proposals => Set<Proposal>();
         public DbSet<UnavailableDate> UnavailableDates => Set<UnavailableDate>();
+        public DbSet<Webinar> Webinars => Set<Webinar>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,6 +77,25 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
 
             });
 
+            modelBuilder.Entity<Webinar>(builder =>
+            {
+                builder.ToTable("Webinars");
+
+                builder.HasKey(e => e.Id);
+
+                builder.Property(e => e.LiveStreaming)
+                    .HasConversion(v => v == null ? null : v.ToString(), db => db == null ? null : new Uri(db));
+
+                builder.Property(e => e.Streamyard)
+                    .HasConversion(v => v == null ? null : v.ToString(), db => db == null ? null : new Uri(db));
+
+                builder.Property(e => e.MeetupId);
+
+                builder.Property(e => e.Status).IsRequired();
+
+                builder.Property(e => e.Flyer)
+                    .HasConversion(v => v == null ? null : v.ToString(), db => db == null ? null : new Uri(db));
+            });
 
 
             base.OnModelCreating(modelBuilder);
