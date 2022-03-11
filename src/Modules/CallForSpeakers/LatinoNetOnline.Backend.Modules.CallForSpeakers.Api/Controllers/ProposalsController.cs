@@ -28,6 +28,7 @@ namespace LatinoNETOnline.App.Api.Controllers
             => new OperationActionResult(await _proposalService.GetAllAsync(filter));
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
             => new OperationActionResult(await _proposalService.GetByIdAsync(new(id)));
 
