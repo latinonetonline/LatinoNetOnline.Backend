@@ -4,6 +4,8 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Enums;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +38,12 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         {
             MockObject mockObject = new();
 
+            Proposal proposal = new("test", "tests", string.Empty, string.Empty, string.Empty, new(2022, 12, 25));
+
+            mockObject.ApplicationDbContext.Proposals.Add(proposal);
+
             Uri uri = new("https://tests.com");
-            Webinar webinar = new(Guid.NewGuid(), 1, 1, uri, uri, uri);
+            Webinar webinar = new(proposal.Id, 1, 1, uri, uri, uri);
             webinar.Status = WebinarStatus.Draft;
             mockObject.ApplicationDbContext.Webinars.Add(webinar);
 
@@ -113,9 +119,15 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         {
             MockObject mockObject = new();
 
+            Proposal proposal = new("test", "tests", string.Empty, string.Empty, string.Empty, new(2022, 12, 25));
+
+            mockObject.ApplicationDbContext.Proposals.Add(proposal);
+
+            mockObject.ApplicationDbContext.SaveChanges();
+
             Uri uri = new("https://tests.com");
 
-            Webinar webinar = new(Guid.NewGuid(), 1, 1, uri, uri, uri);
+            Webinar webinar = new(proposal.Id, 1, 1, uri, uri, uri);
             mockObject.ApplicationDbContext.Webinars.Add(webinar);
 
             mockObject.ApplicationDbContext.SaveChanges();
@@ -134,11 +146,18 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         {
             MockObject mockObject = new();
 
+            Proposal proposal1 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Now.AddDays(1));
+
+            Proposal proposal2 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Now.AddDays(2));
+
+            mockObject.ApplicationDbContext.Proposals.Add(proposal1);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal2);
+
             Uri uri = new("https://tests.com");
 
 
-            Webinar webinar = new(Guid.NewGuid(), 1, 1, uri, uri, uri);
-            Webinar webinar2 = new(Guid.NewGuid(), 2, 2, uri, uri, uri);
+            Webinar webinar = new(proposal1.Id, 1, 1, uri, uri, uri);
+            Webinar webinar2 = new(proposal2.Id, 2, 2, uri, uri, uri);
 
             mockObject.ApplicationDbContext.Webinars.Add(webinar);
             mockObject.ApplicationDbContext.Webinars.Add(webinar2);
@@ -160,11 +179,21 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         {
             MockObject mockObject = new();
 
+            Proposal proposal1 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Now.AddDays(3));
+
+            Proposal proposal2 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Now.AddDays(2));
+
+            Proposal proposal3 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Now.AddDays(1));
+
+            mockObject.ApplicationDbContext.Proposals.Add(proposal1);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal2);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal3);
+
             Uri uri = new("https://tests.com");
 
-            Webinar webinar = new(Guid.NewGuid(), 1, 1, uri, uri, uri);
-            Webinar webinar2 = new(Guid.NewGuid(), 2, 2, uri, uri, uri);
-            Webinar webinar3 = new(Guid.NewGuid(), 3, 3, uri, uri, uri);
+            Webinar webinar = new(proposal1.Id, 1, 1, uri, uri, uri);
+            Webinar webinar2 = new(proposal2.Id, 2, 2, uri, uri, uri);
+            Webinar webinar3 = new(proposal3.Id, 3, 3, uri, uri, uri);
             mockObject.ApplicationDbContext.Webinars.Add(webinar2);
             mockObject.ApplicationDbContext.Webinars.Add(webinar3);
             mockObject.ApplicationDbContext.Webinars.Add(webinar);
@@ -181,5 +210,120 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         }
 
         #endregion
+
+
+        #region UpdateWebinarNumbersAsync
+
+        [Fact]
+        public async Task UpdateWebinarNumbersAsync_HasntWebinars_ResultError()
+        {
+            MockObject mockObject = new();
+
+
+            WebinarService service = mockObject.GetWebinarService();
+
+            var result = await service.UpdateWebinarNumbersAsync();
+
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task UpdateWebinarNumbersAsync_HasWebinars_ResultSuccess()
+        {
+            MockObject mockObject = new();
+
+            Proposal proposal1 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Today.AddDays(1));
+
+            Proposal proposal2 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Today.AddDays(2));
+
+            Proposal proposal3 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Today.AddDays(3));
+
+            mockObject.ApplicationDbContext.Proposals.Add(proposal1);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal2);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal3);
+
+            Uri uri = new("https://tests.com");
+
+
+            Webinar webinar = new(proposal1.Id, 0, 1, uri, uri, uri);
+            Webinar webinar2 = new(proposal2.Id, 0, 2, uri, uri, uri);
+            Webinar webinar3 = new(proposal3.Id, 0, 2, uri, uri, uri);
+
+            mockObject.ApplicationDbContext.Webinars.Add(webinar);
+            mockObject.ApplicationDbContext.Webinars.Add(webinar2);
+            mockObject.ApplicationDbContext.Webinars.Add(webinar3);
+
+
+            mockObject.ApplicationDbContext.SaveChanges();
+
+            WebinarService service = mockObject.GetWebinarService();
+
+            var result = await service.UpdateWebinarNumbersAsync();
+
+            webinar = mockObject.ApplicationDbContext.Webinars.First(x => x.Id == webinar.Id);
+            webinar2 = mockObject.ApplicationDbContext.Webinars.First(x => x.Id == webinar2.Id);
+            webinar3 = mockObject.ApplicationDbContext.Webinars.First(x => x.Id == webinar3.Id);
+
+
+
+
+            Assert.True(result.IsSuccess);
+            Assert.Equal(1, webinar.Number);
+            Assert.Equal(2, webinar2.Number);
+            Assert.Equal(3, webinar3.Number);
+        }
+
+        [Fact]
+        public async Task UpdateWebinarNumbersAsync_HasPastWebinarPublished_ResultSuccess()
+        {
+            MockObject mockObject = new();
+
+            Proposal proposal1 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Today.AddDays(-1));
+
+            Proposal proposal2 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Today.AddDays(2));
+
+            Proposal proposal3 = new("test", "tests", string.Empty, string.Empty, string.Empty, DateTime.Today.AddDays(3));
+
+            mockObject.ApplicationDbContext.Proposals.Add(proposal1);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal2);
+            mockObject.ApplicationDbContext.Proposals.Add(proposal3);
+
+            Uri uri = new("https://tests.com");
+
+
+            Webinar webinar = new(proposal1.Id, 4, 1, uri, uri, uri);
+            webinar.Status = WebinarStatus.Published;
+
+            Webinar webinar2 = new(proposal2.Id, 0, 2, uri, uri, uri);
+            Webinar webinar3 = new(proposal3.Id, 0, 2, uri, uri, uri);
+
+            mockObject.ApplicationDbContext.Webinars.Add(webinar);
+            mockObject.ApplicationDbContext.Webinars.Add(webinar2);
+            mockObject.ApplicationDbContext.Webinars.Add(webinar3);
+
+
+            mockObject.ApplicationDbContext.SaveChanges();
+
+            WebinarService service = mockObject.GetWebinarService();
+
+            var result = await service.UpdateWebinarNumbersAsync();
+
+            webinar = mockObject.ApplicationDbContext.Webinars.First(x => x.Id == webinar.Id);
+            webinar2 = mockObject.ApplicationDbContext.Webinars.First(x => x.Id == webinar2.Id);
+            webinar3 = mockObject.ApplicationDbContext.Webinars.First(x => x.Id == webinar3.Id);
+
+
+
+
+            Assert.True(result.IsSuccess);
+            Assert.Equal(4, webinar.Number);
+            Assert.Equal(5, webinar2.Number);
+            Assert.Equal(6, webinar3.Number);
+        }
+
+       
+
+        #endregion
+
     }
 }

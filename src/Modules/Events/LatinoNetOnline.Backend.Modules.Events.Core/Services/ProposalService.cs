@@ -73,7 +73,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         public async Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input)
         {
             var proposal = await GetProposalById(input.Id);
-            return new(new(proposal.ConvertToDto(), proposal.Speakers.Select(x => x.ConvertToDto())));
+
+            if (proposal is not null)
+                return new(new(proposal.ConvertToDto(), proposal.Speakers.Select(x => x.ConvertToDto())));
+            else
+                return OperationResult<ProposalFullDto>.Fail("No existe la propuesta.");
         }
 
 

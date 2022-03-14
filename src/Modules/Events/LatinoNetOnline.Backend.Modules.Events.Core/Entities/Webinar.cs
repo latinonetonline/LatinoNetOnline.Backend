@@ -19,6 +19,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Entities
             MeetupId = meetupId;
             Number = number;
             Flyer = flyer;
+            Status = WebinarStatus.Draft;
         }
 
         public Guid Id { get; set; }

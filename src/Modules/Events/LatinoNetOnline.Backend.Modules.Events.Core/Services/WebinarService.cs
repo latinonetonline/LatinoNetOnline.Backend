@@ -87,7 +87,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         public async Task<OperationResult<WebinarDto>> GetByIdAsync(GetWebinarInput input)
         {
             var webinar = await GetWebinarById(input.Id);
-            return new(webinar.ConvertToDto());
+            if (webinar is not null)
+                return new(webinar.ConvertToDto());
+            else
+                return OperationResult<WebinarDto>.Fail("No se encontro el webinar");
         }
 
 
@@ -100,7 +103,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 .OrderBy(x => x.Proposal.EventDate)
                 .FirstOrDefaultAsync();
 
-            return new(webinar.ConvertToDto());
+            if (webinar is not null)
+                return new(webinar.ConvertToDto());
+            else
+                return OperationResult<WebinarDto>.Fail("No se encontro el webinar");
         }
 
         public async Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId)
