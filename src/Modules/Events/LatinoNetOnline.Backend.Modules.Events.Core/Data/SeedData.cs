@@ -15,7 +15,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Data
         {
             var services = new ServiceCollection();
             services.AddLogging();
-            services.AddDbContext<EventDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                options.UseNpgsql(connectionString));
 
 
@@ -26,7 +26,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Data
             if (settingOptions.RunMigration)
             {
 
-                var context = scope.ServiceProvider.GetRequiredService<EventDbContext>();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 context.Database.Migrate();
 
             }

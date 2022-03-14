@@ -1,16 +1,14 @@
-﻿using LatinoNetOnline.Backend.Modules.Events.Core.Data;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 using System.IO;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
+namespace LatinoNetOnline.Backend.Modules.Events.Core.Data
 {
-    public class WebinarDbContextFactory : IDesignTimeDbContextFactory<EventDbContext>
+    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
-        public EventDbContext CreateDbContext(string[] args)
+        public ApplicationDbContext CreateDbContext(string[] args)
         {
             // Build config
             IConfiguration config = new ConfigurationBuilder()
@@ -21,10 +19,10 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
                 .Build();
 
             // Get connection string
-            var optionsBuilder = new DbContextOptionsBuilder<EventDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = config.GetConnectionString("Default");
             optionsBuilder.UseNpgsql(connectionString);
-            return new EventDbContext(optionsBuilder.Options);
+            return new ApplicationDbContext(optionsBuilder.Options);
         }
     }
 }

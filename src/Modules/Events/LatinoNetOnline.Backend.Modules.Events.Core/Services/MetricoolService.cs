@@ -21,10 +21,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
     class MetricoolService : IMetricoolService
     {
-        private readonly EventDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         private readonly IProposalService _proposalService;
 
-        public MetricoolService(EventDbContext dbContext, IProposalService proposalService)
+        public MetricoolService(ApplicationDbContext dbContext, IProposalService proposalService)
         {
             _dbContext = dbContext;
             _proposalService = proposalService;
@@ -38,7 +38,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
             if (!proposalResult.IsSuccess)
             {
-                return OperationResult<MetricoolExportDto>.Fail(proposalResult.Error);
+                return OperationResult<MetricoolExportDto>.Fail(proposalResult.Message);
             }
 
             var proposal = proposalResult.Result;

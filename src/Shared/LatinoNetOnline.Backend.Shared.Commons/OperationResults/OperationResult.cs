@@ -10,7 +10,7 @@ namespace LatinoNetOnline.Backend.Shared.Commons.OperationResults
 
         public bool IsSuccess { get; set; }
 
-        public ErrorResult Error { get; set; }
+        public string Message { get; set; }
 
         public static OperationResult Success() =>
 
@@ -29,11 +29,11 @@ namespace LatinoNetOnline.Backend.Shared.Commons.OperationResults
                  IsSuccess = false
              };
 
-        public static OperationResult Fail(ErrorResult error) =>
+        public static OperationResult Fail(string message) =>
 
              new()
              {
-                 Error = error,
+                 Message = message,
                  Status = HttpStatusCode.BadRequest,
                  IsSuccess = false
              };
@@ -54,11 +54,11 @@ namespace LatinoNetOnline.Backend.Shared.Commons.OperationResults
                  IsSuccess = false
              };
 
-        public static OperationResult ServerError(ErrorResult error) =>
+        public static OperationResult ServerError(string message) =>
 
              new()
              {
-                 Error = error,
+                 Message = message,
                  Status = HttpStatusCode.InternalServerError,
                  IsSuccess = false
              };

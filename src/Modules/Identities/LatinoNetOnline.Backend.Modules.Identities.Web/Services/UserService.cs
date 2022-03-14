@@ -49,7 +49,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             var user = _context.Users.FirstOrDefault(x => x.Id == id);
 
             if (user is null)
+            {
                 return OperationResult<UserRolesDto>.NotFound();
+            }
             else
             {
                 var getRolById = await _context.GetRolesAsync(user);
@@ -106,7 +108,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             var response = await _context.UpdateAsync(getUser);
 
             if (!response.Succeeded)
+            {
                 return OperationResult<UserRolesDto>.Fail(new("error_edit_user"));
+            }
 
             var asignRoleToUser = await AsignRoleToUser(getUser, user.Role);
             var userById = await _context.Users.SingleAsync(x => x.Id == user.Id.ToString());
@@ -120,7 +124,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             var findUserById = await _context.FindByIdAsync(userId);
 
             if (findUserById is null)
+            {
                 return OperationResult<UserRolesDto>.NotFound();
+            }
 
             var roleByUser = await _applicationContext.UserRoles.SingleAsync(x => x.UserId == userId);
             _applicationContext.UserRoles.Remove(roleByUser);
@@ -128,7 +134,9 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             var result = await _context.DeleteAsync(findUserById);
 
             if (!result.Succeeded)
+            {
                 return OperationResult<UserRolesDto>.Fail(new("error_delete_user"));
+            }
 
             return OperationResult.Success();
 
@@ -142,16 +150,22 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Services
             var findUserById = await _context.Users.SingleOrDefaultAsync(x => x.Id == user.Id);
 
             if (findUserById is null)
+            {
                 return OperationResult.Fail();
+            }
 
             var rolesByUser = await _context.GetRolesAsync(findUserById);
             if (rolesByUser.Count > 0)
+            {
                 await _context.RemoveFromRoleAsync(findUserById, rolesByUser.Single());
+            }
 
             var result = await _context.AddToRoleAsync(findUserById, role);
 
             if (!result.Succeeded)
+            {
                 return OperationResult.Fail();
+            }
 
             return OperationResult.Success();
 

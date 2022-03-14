@@ -1,4 +1,5 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Data;
+using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
@@ -15,26 +16,34 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
     {
         public MockObject()
         {
-            WebinarDbContext = new EventDbContext(
-                    new DbContextOptionsBuilder<EventDbContext>()
+            ApplicationDbContext = new ApplicationDbContext(
+                    new DbContextOptionsBuilder<ApplicationDbContext>()
                         .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                         .Options
                 );
 
+            EmailManagerMock = new();
+            MessageBrokerMock = new();
             MeetupService = new();
             ProposalService = new();
             EventDispatcher = new();
             MessageBroker = new();
         }
 
-        public EventDbContext WebinarDbContext { get; set; }
+        public ApplicationDbContext ApplicationDbContext { get; set; }
+        public Mock<IEmailManager> EmailManagerMock { get; set; }
+        public Mock<IMessageBroker> MessageBrokerMock { get; set; }
         public Mock<IMeetupService> MeetupService { get; set; }
         public Mock<IProposalService> ProposalService { get; set; }
         public Mock<IEventDispatcher> EventDispatcher { get; set; }
         public Mock<IMessageBroker> MessageBroker { get; set; }
 
 
+        public ProposalService GetProposalService()
+            => new(ApplicationDbContext, EmailManagerMock.Object, MessageBrokerMock.Object);
+
         public WebinarService GetWebinarService()
-            => new(WebinarDbContext, MeetupService.Object, ProposalService.Object, EventDispatcher.Object, MessageBroker.Object);
+           => new(ApplicationDbContext, MeetupService.Object, ProposalService.Object, MessageBroker.Object);
+
     }
 }

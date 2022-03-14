@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups.GraphTypes
+﻿namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups.GraphTypes
 {
     record DeleteEventResponse(bool Success);
 }

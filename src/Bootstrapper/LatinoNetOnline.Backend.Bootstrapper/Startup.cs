@@ -1,7 +1,6 @@
 
 using IdentityServer4;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api;
 using LatinoNetOnline.Backend.Modules.Events.Api;
 using LatinoNetOnline.Backend.Modules.Identities.Web;
 using LatinoNetOnline.Backend.Modules.Links.Api;
@@ -34,7 +33,6 @@ namespace LatinoNetOnline.Backend.Bootstrapper
         {
             services.AddInfrastructure(this.GetType().Assembly);
             services.RegisterModule<IdentityModule>();
-            services.RegisterModule<CallForSpeakersModule>();
             services.RegisterModule<EventsModule>();
             services.RegisterModule<LinksModule>();
             services.RegisterModule<NotificationModule>();

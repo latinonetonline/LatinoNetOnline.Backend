@@ -123,7 +123,9 @@ namespace LatinoNetOnline.Backend.Modules.Notifications.Core.Services
             Device? device = await _dbContext.Devices.SingleOrDefaultAsync(x => x.Id == id);
 
             if (device is null)
+            {
                 return OperationResult.Fail();
+            }
 
             _dbContext.Devices.Remove(device);
             await _dbContext.SaveChangesAsync();

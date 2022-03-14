@@ -103,7 +103,10 @@ namespace LatinoNetOnline.Backend.Modules.Identities.Web.Quickstart.Consent
 
             // validate return url is still valid
             var request = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-            if (request == null) return result;
+            if (request == null)
+            {
+                return result;
+            }
 
             ConsentResponse grantedConsent = null;
 

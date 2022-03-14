@@ -1,4 +1,5 @@
-﻿
+﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Speakers;
+
 using System.Collections.Generic;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Dto.Proposals

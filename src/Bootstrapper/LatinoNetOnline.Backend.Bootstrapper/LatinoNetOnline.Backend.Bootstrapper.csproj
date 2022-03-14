@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Events\LatinoNetOnline.Backend.Modules.Events.Api\LatinoNetOnline.Backend.Modules.Events.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Identities\LatinoNetOnline.Backend.Modules.Identities.Web\LatinoNetOnline.Backend.Modules.Identities.Web.csproj" />
     <ProjectReference Include="..\..\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Api\LatinoNetOnline.Backend.Modules.Links.Api.csproj" />

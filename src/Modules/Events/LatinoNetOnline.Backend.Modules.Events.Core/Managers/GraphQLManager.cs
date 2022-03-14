@@ -43,7 +43,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                 graphQLHttpClient.HttpClient.DefaultRequestHeaders.Remove("Authorization");
 
                 if (!string.IsNullOrWhiteSpace(accessToken))
+                {
                     graphQLHttpClient.HttpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {accessToken}");
+                }
 
                 var request = new GraphQLRequest
                 {
@@ -80,7 +82,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                 graphQLHttpClient.HttpClient.DefaultRequestHeaders.Remove("Authorization");
 
                 if (!string.IsNullOrWhiteSpace(accessToken))
+                {
                     graphQLHttpClient.HttpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {accessToken}");
+                }
 
                 var request = new GraphQLRequest
                 {
@@ -117,7 +121,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
                 graphQLHttpClient.HttpClient.DefaultRequestHeaders.Remove("Authorization");
 
                 if (!string.IsNullOrWhiteSpace(accessToken))
+                {
                     graphQLHttpClient.HttpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {accessToken}");
+                }
 
                 var request = new GraphQLRequest
                 {

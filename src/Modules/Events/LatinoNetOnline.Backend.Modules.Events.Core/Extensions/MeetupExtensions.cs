@@ -13,7 +13,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Extensions
         public static long NormalizeId(this MeetupEvent @event)
         {
             if (string.IsNullOrWhiteSpace(@event.Id))
+            {
                 return 0;
+            }
 
             if (long.TryParse(@event.Id.Replace("!chp", string.Empty), out long id))
             {
@@ -31,7 +33,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Extensions
 
             CultureInfo culture = new("es-ES");
 
-            description.AppendLine($"Webinar Nro {webinar.Number} de la comunidad Latino .NET Online realizado el {culture.DateTimeFormat.GetDayName(webinar.StartDateTime.DayOfWeek)} {webinar.StartDateTime.Day} de {culture.DateTimeFormat.GetMonthName(webinar.StartDateTime.Month)} del {webinar.StartDateTime.Year}");
+            description.AppendLine($"Webinar Nro {webinar.Number} de la comunidad Latino .NET Online realizado el {culture.DateTimeFormat.GetDayName(proposal.Proposal.EventDate.DayOfWeek)} {proposal.Proposal.EventDate.Day} de {culture.DateTimeFormat.GetMonthName(proposal.Proposal.EventDate.Month)} del {proposal.Proposal.EventDate.Year}");
             description.AppendLine();
             description.Append($"🎤Speakers: ");
 

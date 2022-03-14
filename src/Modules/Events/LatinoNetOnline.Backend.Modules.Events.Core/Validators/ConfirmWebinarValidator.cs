@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 
 using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
-
-using System;
+using LatinoNetOnline.Backend.Modules.Events.Core.Enums;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Validators
 {
@@ -13,8 +12,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Validators
             RuleFor(x => x.Flyer).NotNull();
             RuleFor(x => x.Streamyard).NotNull();
             RuleFor(x => x.LiveStreaming).NotNull();
-            RuleFor(x => x.Status).Equal(Enums.WebinarStatus.Draft);
-            RuleFor(x => x.StartDateTime).GreaterThanOrEqualTo(DateTime.Now);
+            RuleFor(x => x.Status).Equal(WebinarStatus.Draft);
         }
     }
 }

@@ -45,7 +45,9 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
             Token? token = JsonSerializer.Deserialize<Token>(file.Content, _jsonOptions);
 
             if (token is null)
+            {
                 throw new NullReferenceException("Token is Null");
+            }
 
             return token;
         }

@@ -1,15 +1,11 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups.GraphTypes;
-using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups.Objects;
 using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
@@ -49,7 +45,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
             string query = @"
                          query {
-                              event(id: "+ meetupId  + @") {
+                              event(id: " + meetupId + @") {
                            
                                   id
                                   title

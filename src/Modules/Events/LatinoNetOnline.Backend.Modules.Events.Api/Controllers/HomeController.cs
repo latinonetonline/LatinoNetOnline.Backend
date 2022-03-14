@@ -8,6 +8,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
     {
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<string> Get() => "Events module";
+        public ActionResult<string> Get() => "Call For Speakers module";
     }
 }

@@ -40,12 +40,13 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Events
                     yield return asm;
 
                     foreach (var reference in asm.GetReferencedAssemblies())
+                    {
                         if (reference.FullName.Contains("LatinoNetOnline") && !list.Contains(reference.FullName))
                         {
                             stack.Push(Assembly.Load(reference));
                             list.Add(reference.FullName);
                         }
-
+                    }
                 }
                 while (stack.Count > 0);
             }

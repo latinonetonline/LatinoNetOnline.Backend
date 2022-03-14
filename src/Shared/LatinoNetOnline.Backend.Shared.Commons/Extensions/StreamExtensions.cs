@@ -37,25 +37,39 @@ namespace LatinoNetOnline.Backend.Shared.Commons.Extensions
             var jpeg2 = new byte[] { 255, 216, 255, 225 }; // jpeg canon
 
             if (bmp.SequenceEqual(bytes.Take(bmp.Length)))
+            {
                 return ImageFormat.BMP;
+            }
 
             if (gif.SequenceEqual(bytes.Take(gif.Length)))
+            {
                 return ImageFormat.GIF;
+            }
 
             if (png.SequenceEqual(bytes.Take(png.Length)))
+            {
                 return ImageFormat.PNG;
+            }
 
             if (tiff.SequenceEqual(bytes.Take(tiff.Length)))
+            {
                 return ImageFormat.TIFF;
+            }
 
             if (tiff2.SequenceEqual(bytes.Take(tiff2.Length)))
+            {
                 return ImageFormat.TIFF;
+            }
 
             if (jpeg.SequenceEqual(bytes.Take(jpeg.Length)))
+            {
                 return ImageFormat.JPEG;
+            }
 
             if (jpeg2.SequenceEqual(bytes.Take(jpeg2.Length)))
+            {
                 return ImageFormat.JPEG;
+            }
 
             return ImageFormat.Unknown;
         }

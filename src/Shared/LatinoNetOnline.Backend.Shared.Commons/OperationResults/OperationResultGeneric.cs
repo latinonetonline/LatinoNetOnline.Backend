@@ -12,6 +12,7 @@ namespace LatinoNetOnline.Backend.Shared.Commons.OperationResults
         {
             Result = result;
             IsSuccess = true;
+            Status = HttpStatusCode.OK;
         }
 
         public T Result { get; set; }
@@ -26,21 +27,21 @@ namespace LatinoNetOnline.Backend.Shared.Commons.OperationResults
             };
         }
 
-        public static new OperationResult<T> Fail(ErrorResult error) =>
+        public static new OperationResult<T> Fail(string message) =>
 
              new()
              {
-                 Error = error,
+                 Message = message,
                  Status = HttpStatusCode.BadRequest,
                  IsSuccess = false
              };
 
 
-        public static OperationResult<T> NotFound(ErrorResult error) =>
+        public static OperationResult<T> NotFound(string message) =>
 
              new()
              {
-                 Error = error,
+                 Message = message,
                  Status = HttpStatusCode.NotFound,
                  IsSuccess = false
              };
