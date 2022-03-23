@@ -160,21 +160,19 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 {
 
                     //TODO: Service Bus
-                    var result = await _meetupService.PublishEventAsync(webinar.MeetupId);
+                    //var result = await _meetupService.PublishEventAsync(webinar.MeetupId);
 
-                    if (result.IsSuccess)
-                    {
-                        result = await _meetupService.AnnounceEventAsync(webinar.MeetupId);
-                    }
+                    //if (result.IsSuccess)
+                    //{
+                    //    result = await _meetupService.AnnounceEventAsync(webinar.MeetupId);
+                    //}
 
-                    if (result.IsSuccess)
-                    {
-                        webinar.Status = WebinarStatus.Published;
 
-                        _dbContext.Update(webinar);
+                    webinar.Status = WebinarStatus.Published;
 
-                        await _dbContext.SaveChangesAsync();
-                    }
+                    _dbContext.Update(webinar);
+
+                    await _dbContext.SaveChangesAsync();
 
 
                     return new(webinar.ConvertToDto());
