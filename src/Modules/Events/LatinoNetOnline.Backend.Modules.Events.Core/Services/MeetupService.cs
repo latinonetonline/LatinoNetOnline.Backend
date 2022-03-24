@@ -93,7 +93,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             {
                 Input = new
                 {
-                    GroupUrlname = "latino-net-online",
+                    GroupUrlname = URLNAME,
                     input.Title,
                     input.Description,
                     StartDateTime = input.StartDateTime.AddHours(10).ToString("yyyy-MM-ddTHH:mm:ss"), //"2021-08-28T10:00:00",

@@ -6,7 +6,7 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Events.Core.Enums;
 using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.Events.Core.Validators;
-using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
+using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -35,15 +35,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMeetupService _meetupService;
-        private readonly IProposalService _proposalService;
-        private readonly IMessageBroker _messageBroker;
+        private readonly IStorageService _storageService;
 
-        public WebinarService(ApplicationDbContext dbContext, IMeetupService meetupService, IProposalService proposalService, IMessageBroker messageBroker)
+        public WebinarService(ApplicationDbContext dbContext, IMeetupService meetupService, IStorageService storageService)
         {
             _dbContext = dbContext;
             _meetupService = meetupService;
-            _proposalService = proposalService;
-            _messageBroker = messageBroker;
+            _storageService = storageService;
         }
 
         public async Task<OperationResult<WebinarDto>> UpdateAsync(UpdateWebinarInput input)
@@ -88,9 +86,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
         {
             var webinar = await GetWebinarById(input.Id);
             if (webinar is not null)
+            {
                 return new(webinar.ConvertToDto());
+            }
             else
+            {
                 return OperationResult<WebinarDto>.Fail("No se encontro el webinar");
+            }
         }
 
 
@@ -104,9 +106,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
                 .FirstOrDefaultAsync();
 
             if (webinar is not null)
+            {
                 return new(webinar.ConvertToDto());
+            }
             else
+            {
                 return OperationResult<WebinarDto>.Fail("No se encontro el webinar");
+            }
         }
 
         public async Task<OperationResult<WebinarDto>> GetByProposalAsync(Guid proposalId)
@@ -124,21 +130,14 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         private async Task<Webinar> MappingFlyerLinkAsync(Webinar webinar, Stream image)
         {
-            var proposalResult = await _proposalService.GetByIdAsync(new(webinar.ProposalId));
-
-            UploadImageInput uploadImageInput = new("EVENT_PHOTO", webinar.Id + ".jpeg", "JPEG", image);
-
-            var photoResult = await _meetupService.UploadPhotoAsync(uploadImageInput);
 
 
-            webinar.Flyer = new Uri("https://secure.meetupstatic.com" + photoResult.Result.ImagePath);
+            var imageLink = await _storageService.UploadFile("flyers", webinar.Id + ".jpeg", image.ReadFully());
 
-            UpdateMeetupEventInput updateMeetupEventInput = new(webinar.MeetupId, proposalResult.Result.Proposal.Title, webinar.ConvertToDto().GetDescription(proposalResult.Result), proposalResult.Result.Proposal.EventDate.Date, webinar.LiveStreaming, long.Parse(photoResult.Result.Image.Id));
-
-            var meetupResult = await _meetupService.UpdateEventAsync(updateMeetupEventInput);
-
-            if (meetupResult.IsSuccess)
+            if (imageLink.IsSuccess)
             {
+                webinar.Flyer = imageLink.Result;
+
                 _dbContext.Update(webinar);
 
                 await _dbContext.SaveChangesAsync();

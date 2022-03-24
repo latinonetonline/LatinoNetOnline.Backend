@@ -1,11 +1,10 @@
-using AivenEcommerce.V1.Modules.GitHub.DependencyInjection.Extensions;
+
+using Azure.Storage.Blobs;
 
 using LatinoNetOnline.Backend.Modules.Events.Core.Data;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.Events.Core.Events.External;
 using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
-using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
@@ -16,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+
+using Octokit;
 
 using System.IO;
 
@@ -29,20 +30,32 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IWebinarService, WebinarService>();
             services.AddScoped<IUnavailableDateService, UnavailableDateService>();
-            services.AddScoped<IStorageService, StorageService>();
+            services.AddScoped<IStorageService, BlobStorageService>();
             services.AddScoped<IEmailManager, EmailManager>();
 
             services.AddScoped<IMeetupService, MeetupService>();
             services.AddScoped<IMetricoolService, MetricoolService>();
             services.AddScoped<IGraphQLManager, GraphQLManager>();
             services.AddScoped<ITokenRefresherManager, TokenRefresherManager>();
+            services.AddScoped<IGitHubService, GitHubService>();
 
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),
                     o => o.MigrationsAssembly("LatinoNetOnline.Backend.Bootstrapper")));
 
-            services.AddGitHubClient();
+            services.AddSingleton<IGitHubClient, GitHubClient>(sp =>
+            {
+                GitHubClient githubClient = new(new ProductHeaderValue(nameof(LatinoNetOnline)));
+
+                Credentials basicAuth = new(configuration["GitHubOptions:Token"]);
+
+                githubClient.Credentials = basicAuth;
+
+                return githubClient;
+            });
+
+            services.AddScoped<BlobServiceClient>(sp => new(configuration.GetConnectionString("BlobStorage")));
         }
 
         public override void Configure(IApplicationBuilder app)
@@ -60,11 +73,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
                     return await handler.GetByIdAsync(query);
                 });
 
-            app.UseModuleBroadcast()
-                .Subscribe<WebinarConfirmedEventInput>((sp, input)
-                    => sp.CreateScope().ServiceProvider
-                        .GetService<IEventHandler<WebinarConfirmedEventInput>>()
-                        .HandleAsync(input));
         }
 
         public override void InitialConfiguration(IConfiguration configuration)

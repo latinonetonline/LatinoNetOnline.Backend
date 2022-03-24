@@ -28,6 +28,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
             ProposalService = new();
             EventDispatcher = new();
             MessageBroker = new();
+            StorageService = new();
         }
 
         public ApplicationDbContext ApplicationDbContext { get; set; }
@@ -37,13 +38,14 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         public Mock<IProposalService> ProposalService { get; set; }
         public Mock<IEventDispatcher> EventDispatcher { get; set; }
         public Mock<IMessageBroker> MessageBroker { get; set; }
+        public Mock<IStorageService> StorageService { get; set; }
 
 
         public ProposalService GetProposalService()
-            => new(ApplicationDbContext, EmailManagerMock.Object, MessageBrokerMock.Object);
+            => new(ApplicationDbContext);
 
         public WebinarService GetWebinarService()
-           => new(ApplicationDbContext, MeetupService.Object, ProposalService.Object, MessageBroker.Object);
+           => new(ApplicationDbContext, MeetupService.Object, StorageService.Object);
 
     }
 }

@@ -32,14 +32,10 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
     class ProposalService : IProposalService
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IEmailManager _emailManager;
-        private readonly IMessageBroker _messageBroker;
 
-        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager, IMessageBroker messageBroker)
+        public ProposalService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _emailManager = emailManager;
-            _messageBroker = messageBroker;
         }
 
         public async Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter)

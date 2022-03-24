@@ -1,5 +1,6 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +22,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost(Name = "UploadImage")]
+        [ProducesResponseType(typeof(OperationResult<Uri>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            var result = await _storageService.UploadFile("images", Guid.NewGuid().ToString(), file.OpenReadStream().ReadFully());
+            var result = await _storageService.UploadFile("speakers", Guid.NewGuid().ToString(), file.OpenReadStream().ReadFully());
 
             return new OperationActionResult(result);
         }

@@ -1,7 +1,9 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.UnavailableDates;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System;
@@ -18,22 +20,26 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetUnavailableDates")]
+        [ProducesResponseType(typeof(OperationResult<UnavailableDateDto[]>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
             => new OperationActionResult(await _service.GetAllAsync());
 
 
-        [HttpPost]
+        [HttpPost(Name = "CreateUnavailableDates")]
+        [ProducesResponseType(typeof(OperationResult<UnavailableDateDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Create(CreateUnavailableDateInput input)
             => new OperationActionResult(await _service.CreateAsync(input));
 
 
-        [HttpPut]
+        [HttpPut(Name = "UpdateUnavailableDates")]
+        [ProducesResponseType(typeof(OperationResult<UnavailableDateDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(UpdateUnavailableDateInput input)
             => new OperationActionResult(await _service.UpdateAsync(input));
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeleteUnavailableDates")]
+        [ProducesResponseType(typeof(OperationResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> Delete(Guid id)
             => new OperationActionResult(await _service.DeleteAsync(id));
     }

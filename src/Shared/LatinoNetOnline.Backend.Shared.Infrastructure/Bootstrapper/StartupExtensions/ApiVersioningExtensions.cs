@@ -95,6 +95,9 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
                 {
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 }
+
+                options.DisplayOperationId();
+                options.DisplayRequestDuration();
             });
 
             return app;

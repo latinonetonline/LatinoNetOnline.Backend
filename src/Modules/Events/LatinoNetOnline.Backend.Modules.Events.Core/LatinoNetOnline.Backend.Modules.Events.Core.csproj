@@ -21,16 +21,18 @@
 
 	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.15.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
 		<PackageReference Include="FluentValidation" Version="10.2.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
-		<PackageReference Include="AivenEcommerce.V1.Modules.GitHub.DependencyInjection" Version="0.0.8" />
 		<PackageReference Include="Mailjet.Api" Version="2.0.1" />
 		<PackageReference Include="GraphQL.Client" Version="3.2.4" />
 		<PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="3.2.4" />
+		<PackageReference Include="Octokit" Version="0.50.0" />
 	</ItemGroup>
 
 	<ItemGroup>
