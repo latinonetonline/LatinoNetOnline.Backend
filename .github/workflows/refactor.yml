@@ -10,14 +10,7 @@ on:
   workflow_dispatch:
  
 jobs:
-  tests:
-    name: Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v2
 
-          
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
