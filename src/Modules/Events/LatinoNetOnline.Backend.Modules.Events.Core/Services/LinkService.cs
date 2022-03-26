@@ -63,7 +63,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
         public async Task<OperationResult<Link>> Get(string name)
         {
-            GhFileContent fileContent = await _githubService.GetFileContentAsync(260336124, "links", name);
+            GhFileContent? fileContent = await _githubService.GetFileContentAsync(260336124, "links", name);
             var link = JsonSerializer.Deserialize<Link>(fileContent.Content);
             return OperationResult<Link>.Success(link);
         }

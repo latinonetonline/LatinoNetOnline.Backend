@@ -36,7 +36,7 @@ jobs:
         with:
           file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
           field: "ConnectionStrings.Default"
-          value: ${{ secrets.CONNECTION_STRING2 }}
+          value: ${{ secrets.CONNECTION_STRING_2 }}
 
 
       - name: Set BlobStorage ConnectionString JSON Field
