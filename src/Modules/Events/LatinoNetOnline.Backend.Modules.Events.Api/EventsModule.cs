@@ -29,6 +29,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
         {
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IWebinarService, WebinarService>();
+            services.AddScoped<ILinkService, LinkService>();
             services.AddScoped<IUnavailableDateService, UnavailableDateService>();
             services.AddScoped<IStorageService, BlobStorageService>();
             services.AddScoped<IEmailManager, EmailManager>();

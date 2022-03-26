@@ -1,7 +1,6 @@
-﻿using AivenEcommerce.V1.Modules.GitHub.Dto;
-using AivenEcommerce.V1.Modules.GitHub.Services;
-
-using LatinoNetOnline.Backend.Modules.Links.Core.Entities;
+﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.GitHub;
+using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.Links.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 {
     interface ILinkService
     {

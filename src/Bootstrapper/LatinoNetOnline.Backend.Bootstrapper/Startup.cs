@@ -34,7 +34,6 @@ namespace LatinoNetOnline.Backend.Bootstrapper
             services.AddInfrastructure(this.GetType().Assembly);
             services.RegisterModule<IdentityModule>();
             services.RegisterModule<EventsModule>();
-            services.RegisterModule<LinksModule>();
             services.RegisterModule<NotificationModule>();
         }
 
