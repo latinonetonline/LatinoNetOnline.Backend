@@ -28,22 +28,14 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
       
-      - name: Restore dependencies
-        run: dotnet restore
-
       - name: Run Tests
         run: dotnet test
 
-      - name: Build
-        working-directory: "./src/Bootstrapper/Premiky.Backend.Api"
-        run: dotnet build "Premiky.Backend.Api.csproj" --no-restore -o "./app/build" 
-      
-        
       - name: Publish
-        working-directory: "./src/Bootstrapper/Premiky.Backend.Api"
-        run: dotnet publish "Premiky.Backend.Api.csproj" --no-restore -c Release -o "./app/publish" 
+        working-directory: "./src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
+        run: dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" --no-restore -c Release -o "./app/publish" 
 
 
       - name: Set ConnectionString JSON Field
@@ -51,9 +43,16 @@ jobs:
         with:
           file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
           field: "ConnectionStrings.Default"
-          value: ${{ secrets.CONNECTION_STRING }}
+          value: ${{ secrets.CONNECTION_STRING2 }}
 
-          
+
+      - name: Set BlobStorage ConnectionString JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
+          field: "ConnectionStrings.BlobStorage"
+          value: ${{ secrets.BLOB_STORAGE_CONNECTION_STRING }}       
+
       - name: Set GitHub Token JSON Field
         uses: jossef/action-set-json-field@v1
         with:
@@ -90,25 +89,27 @@ jobs:
           field: "IdentityOptions.Password"
           value: ${{ secrets.IDENTITY_DEFAULT_PASSWORD }}
 
-      # - name: Set Build Version
-      #   uses: jossef/action-set-json-field@v1
-      #   with:
-      #     file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/clientconfig.json"
-      #     field: "ClientConfigOptions.BuildVersion"
-      #     value: ${{ github.run_number }}
+      - name: Set VapidKeys Public Key JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
+          field: "VapidKeysOptions.PublicKey"
+          value: ${{ secrets.VAPIDKEYS_PUBLICKEY }}
+
+      - name: Set VapidKeys Secret Key JSON Field
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
+          field: "VapidKeysOptions.SecretKey"
+          value: ${{ secrets.VAPIDKEYS_SECRETKEY }}
 
 
-
-      # - name: Set UUID
-      #   id: generate-uuid
-      #   uses: filipstefansson/uuid-action@v1
-
-      # - name: Set Jwt Secret
-      #   uses: jossef/action-set-json-field@v1
-      #   with:
-      #     file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.json"
-      #     field: "IdentityOptions.ClientSecret"
-      #     value: ${{ steps.generate-uuid.outputs.uuid }}
+      - name: Set Build Version
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
+          field: "EnvironmentOptions.BuildVersion"
+          value: ${{ github.run_number }}
 
 
       - name: Zip Release
@@ -142,6 +143,6 @@ jobs:
         scp: |
           './src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/release.zip' => deployments/webapi
         # execute post-commands after scp
-        last_ssh: sudo systemctl stop kestrel-premiky-webapi.service && unzip deployments/webapi/release.zip -d deployments/webapi/release && mkdir -p deployments/webapi/backups && mv -f deployments/webapi/release.zip deployments/webapi/backups/release${{ steps.date.outputs.date }}.zip && sudo systemctl start kestrel-premiky-webapi.service
+        last_ssh: sudo systemctl stop kestrel-webapi.service && unzip deployments/webapi/release.zip -d deployments/webapi/release && sudo systemctl start kestrel-webapi.service
 
 
