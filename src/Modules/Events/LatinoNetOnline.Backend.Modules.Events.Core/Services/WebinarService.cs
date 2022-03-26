@@ -1,6 +1,5 @@
 ﻿
 using LatinoNetOnline.Backend.Modules.Events.Core.Data;
-using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Meetups;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Webinars;
 using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Events.Core.Enums;

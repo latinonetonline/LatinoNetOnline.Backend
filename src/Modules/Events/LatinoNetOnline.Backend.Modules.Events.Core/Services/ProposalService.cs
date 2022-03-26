@@ -5,9 +5,7 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Speakers;
 using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Events.Core.Enums;
 using LatinoNetOnline.Backend.Modules.Events.Core.Extensions;
-using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
 using LatinoNetOnline.Backend.Modules.Events.Core.Validators;
-using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -71,9 +69,13 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
             var proposal = await GetProposalById(input.Id);
 
             if (proposal is not null)
+            {
                 return new(new(proposal.ConvertToDto(), proposal.Speakers.Select(x => x.ConvertToDto())));
+            }
             else
+            {
                 return OperationResult<ProposalFullDto>.Fail("No existe la propuesta.");
+            }
         }
 
 

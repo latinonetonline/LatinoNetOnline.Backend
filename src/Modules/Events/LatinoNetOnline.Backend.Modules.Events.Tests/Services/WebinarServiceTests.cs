@@ -4,8 +4,6 @@ using LatinoNetOnline.Backend.Modules.Events.Core.Enums;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
-using Microsoft.EntityFrameworkCore;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -321,7 +319,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
             Assert.Equal(6, webinar3.Number);
         }
 
-       
+
 
         #endregion
 
