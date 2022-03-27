@@ -50,7 +50,7 @@ jobs:
         uses: jossef/action-set-json-field@v1
         with:
           file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
-          field: "GitHubOptions.Token"
+          field: "GithubOptions.Token"
           value: ${{ secrets.GH_TOKEN }}
           
       - name: Set Google Secret JSON Field
@@ -93,7 +93,7 @@ jobs:
         uses: jossef/action-set-json-field@v1
         with:
           file: "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app/publish/appsettings.json"
-          field: "VapidKeysOptions.SecretKey"
+          field: "VapidKeysOptions.PrivateKey"
           value: ${{ secrets.VAPIDKEYS_SECRETKEY }}
 
 
