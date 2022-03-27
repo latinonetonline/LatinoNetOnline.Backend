@@ -1,7 +1,10 @@
 ﻿using LatinoNetOnline.Backend.Modules.Events.Core.Dto.GitHub;
 using LatinoNetOnline.Backend.Modules.Events.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Events.Core.Options;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+
+using Microsoft.Extensions.Options;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -12,60 +15,75 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 {
     interface ILinkService
     {
-        Task<OperationResult<Link>> Create(Link link);
-        Task<OperationResult> Delete(string name);
-        Task<OperationResult<Link>> Get(string name);
-        Task<OperationResult<IEnumerable<Link>>> GetAll();
-        Task<OperationResult<Link>> Update(Link link);
+        Task<OperationResult<Link>> CreateAsync(Link link);
+        Task<OperationResult> DeleteAsync(string name);
+        Task<OperationResult<Link>> GetAsync(string name);
+        Task<OperationResult<IEnumerable<Link>>> GetAllAsync();
+        Task<OperationResult<Link>> UpdateAsync(Link link);
     }
 
     class LinkService : ILinkService
     {
         private readonly IGitHubService _githubService;
+        private readonly GithubOptions _options;
+        const string PATH = "links";
 
-        public LinkService(IGitHubService githubService)
+        public LinkService(IGitHubService githubService, IOptions<GithubOptions> options)
         {
             _githubService = githubService;
+            _options = options.Value;
         }
 
-        public async Task<OperationResult<Link>> Create(Link link)
+        public async Task<OperationResult<Link>> CreateAsync(Link link)
         {
-            await _githubService.CreateFileAsync(260336124, "links", link.Name, JsonSerializer.Serialize(link));
+            await _githubService.CreateFileAsync(_options.LinkRepositoryId, PATH, link.Name, JsonSerializer.Serialize(link));
             return OperationResult<Link>.Success(link);
         }
 
-        public async Task<OperationResult<Link>> Update(Link link)
+        public async Task<OperationResult<Link>> UpdateAsync(Link link)
         {
-            await _githubService.UpdateFileAsync(260336124, "links", link.Name, JsonSerializer.Serialize(link));
+            await _githubService.UpdateFileAsync(_options.LinkRepositoryId, PATH, link.Name, JsonSerializer.Serialize(link));
 
             return OperationResult<Link>.Success(link);
         }
 
-        public async Task<OperationResult> Delete(string name)
+        public async Task<OperationResult> DeleteAsync(string name)
         {
-            await _githubService.DeleteFileAsync(260336124, "links", name);
+            await _githubService.DeleteFileAsync(_options.LinkRepositoryId, PATH, name);
             return OperationResult.Success();
         }
 
-        public async Task<OperationResult<IEnumerable<Link>>> GetAll()
+        public async Task<OperationResult<IEnumerable<Link>>> GetAllAsync()
         {
-            IEnumerable<GhFileContent> files = await _githubService.GetAllFilesWithContentAsync(260336124, "links");
+            IEnumerable<GhFileContent> files = await _githubService.GetAllFilesWithContentAsync(_options.LinkRepositoryId, PATH);
             if (files is null)
             {
                 return OperationResult<IEnumerable<Link>>.Success(Enumerable.Empty<Link>());
             }
             else
             {
-                return OperationResult<IEnumerable<Link>>.Success(files.Select(x => JsonSerializer.Deserialize<Link>(x.Content)));
+                var links = files.Where(x => !string.IsNullOrWhiteSpace(x.Content)).Select(x => JsonSerializer.Deserialize<Link>(x.Content!)!);
+
+                return OperationResult<IEnumerable<Link>>.Success(links);
             }
 
         }
 
-        public async Task<OperationResult<Link>> Get(string name)
+        public async Task<OperationResult<Link>> GetAsync(string name)
         {
-            GhFileContent? fileContent = await _githubService.GetFileContentAsync(260336124, "links", name);
-            var link = JsonSerializer.Deserialize<Link>(fileContent.Content);
-            return OperationResult<Link>.Success(link);
+            GhFileContent? fileContent = await _githubService.GetFileContentAsync(_options.LinkRepositoryId, PATH, name);
+
+            if (fileContent is not null && !string.IsNullOrWhiteSpace(fileContent.Content))
+            {
+                var link = JsonSerializer.Deserialize<Link>(fileContent.Content);
+
+                if(link is not null)
+                {
+                    return OperationResult<Link>.Success(link);
+                }
+            }
+
+            return OperationResult<Link>.Fail("No se pudo encontrar el Link.");
         }
     }
 }

@@ -4,6 +4,7 @@ using Azure.Storage.Blobs;
 using LatinoNetOnline.Backend.Modules.Events.Core.Data;
 using LatinoNetOnline.Backend.Modules.Events.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Events.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Events.Core.Options;
 using LatinoNetOnline.Backend.Modules.Events.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
@@ -40,6 +41,8 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
             services.AddScoped<ITokenRefresherManager, TokenRefresherManager>();
             services.AddScoped<IGitHubService, GitHubService>();
 
+            services.AddOptions()
+                .Configure<GithubOptions>(configuration.GetSection(nameof(GithubOptions)));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),
