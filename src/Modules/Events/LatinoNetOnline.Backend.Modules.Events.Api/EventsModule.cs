@@ -11,15 +11,11 @@ using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 
 using Octokit;
-
-using System.IO;
 
 
 namespace LatinoNetOnline.Backend.Modules.Events.Api
@@ -39,7 +35,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
             services.AddScoped<IMetricoolService, MetricoolService>();
             services.AddScoped<IGraphQLManager, GraphQLManager>();
             services.AddScoped<ITokenRefresherManager, TokenRefresherManager>();
-            services.AddScoped<IGitHubService, GitHubService>();
+            services.AddScoped<IGithubService, GithubService>();
 
             services.AddOptions()
                 .Configure<GithubOptions>(configuration.GetSection(nameof(GithubOptions)));
@@ -52,7 +48,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
             {
                 GitHubClient githubClient = new(new ProductHeaderValue(nameof(LatinoNetOnline)));
 
-                Credentials basicAuth = new(configuration["GitHubOptions:Token"]);
+                Credentials basicAuth = new(configuration[$"{nameof(GithubOptions)}:{nameof(GithubOptions.Token)}"]);
 
                 githubClient.Credentials = basicAuth;
 
@@ -64,12 +60,6 @@ namespace LatinoNetOnline.Backend.Modules.Events.Api
 
         public override void Configure(IApplicationBuilder app)
         {
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(new FileInfo(typeof(ApplicationDbContext).Assembly.Location).DirectoryName ?? string.Empty, "Files")),
-                RequestPath = new PathString("/callforspeakers-module")
-            });
-
             app.UseModuleRequests()
                 .Subscribe<GetProposalInput>("modules/proposals/get", async (sp, query) =>
                 {

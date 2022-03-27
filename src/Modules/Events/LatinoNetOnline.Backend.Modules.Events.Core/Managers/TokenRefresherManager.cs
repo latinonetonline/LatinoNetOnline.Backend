@@ -15,7 +15,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
 
     class TokenRefresherManager : ITokenRefresherManager
     {
-        private readonly IGitHubService _githubService;
+        private readonly IGithubService _githubService;
 
         const long REPOSITORY_ID = 382245667;
         const string FOLDER_PATH = "refresh-tokens";
@@ -26,7 +26,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
         };
 
 
-        public TokenRefresherManager(IGitHubService githubService)
+        public TokenRefresherManager(IGithubService githubService)
         {
             _githubService = githubService;
         }

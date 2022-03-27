@@ -24,11 +24,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Services
 
     class LinkService : ILinkService
     {
-        private readonly IGitHubService _githubService;
+        private readonly IGithubService _githubService;
         private readonly GithubOptions _options;
         const string PATH = "links";
 
-        public LinkService(IGitHubService githubService, IOptions<GithubOptions> options)
+        public LinkService(IGithubService githubService, IOptions<GithubOptions> options)
         {
             _githubService = githubService;
             _options = options.Value;

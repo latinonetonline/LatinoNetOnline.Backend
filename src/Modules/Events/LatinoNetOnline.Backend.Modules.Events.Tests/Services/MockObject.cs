@@ -43,7 +43,7 @@ namespace LatinoNetOnline.Backend.Modules.Events.Tests.Services
         public Mock<IEventDispatcher> EventDispatcher { get; set; }
         public Mock<IMessageBroker> MessageBroker { get; set; }
         public Mock<IStorageService> StorageService { get; set; }
-        public Mock<IGitHubService> GithubService { get; set; }
+        public Mock<IGithubService> GithubService { get; set; }
         public Mock<IOptions<GithubOptions>> GithubOptions { get; set; }
 
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
 {
-    internal interface IGitHubService
+    internal interface IGithubService
     {
         Task<GhFileContent> CreateFileAsync(long repositoryId, string path, string fileName, string content);
         Task<GhFileContent> CreateFileAsync(long repositoryId, string path, string fileName, byte[] content);
@@ -23,11 +23,11 @@ namespace LatinoNetOnline.Backend.Modules.Events.Core.Managers
         Task UpdateFileAsync(long repositoryId, string path, string fileName, string content);
     }
 
-    internal class GitHubService : IGitHubService
+    internal class GithubService : IGithubService
     {
         private readonly IGitHubClient _githubClient;
 
-        public GitHubService(IGitHubClient githubClient)
+        public GithubService(IGitHubClient githubClient)
         {
             _githubClient = githubClient;
         }
