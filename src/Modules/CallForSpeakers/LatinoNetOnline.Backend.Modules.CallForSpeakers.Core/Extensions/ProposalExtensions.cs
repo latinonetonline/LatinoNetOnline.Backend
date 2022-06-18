@@ -17,7 +17,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
     static class ProposalExtensions
     {
         public static ProposalDto ConvertToDto(this Proposal proposal)
-            => new(proposal.Id, proposal.Title, proposal.Description, proposal.EventDate, proposal.CreationTime, proposal.AudienceAnswer, proposal.KnowledgeAnswer, proposal.UseCaseAnswer, proposal.IsActive);
+            => new(proposal.Id, proposal.Title, proposal.Description, proposal.EventDate, proposal.CreationTime, proposal.AudienceAnswer, proposal.KnowledgeAnswer, proposal.UseCaseAnswer, proposal.IsActive, proposal.WebinarNumber, proposal.Meetup, proposal.Streamyard, proposal.LiveStreaming, proposal.Flyer);
 
 
         public static async Task<SendEmailInput> ConvertToProposalCreatedEmailInput(this ProposalFullDto proposal)

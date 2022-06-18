@@ -62,6 +62,22 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
                 builder.Property(e => e.KnowledgeAnswer);
                 builder.Property(e => e.UseCaseAnswer);
 
+                builder.Property(e => e.Flyer)
+                .HasConversion(v => v.ToString(), db => new Uri(db))
+                .IsRequired(false);
+
+                builder.Property(e => e.Streamyard)
+                .HasConversion(v => v.ToString(), db => new Uri(db))
+                .IsRequired(false);
+
+                builder.Property(e => e.Meetup)
+                .HasConversion(v => v.ToString(), db => new Uri(db))
+                .IsRequired(false);
+
+                builder.Property(e => e.LiveStreaming)
+                .HasConversion(v => v.ToString(), db => new Uri(db))
+                .IsRequired(false);
+
             });
 
             modelBuilder.Entity<UnavailableDate>(builder =>

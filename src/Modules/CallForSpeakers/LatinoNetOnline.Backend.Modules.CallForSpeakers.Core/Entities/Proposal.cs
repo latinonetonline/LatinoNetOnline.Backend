@@ -1,4 +1,5 @@
-﻿using LatinoNetOnline.Backend.Shared.Commons.Entities;
+﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Enums;
+using LatinoNetOnline.Backend.Shared.Commons.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities
         public string? AudienceAnswer { get; set; }
         public string? KnowledgeAnswer { get; set; }
         public string? UseCaseAnswer { get; set; }
+        public int? WebinarNumber { get; set; }
+        public Uri? Meetup { get; set; }
+        public Uri? Streamyard { get; set; }
+        public Uri? LiveStreaming { get; set; }
+        public Uri? Flyer { get; set; }
         public bool IsActive { get; set; }
         public DateTime EventDate { get; set; }
         public DateTime CreationTime { get; set; }

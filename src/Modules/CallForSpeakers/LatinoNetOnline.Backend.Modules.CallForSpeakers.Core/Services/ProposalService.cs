@@ -172,6 +172,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             proposal.AudienceAnswer = input.AudienceAnswer;
             proposal.KnowledgeAnswer = input.KnowledgeAnswer;
             proposal.UseCaseAnswer = input.UseCaseAnswer;
+            proposal.WebinarNumber = input.WebinarNumber;
+            proposal.Meetup = input.Meetup;
+            proposal.Streamyard = input.Streamyard;
+            proposal.LiveStreaming = input.LiveStreaming;
+            proposal.Flyer = input.Flyer;
             proposal.EventDate = input.Date;
 
             proposal.Speakers = new List<Speaker>();
