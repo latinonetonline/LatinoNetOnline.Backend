@@ -23,6 +23,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
 
             EmailManagerMock = new();
             MessageBrokerMock = new();
+            StorageServiceMock = new();
         }
 
         public ApplicationDbContext ApplicationDbContext { get; set; }
