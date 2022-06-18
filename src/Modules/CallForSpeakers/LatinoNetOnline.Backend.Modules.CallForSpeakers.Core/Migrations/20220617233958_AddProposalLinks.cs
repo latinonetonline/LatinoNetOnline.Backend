@@ -60,10 +60,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
                 schema: "cfs",
                 table: "Proposals");
 
-            migrationBuilder.DropColumn(
-                name: "Status",
-                schema: "cfs",
-                table: "Proposals");
 
             migrationBuilder.DropColumn(
                 name: "Streamyard",

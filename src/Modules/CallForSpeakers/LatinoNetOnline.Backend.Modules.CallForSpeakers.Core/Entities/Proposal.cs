@@ -67,6 +67,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities
         public string? KnowledgeAnswer { get; set; }
         public string? UseCaseAnswer { get; set; }
         public int? WebinarNumber { get; set; }
+        public WebinarStatus Status { get; set; }
         public Uri? Meetup { get; set; }
         public Uri? Streamyard { get; set; }
         public Uri? LiveStreaming { get; set; }

@@ -28,10 +28,11 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
         public ApplicationDbContext ApplicationDbContext { get; set; }
         public Mock<IEmailManager> EmailManagerMock { get; set; }
         public Mock<IMessageBroker> MessageBrokerMock { get; set; }
+        public Mock<IStorageService> StorageServiceMock { get; set; }
 
 
         public ProposalService GetProposalService()
-            => new(ApplicationDbContext, EmailManagerMock.Object, MessageBrokerMock.Object);
+            => new(ApplicationDbContext, EmailManagerMock.Object, MessageBrokerMock.Object, StorageServiceMock.Object);
 
     }
 }

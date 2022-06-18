@@ -42,7 +42,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External.H
                 return;
             }
 
-            var emailInput = await proposalResult.Result.ConvertToProposalConfirmedEmailInput(webinarResult.Result);
+            var emailInput = await proposalResult.Result.ConvertToProposalConfirmedEmailInput();
 
             var emailResult = await _emailManager.SendEmailAsync(emailInput);
 

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220617233958_AddProposalLinks")]
-    partial class AddProposalLinks
+    [Migration("20220618020819_AddProposalStatus")]
+    partial class AddProposalStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
 
                     b.Property<string>("Meetup")
                         .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Streamyard")
                         .HasColumnType("text");

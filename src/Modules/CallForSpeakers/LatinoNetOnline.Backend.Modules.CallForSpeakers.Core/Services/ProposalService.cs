@@ -32,6 +32,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult<ProposalDateDto>> GetDatesAsync();
         Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input);
         Task<OperationResult<ProposalDto>> ChangePhotoAsync(Guid id, byte[] image);
+        Task<OperationResult<ProposalDto>> ConfirmProposalAsync(ConfirmProposalInput input);
     }
 
     class ProposalService : IProposalService
@@ -279,6 +280,41 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             }
 
             return OperationResult<ProposalDto>.Success(proposal.ConvertToDto());
+        }
+
+
+        public async Task<OperationResult<ProposalDto>> ConfirmProposalAsync(ConfirmProposalInput input)
+        {
+            var proposal = await _dbContext.Proposals.Include(x => x.Speakers).SingleOrDefaultAsync(x => x.Id == input.Id);
+
+            if (proposal is not null)
+            {
+                proposal.Status = Enums.WebinarStatus.Published;
+
+                _dbContext.Update(proposal);
+
+                await _dbContext.SaveChangesAsync();
+
+
+                ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), proposal.Speakers.Select( x => x.ConvertToDto()));
+
+
+                var emailInput = await proposalFullDto.ConvertToProposalConfirmedEmailInput();
+
+                var emailResult = await _emailManager.SendEmailAsync(emailInput);
+
+                if (!emailResult.IsSuccess)
+                {
+                    return OperationResult<ProposalDto>.Fail(new("Hubo un error al enviar el Email."));
+
+                }
+
+                return OperationResult<ProposalDto>.Success(proposal.ConvertToDto());
+            }
+
+            return OperationResult<ProposalDto>.Fail(new("No existe la propuesta"));
+
+
         }
     }
 }

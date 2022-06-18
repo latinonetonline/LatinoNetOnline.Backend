@@ -17,7 +17,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
     static class ProposalExtensions
     {
         public static ProposalDto ConvertToDto(this Proposal proposal)
-            => new(proposal.Id, proposal.Title, proposal.Description, proposal.EventDate, proposal.CreationTime, proposal.AudienceAnswer, proposal.KnowledgeAnswer, proposal.UseCaseAnswer, proposal.IsActive, proposal.WebinarNumber, proposal.Meetup, proposal.Streamyard, proposal.LiveStreaming, proposal.Flyer);
+            => new(proposal.Id, proposal.Title, proposal.Description, proposal.EventDate, proposal.CreationTime, proposal.AudienceAnswer, proposal.KnowledgeAnswer, proposal.UseCaseAnswer, proposal.IsActive, proposal.WebinarNumber, proposal.Status, proposal.Meetup, proposal.Streamyard, proposal.LiveStreaming, proposal.Flyer);
 
 
         public static async Task<SendEmailInput> ConvertToProposalCreatedEmailInput(this ProposalFullDto proposal)
@@ -34,7 +34,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
           await BuildProposalCreatedEmail(proposal));
         }
 
-        public static async Task<SendEmailInput> ConvertToProposalConfirmedEmailInput(this ProposalFullDto proposal, WebinarDto webinar)
+        public static async Task<SendEmailInput> ConvertToProposalConfirmedEmailInput(this ProposalFullDto proposal)
         {
             StringBuilder message = new();
             message.AppendLine($"Charla: { proposal.Proposal.Title}");
@@ -45,10 +45,10 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
             return new SendEmailInput($"Confirmación del Call For Speaker de Latino .NET Online",
           proposal.Speakers.Select(x => new Email(x.Email)),
           message.ToString(),
-          await BuildProposalConfirmedEmail(proposal, webinar));
+          await BuildProposalConfirmedEmail(proposal));
         }
 
-        private static async Task<string> BuildProposalConfirmedEmail(ProposalFullDto proposal, WebinarDto webinar)
+        private static async Task<string> BuildProposalConfirmedEmail(ProposalFullDto proposal)
         {
             CultureInfo culture = new("es-Es");
             TextInfo textInfo = culture.TextInfo;
@@ -67,19 +67,18 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
 
             string webinarDate = proposal.Proposal.EventDate.ToString("dddd dd 'de' MMMM 'del' yyyy", culture);
 
-            document.GetElementById("webinar-flyer").SetAttribute("src", webinar.Flyer!.ToString());
+            document.GetElementById("webinar-flyer").SetAttribute("src", proposal.Proposal.Flyer!.ToString());
             document.GetElementById("proposal-title").TextContent = proposal.Proposal.Title;
             document.GetElementById("proposal-description").TextContent = proposal.Proposal.Description;
 
-            document.GetElementById("streamyard-link-1").SetAttribute("href", webinar.Streamyard!.ToString());
-            document.GetElementById("streamyard-link-2").SetAttribute("href", webinar.Streamyard!.ToString());
-            document.GetElementById("streamyard-link-2").TextContent = ShortLink(webinar.Streamyard);
+            document.GetElementById("streamyard-link-1").SetAttribute("href", proposal.Proposal.Streamyard!.ToString());
+            document.GetElementById("streamyard-link-2").SetAttribute("href", proposal.Proposal.Streamyard!.ToString());
+            document.GetElementById("streamyard-link-2").TextContent = ShortLink(proposal.Proposal.Streamyard);
 
-            Uri meetupLink = new($"https://www.meetup.com/latino-net-online/events/{webinar.MeetupId}/");
 
-            document.GetElementById("meetup-link-1").SetAttribute("href", meetupLink.ToString());
-            document.GetElementById("meetup-link-2").SetAttribute("href", meetupLink.ToString());
-            document.GetElementById("meetup-link-2").TextContent = ShortLink(meetupLink);
+            document.GetElementById("meetup-link-1").SetAttribute("href", proposal.Proposal.Meetup!.ToString());
+            document.GetElementById("meetup-link-2").SetAttribute("href", proposal.Proposal.Meetup!.ToString());
+            document.GetElementById("meetup-link-2").TextContent = ShortLink(proposal.Proposal.Meetup);
 
             static string ShortLink(Uri link)
                 => link.ToString().Replace("https://", string.Empty).Replace("www.", string.Empty);

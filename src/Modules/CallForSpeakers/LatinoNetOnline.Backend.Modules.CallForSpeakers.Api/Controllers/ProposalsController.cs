@@ -73,5 +73,9 @@ namespace LatinoNETOnline.App.Api.Controllers
         public async Task<IActionResult> Photo(Guid id, IFormFile file)
             => new OperationActionResult(await _proposalService.ChangePhotoAsync(id, file.OpenReadStream().ReadFully()));
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Confirm(ConfirmProposalInput input)
+            => new OperationActionResult(await _proposalService.ConfirmProposalAsync(input));
+
     }
 }
