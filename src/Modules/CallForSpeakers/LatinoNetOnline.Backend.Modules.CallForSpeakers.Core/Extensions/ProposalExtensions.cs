@@ -5,7 +5,10 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Webinars;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -140,6 +143,24 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
 
 
             return newHtml;
+        }
+
+
+        public static Task<int?> MaxNumberAsync(this IQueryable<Proposal> query)
+            => query.AsNoTracking().MaxAsync(x => (int?)x.WebinarNumber);
+
+        public static void UpdateWebinarNumber(this IEnumerable<Proposal> webinars, int lastWebinarConfirmated)
+        {
+            var webinarsList = webinars.OrderBy(x => x.EventDate).ToList();
+
+            for (int i = 0; i < webinarsList.Count; i++)
+            {
+                var webinar = webinarsList[i];
+
+                int nextWebinarNumber = lastWebinarConfirmated + i + 1;
+
+                webinar.WebinarNumber = nextWebinarNumber;
+            }
         }
     }
 }

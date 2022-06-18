@@ -33,6 +33,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input);
         Task<OperationResult<ProposalDto>> ChangePhotoAsync(Guid id, byte[] image);
         Task<OperationResult<ProposalDto>> ConfirmProposalAsync(ConfirmProposalInput input);
+        Task<OperationResult> UpdateWebinarNumbersAsync();
     }
 
     class ProposalService : IProposalService
@@ -159,6 +160,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
 
                 speakerdtos.Add(speaker.ConvertToDto());
             }
+
+            await SetWebinarNumberAsync(proposal);
 
             await _dbContext.AddAsync(proposal);
 
@@ -315,6 +318,50 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             return OperationResult<ProposalDto>.Fail(new("No existe la propuesta"));
 
 
+        }
+
+        private async Task<Proposal> SetWebinarNumberAsync(Proposal webinar)
+        {
+            int? maxWebinarNumber = await _dbContext.Proposals.MaxNumberAsync();
+            webinar.WebinarNumber = maxWebinarNumber.GetValueOrDefault() + 1;
+
+            return webinar;
+        }
+
+
+        public async Task<OperationResult> UpdateWebinarNumbersAsync()
+        {
+            var webinars = await _dbContext.Proposals
+                .Where(x => x.EventDate.Date >= DateTime.Today)
+                .ToListAsync();
+
+
+            if (!webinars.Any()) return OperationResult.Fail(new("No hay propuestas"));
+
+
+            var lastWebinarNumberConfirmated = await _dbContext.Proposals
+                .Where(x => x.Status == Enums.WebinarStatus.Published && x.EventDate.Date < DateTime.Today)
+                .OrderByDescending(x => x.EventDate)
+                .Select(x => x.WebinarNumber)
+                .FirstOrDefaultAsync();
+
+
+            if (!lastWebinarNumberConfirmated.HasValue) return OperationResult.Fail(new("No hay un último numero de webinar publicado."));
+
+
+            webinars.UpdateWebinarNumber(lastWebinarNumberConfirmated.Value);
+
+            _dbContext.Proposals.UpdateRange(webinars);
+
+            await _dbContext.SaveChangesAsync();
+
+
+            //foreach (var item in webinars)
+            //{
+            //    await _eventDispatcher.PublishAsync(new WebinarUpdatedEventInput(item.Id));
+            //}
+
+            return OperationResult.Success();
         }
     }
 }
