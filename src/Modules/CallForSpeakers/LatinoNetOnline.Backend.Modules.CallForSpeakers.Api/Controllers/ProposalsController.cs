@@ -3,9 +3,11 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Requests;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System;
@@ -65,6 +67,11 @@ namespace LatinoNETOnline.App.Api.Controllers
         [HttpDelete("all")]
         public async Task<IActionResult> DeleteAll()
              => new OperationActionResult(await _proposalService.DeleteAllAsync());
+
+        [HttpPost("{id}/[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Photo(Guid id, IFormFile file)
+            => new OperationActionResult(await _proposalService.ChangePhotoAsync(id, file.OpenReadStream().ReadFully()));
 
     }
 }

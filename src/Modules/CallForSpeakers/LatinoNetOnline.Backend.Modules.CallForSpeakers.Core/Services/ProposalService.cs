@@ -9,12 +9,14 @@ using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
+using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +31,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter);
         Task<OperationResult<ProposalDateDto>> GetDatesAsync();
         Task<OperationResult<ProposalFullDto>> GetByIdAsync(GetProposalInput input);
+        Task<OperationResult<ProposalDto>> ChangePhotoAsync(Guid id, byte[] image);
     }
 
     class ProposalService : IProposalService
@@ -36,12 +39,14 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IEmailManager _emailManager;
         private readonly IMessageBroker _messageBroker;
+        private readonly IStorageService _storageService;
 
-        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager, IMessageBroker messageBroker)
+        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager, IMessageBroker messageBroker, IStorageService storageService)
         {
             _dbContext = dbContext;
             _emailManager = emailManager;
             _messageBroker = messageBroker;
+            _storageService = storageService;
         }
 
         public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter)
@@ -254,6 +259,26 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             }
 
             return proposalFullDtos;
+        }
+
+        public async Task<OperationResult<ProposalDto>> ChangePhotoAsync(Guid id, byte[] image)
+        {
+            var proposal = await _dbContext.Proposals.SingleOrDefaultAsync(x => x.Id == id);
+
+
+            var imageResult = await _storageService.UploadFile("flyers", Guid.NewGuid().ToString() + ".jpg", image);
+
+
+            if (imageResult.IsSuccess)
+            {
+                proposal.Flyer = imageResult.Result;
+
+                _dbContext.Update(proposal);
+
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return OperationResult<ProposalDto>.Success(proposal.ConvertToDto());
         }
     }
 }

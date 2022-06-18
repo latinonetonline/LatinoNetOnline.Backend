@@ -25,7 +25,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            var result = await _storageService.UploadFile("images", Guid.NewGuid().ToString(), file.OpenReadStream().ReadFully());
+            var result = await _storageService.UploadFile("images", Guid.NewGuid().ToString() + file.FileName, file.OpenReadStream().ReadFully());
 
             return new OperationActionResult(result);
         }
