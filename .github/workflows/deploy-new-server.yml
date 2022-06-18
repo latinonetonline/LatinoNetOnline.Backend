@@ -20,7 +20,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
       
 
       - name: Create symbolic link Api DockerFile
@@ -29,7 +29,10 @@ jobs:
 
       - name: Copy AivenWeb Packages
         run: cp -r offline-packages packages
-        
+      
+      - name: Run Restore
+        run: dotnet restore
+
       - name: Publish
         working-directory: "./src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
         run: dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" --no-restore -c Release -o "./app/publish" 
