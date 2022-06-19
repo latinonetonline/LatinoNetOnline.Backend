@@ -34,6 +34,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
         Task<OperationResult<ProposalDto>> ChangePhotoAsync(Guid id, byte[] image);
         Task<OperationResult<ProposalDto>> ConfirmProposalAsync(ConfirmProposalInput input);
         Task<OperationResult> UpdateWebinarNumbersAsync();
+        Task<OperationResult<ProposalDescriptionText>> GetDescriptionTextAsync(GetProposalDescriptionTextInput input);
     }
 
     class ProposalService : IProposalService
@@ -362,6 +363,16 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
             //}
 
             return OperationResult.Success();
+        }
+
+        public async Task<OperationResult<ProposalDescriptionText>> GetDescriptionTextAsync(GetProposalDescriptionTextInput input)
+        {
+            var proposal = await _dbContext.Proposals.AsNoTracking().Include(x => x.Speakers).SingleOrDefaultAsync(x => x.Id == input.Id);
+
+            ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), proposal.Speakers.Select(x => x.ConvertToDto()));
+
+            return OperationResult<ProposalDescriptionText>.Success(new(proposalFullDto.GetDescription()));
+
         }
     }
 }

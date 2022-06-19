@@ -82,5 +82,10 @@ namespace LatinoNETOnline.App.Api.Controllers
         public async Task<IActionResult> UpdateNumbers()
             => new OperationActionResult(await _proposalService.UpdateWebinarNumbersAsync());
 
+        [HttpGet("{id}/Description")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDescription(Guid id)
+            => new OperationActionResult(await _proposalService.GetDescriptionTextAsync(new(id)));
+
     }
 }
