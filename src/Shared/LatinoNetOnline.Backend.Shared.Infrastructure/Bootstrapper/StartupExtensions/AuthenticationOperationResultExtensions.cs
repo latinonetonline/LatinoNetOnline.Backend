@@ -26,6 +26,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
             {
 
                 o.FallbackPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                       .RequireRole("Admin")
                        .RequireAuthenticatedUser()
                        .Build();
 
