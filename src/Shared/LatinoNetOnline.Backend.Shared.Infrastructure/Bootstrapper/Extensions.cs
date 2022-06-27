@@ -6,6 +6,7 @@ using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensio
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
 {
     internal static class Extensions
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, Assembly assembly)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
         {
             services.AddControllersWithViews()
                 .AddJsonOptions(o =>
@@ -32,6 +33,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
                     manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
                 });
             services.AddInfrastructure();
+            services.AddJwtAuthentication(configuration);
             services.AddSerilog();
             services.AddSwaggerApiVersioning(assembly);
             services.AddForwardedHeaders();
@@ -39,7 +41,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
             return services;
         }
 
-        public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider, ILoggerFactory loggerFactory)
+        public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider, ILoggerFactory loggerFactory, IConfiguration configuration)
         {
             app.UseForwardedHeaders()
 
@@ -60,7 +62,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
 
             app.UseExceptionHandlingOperationResult(loggerFactory.CreateLogger("ExceptionHandler"))
                 .UseAllowAnyCors()
-                .UseSwaggerApiVersioning(provider)
+                .UseSwaggerApiVersioning(provider, configuration)
                 .UseAuthenticationOperationResult();
 
             return app;

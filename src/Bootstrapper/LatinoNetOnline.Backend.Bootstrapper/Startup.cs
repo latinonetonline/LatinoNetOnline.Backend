@@ -1,9 +1,5 @@
 
-using IdentityServer4;
-
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api;
-using LatinoNetOnline.Backend.Modules.Events.Api;
-using LatinoNetOnline.Backend.Modules.Identities.Web;
 using LatinoNetOnline.Backend.Modules.Links.Api;
 using LatinoNetOnline.Backend.Modules.Notifications.Api;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
@@ -32,23 +28,23 @@ namespace LatinoNetOnline.Backend.Bootstrapper
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddInfrastructure(this.GetType().Assembly);
-            services.RegisterModule<IdentityModule>();
+            services.AddInfrastructure(Configuration, this.GetType().Assembly);
             services.RegisterModule<CallForSpeakersModule>();
-            services.RegisterModule<EventsModule>();
             services.RegisterModule<LinksModule>();
             services.RegisterModule<NotificationModule>();
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider, ILoggerFactory loggerFactory)
         {
-            app.UseInfrastructure(Environment, provider, loggerFactory);
+            app.UseInfrastructure(Environment, provider, loggerFactory, Configuration);
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseRegisterModules();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers().RequireAuthorization(IdentityServerConstants.LocalApi.PolicyName);
+                endpoints.MapControllers();
                 endpoints.MapGet("/", context => context.Response.WriteAsync("Modular Monolith API"));
             });
         }

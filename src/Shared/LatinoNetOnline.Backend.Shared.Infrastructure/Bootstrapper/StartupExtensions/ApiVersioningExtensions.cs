@@ -4,6 +4,7 @@ using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
@@ -44,6 +45,8 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
             services.AddSwaggerGen(
                 options =>
                 {
+
+                    options.OAuth2Security();
                     OpenApiSecurityScheme securityScheme = new()
                     {
                         Name = "JWT Authentication",
@@ -76,7 +79,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
             return services;
         }
 
-        public static IApplicationBuilder UseSwaggerApiVersioning(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
+        public static IApplicationBuilder UseSwaggerApiVersioning(this IApplicationBuilder app, IApiVersionDescriptionProvider provider, IConfiguration configuration)
         {
             app.UseSwagger(c =>
             {
@@ -90,6 +93,13 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
             app.UseSwaggerUI(
             options =>
             {
+                options.DisplayOperationId();
+                options.DisplayRequestDuration();
+                options.OAuthUsePkce();
+                options.OAuthClientId(configuration["Security:SwaggerClientId"]);
+                options.OAuthClientSecret(configuration["Security:SwaggerClientSecret"]);
+
+
                 // build a swagger endpoint for each discovered API version
                 foreach (var description in provider.ApiVersionDescriptions)
                 {
