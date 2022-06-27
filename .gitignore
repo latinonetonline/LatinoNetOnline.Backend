@@ -335,3 +335,4 @@ logs/
 .DS_Store
 /src/Bootstrapper/ModularMonolith.Bootstrapper/appsettings.development.json
 /src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/appsettings.development.json
+/src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/app
