@@ -1,18 +1,18 @@
 name: Deploy To New Server
 
 on:
-  workflow_run:
-    workflows: [Deploy]
-    types: [completed]
+  push:
+    paths-ignore: 
+    - '.github/workflows/**'
+    branches:
+      - main
     
   workflow_dispatch:
   
 jobs:
   on-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' ||  github.event_name == 'workflow_dispatch' }}
     steps:
-      - run: echo 'The triggering workflow passed'
       
       - name: Checkout source
         uses: actions/checkout@v2
