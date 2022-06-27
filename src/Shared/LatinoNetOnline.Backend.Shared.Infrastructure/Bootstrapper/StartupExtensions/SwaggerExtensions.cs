@@ -53,7 +53,9 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
                         TokenUrl = new Uri("https://ids.latinonet.online/connect/token"),
                         Scopes = new Dictionary<string, string>
                             {
-                                {"latinonetonline_api", "latinonetonline_api"}
+                                {"latinonetonline_api", "latinonetonline_api"},
+                                {"roles", "roles"},
+                                {"openid", "openid"}
                             }
                     }
                 }
