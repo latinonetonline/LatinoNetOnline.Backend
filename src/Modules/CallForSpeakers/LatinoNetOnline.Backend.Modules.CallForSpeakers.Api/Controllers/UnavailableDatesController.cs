@@ -2,6 +2,7 @@
 using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using System;
@@ -19,6 +20,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
             => new OperationActionResult(await _service.GetAllAsync());
 

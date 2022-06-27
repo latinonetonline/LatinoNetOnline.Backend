@@ -69,7 +69,6 @@ namespace LatinoNETOnline.App.Api.Controllers
              => new OperationActionResult(await _proposalService.DeleteAllAsync());
 
         [HttpPost("{id}/[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> Photo(Guid id, IFormFile file)
             => new OperationActionResult(await _proposalService.ChangePhotoAsync(id, file.OpenReadStream().ReadFully()));
 
