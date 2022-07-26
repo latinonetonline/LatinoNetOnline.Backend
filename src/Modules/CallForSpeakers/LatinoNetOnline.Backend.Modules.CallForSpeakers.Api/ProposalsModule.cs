@@ -32,6 +32,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
             services.AddScoped<IUnavailableDateService, UnavailableDateService>();
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<IMetricoolService, MetricoolService>();
+            services.AddScoped<IWebsiteService, WebsiteService>();
             services.AddScoped<IEmailManager, EmailManager>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
