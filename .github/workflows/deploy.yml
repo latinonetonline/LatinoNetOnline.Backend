@@ -1,0 +1,76 @@
+name: Build and Deploy
+
+on:
+  push:
+    paths-ignore: 
+    - '.github/workflows/**'
+    branches:
+      - main
+    
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      
+
+
+      - name: Copy AivenWeb Packages
+        run: cp -r offline-packages packages
+      
+      - name: Run Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build 'src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj' -c Release --no-restore
+
+
+      - name: Publish
+        run: dotnet publish "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o app/publish
+        
+        
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+         name: backend-drop
+         path: app/publish
+          
+  deploy:
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+    - name: Download a Build Artifact Backend API
+      uses: actions/download-artifact@v3.0.0
+      with:
+        # Artifact name
+        name: backend-drop
+        # Destination path
+        path: /var/www/api.latinonet.online
+
+    - uses: microsoft/variable-substitution@v1 
+      with:
+          files: '/var/www/api.latinonet.online/appsettings.json'
+      env:
+          ConnectionStrings.Default: ${{ secrets.CONNECTION_STRING }}
+          GitHubOptions.Token: ${{ secrets.GH_TOKEN }}
+          GoogleOptions.ClientSecret: ${{ secrets.GOOGLE_SECRET }}
+          MailjetOptions.ClientSecret: ${{ secrets.MAILJET_SECRET }}
+          IdentityOptions.ClientSecret: ${{ secrets.MAILJET_SECRET }}
+          IdentityOptions.Password: ${{ secrets.IDENTITY_DEFAULT_PASSWORD }}
+
+ 
+        
+    - name: Restart the app
+      run: |
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          systemctl --user restart api.latinonet.online.service
