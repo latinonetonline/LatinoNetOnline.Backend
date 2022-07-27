@@ -49,13 +49,13 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Download a Build Artifact IDS
+    - name: Download a Build Artifact Backend API
       uses: actions/download-artifact@v3.0.0
       with:
         # Artifact name
         name: backend-drop
         # Destination path
-        path: /var/www/ids.latinonet.online
+        path: /var/www/api.latinonet.online
 
     - uses: microsoft/variable-substitution@v1 
       with:
@@ -73,4 +73,4 @@ jobs:
   #  - name: Restart the app
   #    run: |
    #       export XDG_RUNTIME_DIR=/run/user/$(id -u)
-  #        systemctl --user restart ids.latinonet.online.service
+  #        systemctl --user restart api.latinonet.online.service
