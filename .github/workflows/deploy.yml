@@ -30,9 +30,12 @@ jobs:
       - name: Run Restore
         run: dotnet restore
 
+      - name: Build
+        run: dotnet build 'src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj' -c Release --no-restore
+
+
       - name: Publish
-        working-directory: "./src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
-        run: dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" --no-restore -c Release -o app/publish
+        run: dotnet publish "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/LatinoNetOnline.Backend.Bootstrapper.csproj" -c Release -o app/publish
         
         
       - name: Upload a Build Artifact
