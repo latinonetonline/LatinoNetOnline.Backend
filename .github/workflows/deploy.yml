@@ -1,4 +1,4 @@
-name: Deploy To New Server
+name: Build and Deploy
 
 on:
   push:
@@ -23,9 +23,6 @@ jobs:
           dotnet-version: 6.0.x
       
 
-      - name: Create symbolic link Api DockerFile
-        run: cp "src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper/Dockerfile" "Dockerfile"
-     
 
       - name: Copy AivenWeb Packages
         run: cp -r offline-packages packages
@@ -35,7 +32,7 @@ jobs:
 
       - name: Publish
         working-directory: "./src/Bootstrapper/LatinoNetOnline.Backend.Bootstrapper"
-        run: dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" --no-restore -c Release -o "./app/publish" 
+        run: dotnet publish "LatinoNetOnline.Backend.Bootstrapper.csproj" --no-restore -c Release -o app/publish
         
         
       - name: Upload a Build Artifact
