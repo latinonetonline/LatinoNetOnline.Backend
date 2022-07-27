@@ -70,7 +70,7 @@ jobs:
 
  
         
-  #  - name: Restart the app
-  #    run: |
-   #       export XDG_RUNTIME_DIR=/run/user/$(id -u)
-  #        systemctl --user restart api.latinonet.online.service
+    - name: Restart the app
+      run: |
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          systemctl --user restart api.latinonet.online.service
