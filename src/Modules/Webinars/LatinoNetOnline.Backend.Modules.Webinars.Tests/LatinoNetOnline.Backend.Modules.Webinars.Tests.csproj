@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core\LatinoNetOnline.Backend.Modules.Webinars.Core.csproj" />
+    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Core\LatinoNetOnline.Backend.Modules.Webinars.Core.csproj" />
   </ItemGroup>
 
 </Project>
