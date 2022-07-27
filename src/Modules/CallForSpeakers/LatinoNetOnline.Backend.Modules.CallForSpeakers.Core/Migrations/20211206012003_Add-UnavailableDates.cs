@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Migrations
 {
     public partial class AddUnavailableDates : Migration
     {

@@ -1,13 +1,13 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 
 using Microsoft.Extensions.Logging;
 
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External.Handlers
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Events.External.Handlers
 {
     class WebinarConfirmedEventHandler : IEventHandler<WebinarConfirmedEventInput>
     {

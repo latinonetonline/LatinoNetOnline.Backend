@@ -1,5 +1,5 @@
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api;
+using LatinoNetOnline.Backend.Modules.Webinars.Api;
 using LatinoNetOnline.Backend.Modules.Links.Api;
 using LatinoNetOnline.Backend.Modules.Notifications.Api;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper;
@@ -29,7 +29,7 @@ namespace LatinoNetOnline.Backend.Bootstrapper
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration, this.GetType().Assembly);
-            services.RegisterModule<CallForSpeakersModule>();
+            services.RegisterModule<WebinarsModule>();
             services.RegisterModule<LinksModule>();
             services.RegisterModule<NotificationModule>();
         }

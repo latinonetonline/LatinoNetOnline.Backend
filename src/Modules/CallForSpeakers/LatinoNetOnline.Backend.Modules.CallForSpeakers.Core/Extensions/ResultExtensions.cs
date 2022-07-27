@@ -4,7 +4,7 @@ using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions
 {
     static class ResultExtensions
     {

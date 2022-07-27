@@ -1,10 +1,10 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails;
 using LatinoNetOnline.Backend.Shared.Commons.Entities;
 
 using System;
 using System.Collections.Generic;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Entities
 {
     public class Speaker : IEntity
     {

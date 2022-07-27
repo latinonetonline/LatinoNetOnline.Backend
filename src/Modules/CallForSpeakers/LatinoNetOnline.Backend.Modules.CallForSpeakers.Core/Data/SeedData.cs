@@ -7,7 +7,7 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Data
 {
     class SeedData
     {

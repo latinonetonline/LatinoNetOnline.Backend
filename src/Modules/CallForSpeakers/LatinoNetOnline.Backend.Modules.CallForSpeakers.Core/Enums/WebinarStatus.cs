@@ -1,4 +1,4 @@
-﻿namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Enums
+﻿namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Enums
 {
     public enum WebinarStatus
     {

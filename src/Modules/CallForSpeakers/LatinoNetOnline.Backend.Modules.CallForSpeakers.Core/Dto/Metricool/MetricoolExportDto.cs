@@ -1,4 +1,4 @@
-﻿namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Metricool
+﻿namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Metricool
 {
     record MetricoolExportDto(string Text, string Filename);
 }

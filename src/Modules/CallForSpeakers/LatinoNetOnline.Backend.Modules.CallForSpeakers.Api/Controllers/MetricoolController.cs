@@ -1,4 +1,4 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
+namespace LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers
 {
     class MetricoolController : BaseController
     {

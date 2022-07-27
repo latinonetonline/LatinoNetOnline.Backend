@@ -1,5 +1,5 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.UnavailableDates;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.UnavailableDates;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
+namespace LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers
 {
     internal class UnavailableDatesController : BaseController
     {

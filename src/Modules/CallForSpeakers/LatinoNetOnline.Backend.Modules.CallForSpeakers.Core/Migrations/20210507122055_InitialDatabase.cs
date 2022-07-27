@@ -2,7 +2,7 @@
 
 using System;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Migrations
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Migrations
 {
     public partial class InitialDatabase : Migration
     {

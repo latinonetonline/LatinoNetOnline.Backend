@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
+namespace LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers
 {
     [ApiVersion("2.0")]
     [ApiVersion("1.0")]
@@ -9,6 +9,6 @@ namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers
     [Produces("application/json")]
     internal abstract class BaseController : ControllerBase
     {
-        protected const string BasePath = "api/v{version:apiVersion}/callforspeakers-module";
+        protected const string BasePath = "api/v{version:apiVersion}/webinars-module";
     }
 }

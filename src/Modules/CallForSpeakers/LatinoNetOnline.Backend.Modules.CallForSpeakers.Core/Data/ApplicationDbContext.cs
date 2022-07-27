@@ -1,12 +1,12 @@
 ﻿
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
 using System;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Data
 {
     public class ApplicationDbContext : DbContext
     {

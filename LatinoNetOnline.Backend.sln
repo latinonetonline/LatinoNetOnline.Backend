@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Shared.Infrastructure", "src\Shared\LatinoNetOnline.Backend.Shared.Infrastructure\LatinoNetOnline.Backend.Shared.Infrastructure.csproj", "{65B3C426-EF74-4B69-8F65-9909CFFAF67F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CallForSpeakers", "CallForSpeakers", "{5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Webinars", "Webinars", "{5D8EFB7B-CD2C-49E3-9BE5-2DFFCF0C34D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForSpeakers.Api", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.csproj", "{9D4EC920-DF48-490B-992C-DB85BAB2921D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Webinars.Api", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Api\LatinoNetOnline.Backend.Modules.Webinars.Api.csproj", "{9D4EC920-DF48-490B-992C-DB85BAB2921D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForSpeakers.Core", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.csproj", "{2596A790-3057-4E11-89D2-77EA7F40E551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Webinars.Core", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core\LatinoNetOnline.Backend.Modules.Webinars.Core.csproj", "{2596A790-3057-4E11-89D2-77EA7F40E551}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Shared.Commons", "src\Shared\LatinoNetOnline.Backend.Shared.Commons\LatinoNetOnline.Backend.Shared.Commons.csproj", "{113339E7-BC09-4FB9-B6DC-8CB12F9B90AE}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Links.Core", "src\Modules\Links\LatinoNetOnline.Backend.Modules.Links.Core\LatinoNetOnline.Backend.Modules.Links.Core.csproj", "{6A2C757E-B23B-4650-8B0E-B64029B45B03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests\LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.csproj", "{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatinoNetOnline.Backend.Modules.Webinars.Tests", "src\Modules\CallForSpeakers\LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests\LatinoNetOnline.Backend.Modules.Webinars.Tests.csproj", "{12FFBDB2-7F39-4DB0-8ACA-1CFE63C5109C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{DD7A33E5-6E9C-4E29-B6E1-961FC173077F}"
 EndProject

@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Infrastructure\LatinoNetOnline.Backend.Shared.Infrastructure.csproj" />
-    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.csproj" />
+    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.CallForSpeakers.Core\LatinoNetOnline.Backend.Modules.Webinars.Core.csproj" />
   </ItemGroup>
 
 </Project>

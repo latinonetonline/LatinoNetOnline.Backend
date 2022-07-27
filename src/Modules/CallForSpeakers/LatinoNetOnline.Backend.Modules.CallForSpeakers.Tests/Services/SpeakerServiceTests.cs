@@ -1,5 +1,5 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
 {
     public class SpeakerServiceTests
     {

@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails;
 
 using Mailjet.Client;
 using Mailjet.Client.Resources;
@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Managers
 {
     interface IEmailManager
     {

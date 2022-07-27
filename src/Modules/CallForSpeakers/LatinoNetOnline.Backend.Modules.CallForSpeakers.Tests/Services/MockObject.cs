@@ -1,6 +1,6 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using Moq;
 
 using System;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
 {
     class MockObject
     {

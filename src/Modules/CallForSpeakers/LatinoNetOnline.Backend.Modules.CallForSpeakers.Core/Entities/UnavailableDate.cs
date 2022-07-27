@@ -2,7 +2,7 @@
 
 using System;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Entities
 {
     public class UnavailableDate : IEntity
     {

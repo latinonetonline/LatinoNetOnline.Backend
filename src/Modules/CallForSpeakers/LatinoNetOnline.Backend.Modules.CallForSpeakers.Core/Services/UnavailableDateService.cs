@@ -1,8 +1,8 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.UnavailableDates;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.UnavailableDates;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Validators;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 {
     interface IUnavailableDateService
     {

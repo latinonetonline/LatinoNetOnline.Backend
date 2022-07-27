@@ -1,13 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Events;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Validators;
 using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 {
     interface IProposalService
     {

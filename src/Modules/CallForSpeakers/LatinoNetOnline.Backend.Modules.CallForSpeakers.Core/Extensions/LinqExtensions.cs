@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions
 {
     static class LinqExtensions
     {

@@ -1,7 +1,7 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions
 {
     static class SpeakerExtensions
     {

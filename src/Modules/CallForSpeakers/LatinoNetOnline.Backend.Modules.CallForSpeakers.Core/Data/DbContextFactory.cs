@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 using System.IO;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Data
 {
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {

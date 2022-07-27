@@ -1,9 +1,9 @@
 ﻿using AngleSharp;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Webinars;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Webinars;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions
 {
     static class ProposalExtensions
     {

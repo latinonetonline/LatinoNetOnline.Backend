@@ -1,8 +1,8 @@
 ﻿
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Controllers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Api.Requests;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers;
+using LatinoNetOnline.Backend.Modules.Webinars.Api.Requests;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 

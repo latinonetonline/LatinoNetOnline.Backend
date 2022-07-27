@@ -1,7 +1,7 @@
-﻿using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Metricool;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Metricool;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 {
     interface IMetricoolService
     {

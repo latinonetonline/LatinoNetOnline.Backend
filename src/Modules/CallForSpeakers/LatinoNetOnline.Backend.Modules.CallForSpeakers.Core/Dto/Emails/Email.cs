@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails
 {
     public record Email
 

@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Validators
 {
     class CreateSpeakerValidator : AbstractValidator<CreateSpeakerInput>
     {

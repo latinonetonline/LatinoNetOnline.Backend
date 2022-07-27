@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Emails;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Speakers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Entities;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Tests.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
 {
     public class ProposalServiceTests
     {

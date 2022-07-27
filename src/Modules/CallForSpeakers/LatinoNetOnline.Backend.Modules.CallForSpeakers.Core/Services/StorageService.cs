@@ -5,7 +5,7 @@ using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using System;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 {
     interface IStorageService
     {

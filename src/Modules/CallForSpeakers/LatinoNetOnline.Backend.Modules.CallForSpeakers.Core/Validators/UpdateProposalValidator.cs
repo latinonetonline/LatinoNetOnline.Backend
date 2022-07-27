@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Validators
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Validators
 {
     class UpdateProposalValidator : AbstractValidator<UpdateProposalInput>
     {

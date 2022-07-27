@@ -4,7 +4,7 @@ using FluentValidation.Results;
 
 using System.Linq;
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Extensions
+namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions
 {
     static class ValidationResultExtensions
     {

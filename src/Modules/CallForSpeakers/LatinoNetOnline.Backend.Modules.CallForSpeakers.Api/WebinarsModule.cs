@@ -1,10 +1,10 @@
 using AivenEcommerce.V1.Modules.GitHub.DependencyInjection.Extensions;
 
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Data;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Dto.Proposals;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Events.External;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Managers;
-using LatinoNetOnline.Backend.Modules.CallForSpeakers.Core.Services;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Events.External;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Managers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
@@ -20,9 +20,9 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 
 
-namespace LatinoNetOnline.Backend.Modules.CallForSpeakers.Api
+namespace LatinoNetOnline.Backend.Modules.Webinars.Api
 {
-    public class CallForSpeakersModule : Module
+    public class WebinarsModule : Module
     {
         public override void Load(IServiceCollection services, IConfiguration configuration)
         {
