@@ -2,6 +2,7 @@
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new(string.Empty, "lastname", "test@tests.com", "@tests", "tests", new("https://tests.com"));
 
@@ -34,7 +35,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("test", string.Empty, "test@tests.com", "@tests", "tests", new("https://tests.com"));
 
@@ -50,7 +51,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("tests", "lastname", null, "@tests", "tests", new("https://tests.com"));
 
@@ -66,7 +67,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", string.Empty, new("https://tests.com"));
 
@@ -81,7 +82,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", "tests", null);
 
@@ -97,7 +98,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", string.Empty, new("https://tests.com"));
 
@@ -113,7 +114,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", string.Empty, "tests", new("https://tests.com"));
 
@@ -128,7 +129,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             CreateSpeakerInput input = new("tests", "lastname", "test@tests.com", "@tests", "tests", new("https://tests.com"));
 
@@ -147,7 +148,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
         {
             MockObject mockObject = new();
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             OperationResult<IEnumerable<SpeakerDto>> result = await service.GetAllAsync();
 
@@ -161,13 +162,13 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Tests.Services
             MockObject mockObject = new();
 
             mockObject.ApplicationDbContext.Speakers.Add(
-                new("tests", "tests", new("test@tests.com"), "@tests", "tests", new("https://tests.com"))
+                new("tests", "tests", new("test@tests.com"), "@tests", "tests", new("https://tests.com"), Guid.Empty)
                 );
 
             mockObject.ApplicationDbContext.SaveChanges();
 
 
-            SpeakerService service = new(mockObject.ApplicationDbContext);
+            SpeakerService service = new(mockObject.ApplicationDbContext, mockObject.HttpContextAccessorMock.Object);
 
             OperationResult<IEnumerable<SpeakerDto>> result = await service.GetAllAsync();
 

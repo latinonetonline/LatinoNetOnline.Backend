@@ -39,7 +39,6 @@ namespace LatinoNETOnline.App.Api.Controllers
         public async Task<IActionResult> GetAllDates()
             => new OperationActionResult(await _proposalService.GetDatesAsync());
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProposalRequest request)
         {

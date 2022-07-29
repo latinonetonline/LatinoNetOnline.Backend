@@ -8,12 +8,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Entities
 {
     public class Speaker : IEntity
     {
-        public Speaker()
-        {
-            Proposals = new HashSet<Proposal>();
-        }
-
-        public Speaker(string name, string lastName, Email email, string? twitter, string description, Uri image)
+        public Speaker(string name, string lastName, string email, string? twitter, string description, Uri image, Guid userId)
         {
             Name = name;
             LastName = lastName;
@@ -21,59 +16,27 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Entities
             Twitter = twitter;
             Description = description;
             Image = image;
+            UserId = userId;
 
             Proposals = new HashSet<Proposal>();
         }
 
         public Guid Id { get; set; }
 
-        private string? _name;
+        public string Name { get; set; }
 
-        public string Name
-        {
-            set => _name = value;
-            get => _name
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Name));
-        }
-
-        private string? _lastName;
-
-        public string LastName
-        {
-            set => _lastName = value;
-            get => _lastName
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(LastName));
-        }
+        public string LastName { get; set; }
 
 
-        private Email? _email;
+        public string Email { get; set; }
 
-        public Email Email
-        {
-            set => _email = value;
-            get => _email
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Email));
-        }
-
-        private string? _description;
-
-        public string Description
-        {
-            set => _description = value;
-            get => _description
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Description));
-        }
+        public string Description { get; set; }
 
         public string? Twitter { get; set; }
 
-        private Uri? _image;
+        public Uri Image { get; set; }
 
-        public Uri Image
-        {
-            set => _image = value;
-            get => _image
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Image));
-        }
+        public Guid UserId { get; set; }
 
         public ICollection<Proposal> Proposals { get; set; }
     }

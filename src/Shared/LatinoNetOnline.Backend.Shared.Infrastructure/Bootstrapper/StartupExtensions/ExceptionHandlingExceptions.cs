@@ -26,7 +26,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
                     {
                         logger.LogError(contextFeature.Error, contextFeature.Error.ToString());
 
-                        ErrorResult errorResult = new("internal_server_error");
+                        ErrorResult errorResult = new("internal_server_error: " + contextFeature.Error.ToString());
 
                         await context.Response.WriteAsync(JsonSerializer.Serialize(OperationResult.ServerError(errorResult)));
                     }

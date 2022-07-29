@@ -32,7 +32,6 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Data
 
                 builder.Property(e => e.LastName).IsRequired();
                 builder.Property(e => e.Email)
-                .HasConversion(v => v.ToString(), db => new Email(db))
                 .IsRequired();
 
 
@@ -41,6 +40,10 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Data
                 builder.Property(e => e.Image)
                 .HasConversion(v => v.ToString(), db => new Uri(db))
                 .IsRequired();
+
+                builder.Property(p => p.UserId).IsRequired().HasDefaultValue(Guid.Empty);
+
+               
 
             });
 

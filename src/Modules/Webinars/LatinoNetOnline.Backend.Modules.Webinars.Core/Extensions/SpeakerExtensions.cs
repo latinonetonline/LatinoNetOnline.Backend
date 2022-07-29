@@ -6,6 +6,6 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions
     static class SpeakerExtensions
     {
         public static SpeakerDto ConvertToDto(this Speaker speaker)
-            => new(speaker.Id, speaker.Name, speaker.LastName, speaker.Email.ToString(), speaker.Twitter, speaker.Description, speaker.Image);
+            => new(speaker.Id, speaker.Name, speaker.LastName, speaker.Email, speaker.Twitter, speaker.Description, speaker.Image);
     }
 }

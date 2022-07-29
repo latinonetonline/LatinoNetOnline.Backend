@@ -12,12 +12,14 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Messaging;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
@@ -43,13 +45,15 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
         private readonly IEmailManager _emailManager;
         private readonly IMessageBroker _messageBroker;
         private readonly IStorageService _storageService;
+        private readonly IHttpContextAccessor _accessor;
 
-        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager, IMessageBroker messageBroker, IStorageService storageService)
+        public ProposalService(ApplicationDbContext dbContext, IEmailManager emailManager, IMessageBroker messageBroker, IStorageService storageService, IHttpContextAccessor accessor)
         {
             _dbContext = dbContext;
             _emailManager = emailManager;
             _messageBroker = messageBroker;
             _storageService = storageService;
+            _accessor = accessor;
         }
 
         public Task<OperationResult<IEnumerable<ProposalFullDto>>> GetAllAsync(ProposalFilter filter)
@@ -153,13 +157,42 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 
             List<SpeakerDto> speakerdtos = new();
 
+            var userId = new Guid(_accessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var userEmail = _accessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.Email).Value;
+
+
+            var speakers = await _dbContext.Speakers.Where(x => x.UserId == userId || input.Speakers.Select(s => s.Email).Contains(x.Email)).ToListAsync();
+
             foreach (var speakerInput in input.Speakers)
             {
-                Speaker speaker = new(speakerInput.Name, speakerInput.LastName, new(speakerInput.Email), speakerInput.Twitter, speakerInput.Description, speakerInput.Image);
+                Guid newUserId = userEmail == speakerInput.Email ? userId : Guid.Empty;
 
-                proposal.Speakers.Add(speaker);
+                if (speakers.Select(x => x.Email).Distinct().Contains(speakerInput.Email))
+                {
+                    Speaker speaker = speakers.First(x => x.UserId == userId || x.Email == speakerInput.Email);
+                    speaker.Name = speakerInput.Name;
+                    speaker.LastName = speakerInput.LastName;
+                    speaker.LastName = speakerInput.LastName;
+                    speaker.Twitter = speakerInput.Twitter;
+                    speaker.Description = speakerInput.Description;
+                    speaker.Image = speakerInput.Image;
 
-                speakerdtos.Add(speaker.ConvertToDto());
+                    if (speaker.UserId == Guid.Empty)
+                        speaker.UserId = newUserId;
+
+                    proposal.Speakers.Add(speaker);
+
+                    speakerdtos.Add(speaker.ConvertToDto());
+                }
+                else
+                {
+                    Speaker speaker = new(speakerInput.Name, speakerInput.LastName, speakerInput.Email, speakerInput.Twitter, speakerInput.Description, speakerInput.Image, newUserId);
+
+                    proposal.Speakers.Add(speaker);
+
+                    speakerdtos.Add(speaker.ConvertToDto());
+                }
+
             }
 
             await SetWebinarNumberAsync(proposal);
@@ -300,7 +333,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
                 await _dbContext.SaveChangesAsync();
 
 
-                ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), proposal.Speakers.Select( x => x.ConvertToDto()));
+                ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), proposal.Speakers.Select(x => x.ConvertToDto()));
 
 
                 var emailInput = await proposalFullDto.ConvertToProposalConfirmedEmailInput();
