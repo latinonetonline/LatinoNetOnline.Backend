@@ -4,6 +4,7 @@ using LatinoNetOnline.Backend.Modules.Webinars.Api.Requests;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -36,11 +37,13 @@ namespace LatinoNETOnline.App.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("dates", Name = "GetDates")]
+        [ProducesResponseType(typeof(OperationResult<ProposalDateDto>), 200)]
         public async Task<IActionResult> GetAllDates()
             => new OperationActionResult(await _proposalService.GetDatesAsync());
 
         [HttpPost(Name = "CreateProposal")]
         [Authorize(Policy = "Anyone")]
+        [ProducesResponseType(typeof(OperationResult<ProposalFullDto>), 200)]
         public async Task<IActionResult> Create(CreateProposalRequest request)
         {
             var result = await _proposalService.CreateAsync(new(

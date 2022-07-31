@@ -1,6 +1,7 @@
 ﻿using LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api.Controllers
         }
 
         [Authorize(Policy = "Anyone")]
-        [HttpPost (Name = "UploadImage")]
+        [HttpPost(Name = "UploadImage")]
+        [ProducesResponseType(typeof(OperationResult), 200)]
         public async Task<IActionResult> Upload(IFormFile file)
         {
             var result = await _storageService.UploadFile("images", Guid.NewGuid().ToString() + file.FileName, file.OpenReadStream().ReadFully());
