@@ -30,6 +30,10 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
                        .RequireAuthenticatedUser()
                        .Build();
 
+                o.AddPolicy("Anyone", new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                       .RequireAuthenticatedUser()
+                       .Build());
+
             });
 
 
