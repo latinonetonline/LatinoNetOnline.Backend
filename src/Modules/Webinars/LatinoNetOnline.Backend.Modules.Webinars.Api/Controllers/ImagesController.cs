@@ -21,8 +21,8 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api.Controllers
             _storageService = storageService;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
+        [Authorize(Policy = "Anyone")]
+        [HttpPost (Name = "UploadImage")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
             var result = await _storageService.UploadFile("images", Guid.NewGuid().ToString() + file.FileName, file.OpenReadStream().ReadFully());

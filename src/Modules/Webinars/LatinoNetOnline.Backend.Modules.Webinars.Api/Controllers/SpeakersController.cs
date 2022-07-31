@@ -17,18 +17,18 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet(Name = "GetAllSpeakers")]
         public async Task<IActionResult> GetAll()
             => new OperationActionResult(await _service.GetAllAsync());
 
-        [HttpGet("Me")]
+        [HttpGet("Me", Name = "GetSpeaker")]
+        [Authorize(Policy = "Anyone")]
         public async Task<IActionResult> Get()
             => new OperationActionResult(await _service.GetAsync());
 
 
-        [HttpGet("Search")]
-        [AllowAnonymous]
+        [HttpGet("Search", Name = "SearchSpeakers")]
+        [Authorize(Policy = "Anyone")]
         public async Task<IActionResult> Search(string search)
             => new OperationActionResult(await _service.SearchAsync(search));
     }

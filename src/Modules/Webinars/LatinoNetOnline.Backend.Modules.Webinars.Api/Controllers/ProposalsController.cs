@@ -35,11 +35,12 @@ namespace LatinoNETOnline.App.Api.Controllers
             => new OperationActionResult(await _proposalService.GetByIdAsync(new(id)));
 
         [AllowAnonymous]
-        [HttpGet("dates")]
+        [HttpGet("dates", Name = "GetDates")]
         public async Task<IActionResult> GetAllDates()
             => new OperationActionResult(await _proposalService.GetDatesAsync());
 
-        [HttpPost]
+        [HttpPost(Name = "CreateProposal")]
+        [Authorize(Policy = "Anyone")]
         public async Task<IActionResult> Create(CreateProposalRequest request)
         {
             var result = await _proposalService.CreateAsync(new(
