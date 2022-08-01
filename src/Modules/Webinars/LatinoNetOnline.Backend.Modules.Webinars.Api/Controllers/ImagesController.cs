@@ -24,7 +24,7 @@ namespace LatinoNetOnline.Backend.Modules.CallForProposals.Api.Controllers
 
         [Authorize(Policy = "Anyone")]
         [HttpPost(Name = "UploadImage")]
-        [ProducesResponseType(typeof(OperationResult), 200)]
+        [ProducesResponseType(typeof(OperationResult<Uri>), 200)]
         public async Task<IActionResult> Upload(IFormFile file)
         {
             var result = await _storageService.UploadFile("images", Guid.NewGuid().ToString() + file.FileName, file.OpenReadStream().ReadFully());
