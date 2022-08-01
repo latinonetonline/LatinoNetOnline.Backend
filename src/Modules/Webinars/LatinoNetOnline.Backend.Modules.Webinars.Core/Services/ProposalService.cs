@@ -87,7 +87,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
         public Task<OperationResult<ProposalFullDto>> CreateAsync(CreateProposalInput input)
             => Validate(input)
                     .Map(CreateProposalAsync)
-                    .Tap(async proposal => await _messageBroker.PublishAsync(new ProposalCreatedEventInput(proposal.Proposal.ProposalId, proposal.Proposal.Title)))
+                    //.Tap(async proposal => await _messageBroker.PublishAsync(new ProposalCreatedEventInput(proposal.Proposal.ProposalId, proposal.Proposal.Title)))
                     .Check(async proposal => await _emailManager.SendEmailAsync(await proposal.ConvertToProposalCreatedEmailInput()))
                     .FinallyOperationResult();
 
