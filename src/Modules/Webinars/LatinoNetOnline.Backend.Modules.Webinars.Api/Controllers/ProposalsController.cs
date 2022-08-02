@@ -87,5 +87,9 @@ namespace LatinoNETOnline.App.Api.Controllers
         public async Task<IActionResult> GetDescription(Guid id)
             => new OperationActionResult(await _proposalService.GetDescriptionTextAsync(new(id)));
 
+        [HttpPut("UpdateViews")]
+        public async Task<IActionResult> UpdateViews(UpdateProposalViewsInput input)
+            => new OperationActionResult(await _proposalService.UpdateViewsAsync(input));
+
     }
 }

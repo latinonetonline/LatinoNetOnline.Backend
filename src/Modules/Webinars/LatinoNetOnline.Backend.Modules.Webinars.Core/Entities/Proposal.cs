@@ -75,6 +75,10 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Entities
         public bool IsActive { get; set; }
         public DateTime EventDate { get; set; }
         public DateTime CreationTime { get; set; }
+        public int? Views { get; set; }
+        public int? LiveAttends { get; set; }
+
+
         public ICollection<Speaker> Speakers { get; set; }
 
 

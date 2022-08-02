@@ -37,6 +37,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
         Task<OperationResult<ProposalDto>> ConfirmProposalAsync(ConfirmProposalInput input);
         Task<OperationResult> UpdateWebinarNumbersAsync();
         Task<OperationResult<ProposalDescriptionText>> GetDescriptionTextAsync(GetProposalDescriptionTextInput input);
+        Task<OperationResult> UpdateViewsAsync(UpdateProposalViewsInput input);
     }
 
     class ProposalService : IProposalService
@@ -406,6 +407,27 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 
             return OperationResult<ProposalDescriptionText>.Success(new(proposalFullDto.GetDescription()));
 
+        }
+
+        public async Task<OperationResult> UpdateViewsAsync(UpdateProposalViewsInput input)
+        {
+            var proposals = await _dbContext.Proposals.Where(x => input.Views.Select(v => v.Id).Contains(x.Id)).ToListAsync();
+
+            foreach (var item in proposals)
+            {
+                var views = input.Views.FirstOrDefault(x => x.Id == item.Id);
+
+                if(views is not null && views.Views.HasValue)
+                {
+                    item.Views = views.Views.Value;
+                }
+            }
+
+            _dbContext.Proposals.UpdateRange(proposals);
+
+            await _dbContext.SaveChangesAsync();
+
+            return OperationResult.Success();
         }
     }
 }
