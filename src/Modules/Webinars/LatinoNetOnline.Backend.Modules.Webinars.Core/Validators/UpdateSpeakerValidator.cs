@@ -10,6 +10,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Validators
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Ingrese un nombre.");
             RuleFor(x => x.LastName).NotEmpty().WithMessage("Ingrese un apellido.");
+            RuleFor(x => x.Image).NotEmpty().WithMessage("Ingrese un link de imagen.");
             RuleFor(x => x.Email).EmailAddress().WithMessage("Ingrese un email valido.");
             RuleFor(x => x.Description).NotEmpty().WithMessage("Ingrese una descipción personal.");
             RuleFor(x => x.Twitter).Must(BeAValidTwitter).WithMessage("Ingrese un usuario de Twitter valido.");

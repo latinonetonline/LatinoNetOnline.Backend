@@ -241,6 +241,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
                     speaker.Email = new(speakerInput.Email);
                     speaker.Twitter = speakerInput.Twitter;
                     speaker.Description = speakerInput.Description;
+                    speaker.Image = speakerInput.Image;
 
                     proposal.Speakers.Add(speaker);
 
