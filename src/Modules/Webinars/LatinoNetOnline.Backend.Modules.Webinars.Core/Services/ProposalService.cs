@@ -222,6 +222,8 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
             proposal.LiveStreaming = input.LiveStreaming;
             proposal.Flyer = input.Flyer;
             proposal.EventDate = input.Date;
+            proposal.Views = input.Views;
+            proposal.LiveAttends = input.LiveAttends;
 
             proposal.Speakers = new List<Speaker>();
 
