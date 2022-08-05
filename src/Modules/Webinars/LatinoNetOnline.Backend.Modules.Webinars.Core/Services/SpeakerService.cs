@@ -22,7 +22,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
     {
         Task<OperationResult<SpeakerDto>> CreateAsync(CreateSpeakerInput input);
         Task<OperationResult<IEnumerable<SpeakerDto>>> GetAllAsync();
-        Task<OperationResult<IEnumerable<SpeakerDto>>> SearchAsync(string search);
+        Task<OperationResult<IEnumerable<SpeakerDto>>> SearchAsync(string? search);
         Task<OperationResult<SpeakerDto?>> GetAsync();
     }
 
@@ -97,7 +97,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
             {
                 foreach (var item in speakers1)
                 {
-                    if(!speakers.Any(x => x.Id == item.Id))
+                    if (!speakers.Any(x => x.Id == item.Id))
                         speakers.Add(item);
                 }
             }
@@ -120,15 +120,27 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 
         }
 
-        public async Task<OperationResult<IEnumerable<SpeakerDto>>> SearchAsync(string search)
+        public async Task<OperationResult<IEnumerable<SpeakerDto>>> SearchAsync(string? search)
         {
+            var query = _dbContext.Speakers.AsNoTracking();
 
-            var speaker = await _dbContext.Speakers.AsNoTracking()
-             .Where(x => x.Email.Contains(search) || x.Name.Contains(search) || x.LastName.Contains(search))
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return OperationResult<IEnumerable<SpeakerDto>>.Success(
+                    await query.Select(x => x.ConvertToDto())
+                    .ToListAsync());
+            }
+
+            search = search.Trim().ToLower();
+
+            var speakers= await _dbContext.Speakers.AsNoTracking()
+             .Where(x => x.Email.Trim().ToLower().Contains(search) || x.Name.Trim().ToLower().Contains(search) || x.LastName.Trim().ToLower().Contains(search))
              .Select(x => x.ConvertToDto())
              .ToListAsync();
 
-            return OperationResult<IEnumerable<SpeakerDto>>.Success(speaker);
+
+
+            return OperationResult<IEnumerable<SpeakerDto>>.Success(speakers);
 
         }
     }
