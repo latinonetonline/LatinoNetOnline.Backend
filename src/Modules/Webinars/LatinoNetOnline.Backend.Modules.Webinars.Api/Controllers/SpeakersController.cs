@@ -1,4 +1,6 @@
-﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
+﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -17,18 +19,21 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet(Name = "GetAllSpeakers")]
+        [ProducesResponseType(typeof(OperationResult<SpeakerDto[]>), 200)]
         public async Task<IActionResult> GetAll()
             => new OperationActionResult(await _service.GetAllAsync());
 
-        [HttpGet("Me")]
+        [HttpGet("Me", Name = "GetSpeaker")]
+        [Authorize(Policy = "Anyone")]
+        [ProducesResponseType(typeof(OperationResult<SpeakerDto>), 200)]
         public async Task<IActionResult> Get()
             => new OperationActionResult(await _service.GetAsync());
 
 
-        [HttpGet("Search")]
-        [AllowAnonymous]
+        [HttpGet("Search", Name = "SearchSpeakers")]
+        [Authorize(Policy = "Anyone")]
+        [ProducesResponseType(typeof(OperationResult<SpeakerDto[]>), 200)]
         public async Task<IActionResult> Search(string search)
             => new OperationActionResult(await _service.SearchAsync(search));
     }

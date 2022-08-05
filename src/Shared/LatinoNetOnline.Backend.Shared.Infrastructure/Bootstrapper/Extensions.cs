@@ -5,6 +5,7 @@ using LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExtensio
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,12 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper
             services.AddSwaggerApiVersioning(assembly);
             services.AddForwardedHeaders();
             services.AddHttpContextAccessor();
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue; // if don't set default value is: 128 MB
+                x.MultipartHeadersLengthLimit = int.MaxValue;
+            });
             return services;
         }
 

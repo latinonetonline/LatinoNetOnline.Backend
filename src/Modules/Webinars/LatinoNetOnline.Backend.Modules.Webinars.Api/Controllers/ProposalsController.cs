@@ -4,6 +4,7 @@ using LatinoNetOnline.Backend.Modules.Webinars.Api.Requests;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
+using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
 
 using Microsoft.AspNetCore.Authorization;
@@ -35,11 +36,14 @@ namespace LatinoNETOnline.App.Api.Controllers
             => new OperationActionResult(await _proposalService.GetByIdAsync(new(id)));
 
         [AllowAnonymous]
-        [HttpGet("dates")]
+        [HttpGet("dates", Name = "GetDates")]
+        [ProducesResponseType(typeof(OperationResult<ProposalDateDto>), 200)]
         public async Task<IActionResult> GetAllDates()
             => new OperationActionResult(await _proposalService.GetDatesAsync());
 
-        [HttpPost]
+        [HttpPost(Name = "CreateProposal")]
+        [Authorize(Policy = "Anyone")]
+        [ProducesResponseType(typeof(OperationResult<ProposalFullDto>), 200)]
         public async Task<IActionResult> Create(CreateProposalRequest request)
         {
             var result = await _proposalService.CreateAsync(new(
@@ -82,6 +86,10 @@ namespace LatinoNETOnline.App.Api.Controllers
         [HttpGet("{id}/Description")]
         public async Task<IActionResult> GetDescription(Guid id)
             => new OperationActionResult(await _proposalService.GetDescriptionTextAsync(new(id)));
+
+        [HttpPut("UpdateViews")]
+        public async Task<IActionResult> UpdateViews(UpdateProposalViewsInput input)
+            => new OperationActionResult(await _proposalService.UpdateViewsAsync(input));
 
     }
 }
