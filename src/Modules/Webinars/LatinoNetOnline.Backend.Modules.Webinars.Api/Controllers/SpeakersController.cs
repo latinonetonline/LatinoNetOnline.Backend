@@ -34,7 +34,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers
         [HttpGet("Search", Name = "SearchSpeakers")]
         [Authorize(Policy = "Anyone")]
         [ProducesResponseType(typeof(OperationResult<SpeakerDto[]>), 200)]
-        public async Task<IActionResult> Search(string search)
-            => new OperationActionResult(await _service.SearchAsync(search));
+        public async Task<IActionResult> Search(string search, int? take)
+            => new OperationActionResult(await _service.SearchAsync(search, take));
     }
 }
