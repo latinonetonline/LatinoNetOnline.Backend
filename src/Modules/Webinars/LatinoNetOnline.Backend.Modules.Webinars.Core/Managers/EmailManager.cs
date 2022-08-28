@@ -34,10 +34,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Managers
             MailjetClient client = new("7a15b8d00d9ae904df4d492a89d03f60", _configuration["MailjetOptions:ClientSecret"]);
 
             List<JObject> emails = new();
-            emails.Add(new JObject {
 
-                             { "Email", "latinonetonline@outlook.com"}
-                         });
 
             foreach (var email in input.Emails)
             {
