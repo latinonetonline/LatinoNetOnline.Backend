@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-
+using LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposals.CreateProposal;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Speakers;

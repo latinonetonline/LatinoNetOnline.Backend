@@ -1,5 +1,6 @@
 using AivenEcommerce.V1.Modules.GitHub.DependencyInjection.Extensions;
 
+using LatinoNetOnline.Backend.Modules.Webinars.Api.Requests;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Events.External;
@@ -9,6 +10,9 @@ using LatinoNetOnline.Backend.Shared.Abstractions.Events;
 using LatinoNetOnline.Backend.Shared.Abstractions.Options;
 using LatinoNetOnline.Backend.Shared.Infrastructure.DependencyInjection;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Modules;
+using LatinoNetOnline.GenericRepository;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +42,10 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Api
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Default"),
                     o => o.MigrationsAssembly("LatinoNetOnline.Backend.Bootstrapper")));
+
+            services.AddRepositories<ApplicationDbContext>();
+
+            services.AddMediatR(typeof(CreateProposalRequest));
 
             services.AddGitHubClient();
         }

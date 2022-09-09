@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Infrastructure\LatinoNetOnline.Backend.Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Core\LatinoNetOnline.Backend.Modules.Webinars.Core.csproj" />
+    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Infrastructure\LatinoNetOnline.Backend.Modules.Webinars.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

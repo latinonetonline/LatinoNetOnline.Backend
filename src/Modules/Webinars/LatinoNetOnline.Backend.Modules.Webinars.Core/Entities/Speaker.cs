@@ -1,5 +1,4 @@
-﻿using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Emails;
-using LatinoNetOnline.Backend.Shared.Commons.Entities;
+﻿using LatinoNetOnline.Backend.Shared.Commons.Entities;
 
 using System;
 using System.Collections.Generic;

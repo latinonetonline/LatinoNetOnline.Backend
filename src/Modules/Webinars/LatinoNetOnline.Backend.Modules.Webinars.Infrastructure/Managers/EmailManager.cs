@@ -15,11 +15,6 @@ using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Managers
 {
-    interface IEmailManager
-    {
-        Task<Result> SendEmailAsync(SendEmailInput input);
-    }
-
     class EmailManager : IEmailManager
     {
         private readonly IConfiguration _configuration;

@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Application\LatinoNetOnline.Backend.Modules.Webinars.Application.csproj" />
     <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Core\LatinoNetOnline.Backend.Modules.Webinars.Core.csproj" />
+    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Infrastructure\LatinoNetOnline.Backend.Modules.Webinars.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

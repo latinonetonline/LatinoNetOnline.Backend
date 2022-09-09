@@ -6,20 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Files\mail-proposal-created.html" />
-    <None Remove="Files\mail-proposal-confirmed.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Files\mail-proposal-created.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Files\mail-proposal-confirmed.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.15.0" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.3" />
     <PackageReference Include="FluentValidation" Version="10.2.3" />
@@ -35,10 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Abstractions\LatinoNetOnline.Backend.Shared.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Shared\LatinoNetOnline.Backend.Shared.Commons\LatinoNetOnline.Backend.Shared.Commons.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Resource Include="Files\mail-proposal-created.html" />
   </ItemGroup>
 
 </Project>

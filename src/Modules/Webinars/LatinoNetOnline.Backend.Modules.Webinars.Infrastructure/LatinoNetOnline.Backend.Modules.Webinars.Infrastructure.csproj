@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Files\mail-proposal-confirmed.html" />
+    <None Remove="Files\mail-proposal-created.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Files\mail-proposal-confirmed.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\mail-proposal-created.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LatinoNetOnline.Backend.Modules.Webinars.Application\LatinoNetOnline.Backend.Modules.Webinars.Application.csproj" />
+  </ItemGroup>
+
+</Project>

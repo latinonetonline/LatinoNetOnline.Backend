@@ -1,11 +1,14 @@
 ﻿
 using LatinoNetOnline.Backend.Modules.Webinars.Api.Controllers;
-using LatinoNetOnline.Backend.Modules.Webinars.Api.Requests;
+using LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposals.CreateProposal;
+using LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposals.GetAllProposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Services;
 using LatinoNetOnline.Backend.Shared.Commons.Extensions;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
 using LatinoNetOnline.Backend.Shared.Infrastructure.Presenter;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +22,18 @@ namespace LatinoNETOnline.App.Api.Controllers
     class ProposalsController : BaseController
     {
         private readonly IProposalService _proposalService;
+        private readonly IMediator _mediator;
 
-        public ProposalsController(IProposalService proposalService)
+        public ProposalsController(IProposalService proposalService, IMediator mediator)
         {
             _proposalService = proposalService;
+            _mediator = mediator;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] ProposalFilter filter)
-            => new OperationActionResult(await _proposalService.GetAllAsync(filter));
+        public async Task<IActionResult> GetAll([FromQuery] GetAllProposalsRequest request)
+            => new OperationActionResult(await _mediator.Send(request));
 
         [HttpGet("{id}")]
         [AllowAnonymous]
@@ -45,18 +50,7 @@ namespace LatinoNETOnline.App.Api.Controllers
         [Authorize(Policy = "Anyone")]
         [ProducesResponseType(typeof(OperationResult<ProposalFullDto>), 200)]
         public async Task<IActionResult> Create(CreateProposalRequest request)
-        {
-            var result = await _proposalService.CreateAsync(new(
-                request.Title,
-                request.Description,
-                request.Date,
-                request.AudienceAnswer,
-                request.KnowledgeAnswer,
-                request.UseCaseAnswer,
-                request.Speakers));
-
-            return new OperationActionResult(result);
-        }
+            => new OperationActionResult(await _mediator.Send(request));
 
         [HttpPut]
         public async Task<IActionResult> Update(UpdateProposalInput input)

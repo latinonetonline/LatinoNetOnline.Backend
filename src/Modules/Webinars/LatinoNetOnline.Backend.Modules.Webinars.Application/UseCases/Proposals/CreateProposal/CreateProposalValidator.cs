@@ -1,21 +1,19 @@
 ﻿using FluentValidation;
 
-using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
+using LatinoNetOnline.Backend.Modules.Webinars.Core.Validators;
+using LatinoNetOnline.GenericRepository.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Validators
+namespace LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposals.CreateProposal
 {
-    class CreateProposalValidator : AbstractValidator<CreateProposalInput>
+    class CreateProposalValidator : AbstractValidator<CreateProposalRequest>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IRepository<Proposal> _dbContext;
 
-        public CreateProposalValidator(ApplicationDbContext dbContext)
+        public CreateProposalValidator(IRepository<Proposal> dbContext)
         {
             _dbContext = dbContext;
 
@@ -42,7 +40,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Validators
 
         private async Task<bool> BeAValidDateAsync(DateTime date, CancellationToken cancellationToken)
         {
-            var existDate = await _dbContext.Proposals.AsNoTracking().AnyAsync(x => x.EventDate.Date == date.Date && x.IsActive, cancellationToken);
+            var existDate = await _dbContext.AnyAsync(x => x.EventDate.Date == date.Date && x.IsActive, false, cancellationToken);
 
             return !existDate;
         }
