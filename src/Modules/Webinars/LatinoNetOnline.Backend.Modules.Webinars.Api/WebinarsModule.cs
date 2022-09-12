@@ -1,6 +1,6 @@
 using AivenEcommerce.V1.Modules.GitHub.DependencyInjection.Extensions;
 
-using LatinoNetOnline.Backend.Modules.Webinars.Api.Requests;
+using LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposals.CreateProposal;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Data;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Dto.Proposals;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Events.External;
@@ -33,7 +33,6 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Api
             services.AddScoped<ISpeakerService, SpeakerService>();
             services.AddScoped<IProposalService, ProposalService>();
             services.AddScoped<IWebinarService, WebinarService>();
-            services.AddScoped<IUnavailableDateService, UnavailableDateService>();
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<IMetricoolService, MetricoolService>();
             services.AddScoped<IWebsiteService, WebsiteService>();
