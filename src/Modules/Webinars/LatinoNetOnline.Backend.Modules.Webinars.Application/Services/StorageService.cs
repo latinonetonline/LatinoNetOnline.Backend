@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LatinoNetOnline.Backend.Modules.Webinars.Core.Services
 {
-    interface IStorageService
+    public interface IStorageService
     {
         Task<OperationResult<Uri>> UploadFile(string path, string filename, byte[] file);
     }

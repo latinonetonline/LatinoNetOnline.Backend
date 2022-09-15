@@ -4,6 +4,7 @@ using LatinoNetOnline.Backend.Modules.Webinars.Core.Entities;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Extensions;
 using LatinoNetOnline.Backend.Modules.Webinars.Core.Managers;
 using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.Results;
 using LatinoNetOnline.GenericRepository.Repositories;
 
 using MediatR;
@@ -15,7 +16,7 @@ using System.Security.Claims;
 
 namespace LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposals.CreateProposal
 {
-    internal class CreateProposalRequestHandler : IRequestHandler<CreateProposalRequest, OperationResult<ProposalFullDto>>
+    internal class CreateProposalRequestHandler : IRequestHandler<CreateProposalRequest, Result<ProposalFullDto>>
     {
         private readonly IRepository<Proposal> _proposalRepository;
         private readonly IRepository<Speaker> _speakerRepository;
@@ -30,70 +31,63 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposal
             _emailManager = emailManager;
         }
 
-        public async Task<OperationResult<ProposalFullDto>> Handle(CreateProposalRequest request, CancellationToken cancellationToken)
+        public async Task<Result<ProposalFullDto>> Handle(CreateProposalRequest request, CancellationToken cancellationToken)
         {
-            CreateProposalValidator validator = new(_proposalRepository);
 
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            Proposal proposal = new(request.Title, request.Description, request.AudienceAnswer, request.KnowledgeAnswer, request.UseCaseAnswer, request.Date);
+            List<SpeakerDto> speakerdtos = new();
 
-            if (validationResult.IsValid)
+            var userId = new Guid(_accessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var userEmail = _accessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.Email).Value;
+
+
+            var speakers = await _speakerRepository.FindAsync(x => x.UserId == userId || request.Speakers.Select(s => s.Email).Contains(x.Email));
+
+            foreach (var speakerInput in request.Speakers)
             {
-                Proposal proposal = new(request.Title, request.Description, request.AudienceAnswer, request.KnowledgeAnswer, request.UseCaseAnswer, request.Date);
-                List<SpeakerDto> speakerdtos = new();
+                Guid newUserId = userEmail == speakerInput.Email ? userId : Guid.Empty;
 
-                var userId = new Guid(_accessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-                var userEmail = _accessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.Email).Value;
-
-
-                var speakers = await _speakerRepository.FindAsync(x => x.UserId == userId || request.Speakers.Select(s => s.Email).Contains(x.Email));
-
-                foreach (var speakerInput in request.Speakers)
+                if (speakers.Select(x => x.Email).Distinct().Contains(speakerInput.Email))
                 {
-                    Guid newUserId = userEmail == speakerInput.Email ? userId : Guid.Empty;
+                    Speaker speaker = speakers.First(x => x.UserId == userId || x.Email == speakerInput.Email);
+                    speaker.Name = speakerInput.Name;
+                    speaker.LastName = speakerInput.LastName;
+                    speaker.LastName = speakerInput.LastName;
+                    speaker.Twitter = speakerInput.Twitter;
+                    speaker.Description = speakerInput.Description;
+                    speaker.Image = speakerInput.Image;
 
-                    if (speakers.Select(x => x.Email).Distinct().Contains(speakerInput.Email))
-                    {
-                        Speaker speaker = speakers.First(x => x.UserId == userId || x.Email == speakerInput.Email);
-                        speaker.Name = speakerInput.Name;
-                        speaker.LastName = speakerInput.LastName;
-                        speaker.LastName = speakerInput.LastName;
-                        speaker.Twitter = speakerInput.Twitter;
-                        speaker.Description = speakerInput.Description;
-                        speaker.Image = speakerInput.Image;
+                    if (speaker.UserId == Guid.Empty)
+                        speaker.UserId = newUserId;
 
-                        if (speaker.UserId == Guid.Empty)
-                            speaker.UserId = newUserId;
+                    proposal.Speakers.Add(speaker);
 
-                        proposal.Speakers.Add(speaker);
+                    speakerdtos.Add(speaker.ConvertToDto());
+                }
+                else
+                {
+                    Speaker speaker = new(speakerInput.Name, speakerInput.LastName, speakerInput.Email, speakerInput.Twitter, speakerInput.Description, speakerInput.Image, newUserId);
 
-                        speakerdtos.Add(speaker.ConvertToDto());
-                    }
-                    else
-                    {
-                        Speaker speaker = new(speakerInput.Name, speakerInput.LastName, speakerInput.Email, speakerInput.Twitter, speakerInput.Description, speakerInput.Image, newUserId);
+                    proposal.Speakers.Add(speaker);
 
-                        proposal.Speakers.Add(speaker);
-
-                        speakerdtos.Add(speaker.ConvertToDto());
-                    }
-
+                    speakerdtos.Add(speaker.ConvertToDto());
                 }
 
-                await SetWebinarNumberAsync(proposal);
-
-                await _proposalRepository.AddAsync(proposal, cancellationToken);
-
-
-
-                ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), speakerdtos);
-
-
-                await _emailManager.SendEmailAsync(await proposalFullDto.ConvertToProposalCreatedEmailInput());
-
-                return OperationResult<ProposalFullDto>.Success(proposalFullDto);
             }
 
-            return OperationResult<ProposalFullDto>.Fail(new(""));
+            await SetWebinarNumberAsync(proposal);
+
+            await _proposalRepository.AddAsync(proposal, cancellationToken);
+
+
+
+            ProposalFullDto proposalFullDto = new(proposal.ConvertToDto(), speakerdtos);
+
+
+            await _emailManager.SendEmailAsync(await proposalFullDto.ConvertToProposalCreatedEmailInput());
+
+            return proposalFullDto;
+
 
         }
 

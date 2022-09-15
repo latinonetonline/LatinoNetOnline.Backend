@@ -34,7 +34,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposal
             return OperationResult<IEnumerable<ProposalFullDto>>.Success(ConvertToFullDto(proposals));
         }
 
-        private ProposalFullDto ConvertToFullDto(Proposal proposal)
+        private static ProposalFullDto ConvertToFullDto(Proposal proposal)
         {
             var proposalDto = proposal.ConvertToDto();
             var speakers = proposal.Speakers;
@@ -43,7 +43,7 @@ namespace LatinoNetOnline.Backend.Modules.Webinars.Application.UseCases.Proposal
             return new(proposalDto, speakerDtos);
         }
 
-        private IEnumerable<ProposalFullDto> ConvertToFullDto(IEnumerable<Proposal> proposals)
+        private static IEnumerable<ProposalFullDto> ConvertToFullDto(IEnumerable<Proposal> proposals)
         {
             List<ProposalFullDto> proposalFullDtos = new();
 
