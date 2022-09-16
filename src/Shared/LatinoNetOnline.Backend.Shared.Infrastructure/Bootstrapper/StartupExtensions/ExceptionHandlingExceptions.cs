@@ -1,4 +1,5 @@
 ﻿using LatinoNetOnline.Backend.Shared.Commons.OperationResults;
+using LatinoNetOnline.Backend.Shared.Commons.Results;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -26,9 +27,7 @@ namespace LatinoNetOnline.Backend.Shared.Infrastructure.Bootstrapper.StartupExte
                     {
                         logger.LogError(contextFeature.Error, contextFeature.Error.ToString());
 
-                        ErrorResult errorResult = new("internal_server_error: " + contextFeature.Error.ToString());
-
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(OperationResult.ServerError(errorResult)));
+                        await context.Response.WriteAsync(JsonSerializer.Serialize((Result)(contextFeature.Error.ToString())));
                     }
                 });
             });
